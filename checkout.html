@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="zxx" class="no-js">
+
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="shortcut icon" href="img/fav.png">
+    <meta name="author" content="CodePixar">
+    <meta name="description" content="">
+    <meta name="keywords" content="">
+    <meta charset="UTF-8">
+    <title>Karma Shop</title>
+
+    <link rel="stylesheet" href="css/linearicons.css">
+    <link rel="stylesheet" href="css/owl.carousel.css">
+    <link rel="stylesheet" href="css/themify-icons.css">
+    <link rel="stylesheet" href="css/font-awesome.min.css">
+    <link rel="stylesheet" href="css/nice-select.css">
+    <link rel="stylesheet" href="css/nouislider.min.css">
+    <link rel="stylesheet" href="css/bootstrap.css">
+    <link rel="stylesheet" href="css/main.css">
+</head>
+
+<body>
+
+<!-- Start Header Area -->
+<header class="header_area sticky-header">
+    <div class="main_menu">
+        <nav class="navbar navbar-expand-lg navbar-light main_box">
+            <div class="container">
+                <a class="navbar-brand logo_h" href="index.html"><img src="img/logo.png" alt=""></a>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+                        aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <div class="collapse navbar-collapse offset" id="navbarSupportedContent">
+                    <ul class="nav navbar-nav menu_nav ml-auto">
+                        <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
+                        <li class="nav-item submenu dropdown active">
+                            <a href="#" class="nav-link dropdown-toggle" role="button" aria-haspopup="true" aria-expanded="false">Shop</a>
+                            <ul class="dropdown-menu">
+                                <li class="nav-item"><a class="nav-link" href="category.html">Shop Category</a></li>
+                                <li class="nav-item"><a class="nav-link" href="single-product.html">Product Details</a></li>
+                                <li class="nav-item active"><a class="nav-link" href="checkout.html">Product Checkout</a></li>
+                                <li class="nav-item"><a class="nav-link" href="cart.html">Shopping Cart</a></li>
+                                <li class="nav-item"><a class="nav-link" href="confirmation.html">Confirmation</a></li>
+                            </ul>
+                        </li>
+                        <li class="nav-item submenu dropdown">
+                            <a href="#" class="nav-link dropdown-toggle" role="button" aria-haspopup="true" aria-expanded="false">Blog</a>
+                            <ul class="dropdown-menu">
+                                <li class="nav-item"><a class="nav-link" href="blog.html">Blog</a></li>
+                                <li class="nav-item"><a class="nav-link" href="single-blog.html">Blog Details</a></li>
+                            </ul>
+                        </li>
+                        <li class="nav-item submenu dropdown">
+                            <a href="#" class="nav-link dropdown-toggle" role="button" aria-haspopup="true" aria-expanded="false">Pages</a>
+                            <ul class="dropdown-menu">
+                                <li class="nav-item"><a class="nav-link" href="login.html">Login</a></li>
+                                <li class="nav-item"><a class="nav-link" href="tracking.html">Tracking</a></li>
+                                <li class="nav-item"><a class="nav-link" href="elements.html">Elements</a></li>
+                            </ul>
+                        </li>
+                        <li class="nav-item"><a class="nav-link" href="contact.html">Contact</a></li>
+                    </ul>
+                    <ul class="nav navbar-nav navbar-right">
+                        <li class="nav-item"><a href="#" class="cart"><span class="ti-bag"></span></a></li>
+                        <li class="nav-item">
+                            <button class="search"><span class="lnr lnr-magnifier" id="search"></span></button>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </div>
+    <div class="search_input" id="search_input_box" style="display:none;">
+        <div class="container">
+            <form class="d-flex justify-content-between">
+                <input type="text" class="form-control" id="search_input" placeholder="Search Here">
+                <button type="submit" class="btn">Search</button>
+                <span class="lnr lnr-cross" id="close_search" title="Close Search"></span>
+            </form>
+        </div>
+    </div>
+</header>
+<!-- End Header Area -->
+
+<!-- Start Banner Area -->
+<section class="banner-area organic-breadcrumb">
+    <div class="container">
+        <div class="breadcrumb-banner d-flex flex-wrap align-items-center justify-content-end">
+            <div class="col-first">
+                <h1>Checkout</h1>
+                <nav class="d-flex align-items-center">
+                    <a href="index.html">Home<span class="lnr lnr-arrow-right"></span></a>
+                    <a href="single-product.html">Checkout</a>
+                </nav>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- End Banner Area -->
+
+<!--================Checkout Area =================-->
+<section class="checkout_area section_gap">
+    <div class="container">
+        <div class="returning_customer">
+            <div class="check_title">
+                <h2>Returning Customer? <a href="#">Click here to login</a></h2>
+            </div>
+            <p>If you have shopped with us before, please enter your details in the boxes below. If you are a new customer, please proceed to the Billing & Shipping section.</p>
+            <form class="row contact_form" action="#" method="post" novalidate="novalidate">
+                <div class="col-md-6 form-group p_star">
+                    <input type="text" class="form-control" id="name" name="name" placeholder="Username or Email">
+                </div>
+                <div class="col-md-6 form-group p_star">
+                    <input type="password" class="form-control" id="password" name="password" placeholder="Password">
+                </div>
+                <div class="col-md-12 form-group">
+                    <button type="submit" value="submit" class="primary-btn">Login</button>
+                    <div class="creat_account">
+                        <input type="checkbox" id="f-option" name="selector">
+                        <label for="f-option">Remember me</label>
+                    </div>
+                    <a class="lost_pass" href="#">Lost your password?</a>
+                </div>
+            </form>
+        </div>
+        <div class="cupon_area">
+            <div class="check_title">
+                <h2>Have a coupon? <a href="#">Click here to enter your code</a></h2>
+            </div>
+            <input type="text" placeholder="Enter coupon code">
+            <a class="tp_btn" href="#">Apply Coupon</a>
+        </div>
+        <div class="billing_details">
+            <div class="row">
+                <div class="col-lg-8">
+                    <h3>Billing Details</h3>
+                    <form class="row contact_form" action="#" method="post" novalidate="novalidate">
+                        <div class="col-md-6 form-group p_star">
+                            <input type="text" class="form-control" id="first" name="name" placeholder="First name">
+                        </div>
+                        <div class="col-md-6 form-group p_star">
+                            <input type="text" class="form-control" id="last" name="name" placeholder="Last name">
+                        </div>
+                        <div class="col-md-12 form-group">
+                            <input type="text" class="form-control" id="company" name="company" placeholder="Company name">
+                        </div>
+                        <div class="col-md-6 form-group p_star">
+                            <input type="text" class="form-control" id="number" name="number" placeholder="Phone number">
+                        </div>
+                        <div class="col-md-6 form-group p_star">
+                            <input type="text" class="form-control" id="email" name="compemailany" placeholder="Email Address">
+                        </div>
+                        <div class="col-md-12 form-group p_star">
+                            <select class="country_select">
+                                <option value="1">Country</option>
+                                <option value="2">Country</option>
+                                <option value="4">Country</option>
+                            </select>
+                        </div>
+                        <div class="col-md-12 form-group">
+                            <textarea class="form-control" name="message" id="message" rows="1" placeholder="Notes about your order, e.g. special notes for delivery."></textarea>
+                        </div>
+                    </form>
+                </div>
+                <div class="col-lg-4">
+                    <div class="order_box">
+                        <h2>Your Order</h2>
+                        <ul class="list">
+                            <li><a href="#">Product <span> $15.00</span></a></li>
+                            <li><a href="#">Product <span> $10.00</span></a></li>
+                            <li><a href="#">Product <span> $5.00</span></a></li>
+                        </ul>
+                        <div class="cupon">
+                            <input type="text" placeholder="Enter coupon code">
+                            <a class="tp_btn" href="#">Apply Coupon</a>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <h5>Subtotal</h5>
+                            </div>
+                            <div class="col-md-6">
+                                <h5>$30.00</h5>
+                            </div>
+                            <div class="col-md-6">
+                                <h5>Shipping</h5>
+                            </div>
+                            <div class="col-md-6">
+                                <h5>Free</h5>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <h5>Total</h5>
+                            </div>
+                            <div class="col-md-6">
+                                <h5>$30.00</h5>
+                            </div>
+                        </div>
+                        <button class="primary-btn" type="submit">Proceed to Pay</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!--================End Checkout Area =================-->
+
+<!-- start footer Area -->
+<footer class="footer-area section_gap">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-3 col-md-6 col-sm-6">
+                <div class="single-footer-widget">
+                    <h6>About Us</h6>
+                    <p>We are a team of designers and developers that create high quality HTML Template.</p>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6 col-sm-6">
+                <div class="single-footer-widget">
+                    <h6>Quick Links</h6>
+                    <ul class="footer-nav">
+                        <li><a href="#">Home</a></li>
+                        <li><a href="#">About</a></li>
+                        <li><a href="#">Shop</a></li>
+                        <li><a href="#">Contact</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6 col-sm-6">
+                <div class="single-footer-widget">
+                    <h6>Newsletter</h6>
+                    <p>Subscribe to our newsletter for updates and special offers.</p>
+                    <div id="mc_embed_signup">
+                        <form target="_blank" action="#" method="get" class="subscribe_form relative">
+                            <div class="input-group d-flex flex-row">
+                                <input name="EMAIL" placeholder="Email Address" required="" type="email">
+                                <button class="btn sub-btn">
+                                    <span class="lnr lnr-arrow-right"></span>
+                                </button>
+                            </div>
+                            <div class="info"></div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6 col-sm-6">
+                <div class="single-footer-widget">
+                    <h6>Contact Us</h6>
+                    <p>123 Street Name, City, Country</p>
+                    <p>+1 234 567 890</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</footer>
+<!-- End footer Area -->
+</body>
+</html>
