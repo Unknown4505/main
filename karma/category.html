@@ -51,6 +51,32 @@
 		.main-nav-list input[type="checkbox"]:checked ~ ul {
 			display: block;
 		}
+		/* Đảm bảo các mục trong danh sách nằm ngang và chia đều */
+		.horizontal-categories .main-categories {
+			list-style-type: none;
+			padding: 0;
+			display: flex;
+			justify-content: space-between; /* Chia đều khoảng cách giữa các khung */
+			margin: 20px 0;
+		}
+
+		.horizontal-categories .main-nav-list {
+			flex: 1; /* Đảm bảo các khung có kích thước bằng nhau */
+			background-color: #ADD8E6;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			border: 1px solid #ddd; /* Viền cho mỗi khung */
+			padding: 15px;
+			box-sizing: border-box; /* Đảm bảo padding không làm tăng kích thước khung */
+			text-align: center;
+		}
+
+		.horizontal-categories label {
+			cursor: pointer;
+			margin-left: 5px;
+		}
+
 	</style>
 </head>
 
@@ -112,77 +138,53 @@
 		</nav>
 	</div>
 
-<!-- Start Banner Area -->
-<section class="banner-area organic-breadcrumb">
-	<div class="container">
-		<div class="breadcrumb-banner d-flex flex-wrap align-items-center justify-content-end">
-			<div class="col-first">
-				<h1>Shop Category page</h1>
-				<nav class="d-flex align-items-center">
-					<a href="index.html">Home<span class="lnr lnr-arrow-right"></span></a>
-					<a href="#">Shop<span class="lnr lnr-arrow-right"></span></a>
-					<a href="category.html">Fashon Category</a>
-				</nav>
+	<!-- Start Banner Area -->
+	<section class="banner-area organic-breadcrumb">
+		<div class="container">
+			<div class="breadcrumb-banner d-flex flex-wrap align-items-center justify-content-end">
+				<div class="col-first">
+					<h1>Shop Category Page</h1>
+					<nav class="d-flex align-items-center">
+						<a href="index.html">Home<span class="lnr lnr-arrow-right"></span></a>
+						<a href="#">Shop<span class="lnr lnr-arrow-right"></span></a>
+						<a href="category.html">Fashion Category</a>
+					</nav>
+				</div>
 			</div>
 		</div>
-	</div>
-</section>
-<!-- End Banner Area -->
+	</section>
+	<!-- End Banner Area -->
 
+	<!-- Start Category Section -->
 	<div class="container">
 		<div class="row">
-			<div class="col-xl-3 col-lg-4 col-md-5">
-				<div class="sidebar-categories">
-					<div class="head">Browse Categories</div>
-					<ul class="main-categories">
+			<div class="col-12">
+				<div class="sidebar-categories horizontal-categories">
+					<ul class="main-categories d-flex justify-content-between">
 						<li class="main-nav-list">
 							<input type="checkbox" id="Sneaker">
-							<label for="Sneaker"><span class="lnr lnr-arrow-right"></span>Sneaker<span class="number">(53)</span></label>
-							<ul>
-								<li class="main-nav-list child"><a href="#">Adidas<span class="number">(13)</span></a></li>
-								<li class="main-nav-list child"><a href="#">Nike<span class="number">(09)</span></a></li>
-								<li class="main-nav-list child"><a href="#">Conver<span class="number">(17)</span></a></li>
-								<li class="main-nav-list child"><a href="#">Bitis<span class="number">(01)</span></a></li>
-							</ul>
+							<a href="category.html">Sneaker<span class="number">(53)</span></a>
 						</li>
 
 						<li class="main-nav-list">
 							<input type="checkbox" id="Bag">
-							<label for="Bag"><span class="lnr lnr-arrow-right"></span>Bag<span class="number">(53)</span></label>
-							<ul>
-								<li class="main-nav-list child"><a href="#">Adidas<span class="number">(13)</span></a></li>
-								<li class="main-nav-list child"><a href="#">Nike<span class="number">(09)</span></a></li>
-								<li class="main-nav-list child"><a href="#">channel<span class="number">(17)</span></a></li>
-								<li class="main-nav-list child"><a href="#">Conver<span class="number">(01)</span></a></li>
-								<li class="main-nav-list child"><a href="#">Bitis<span class="number">(11)</span></a></li>
-							</ul>
+							<a href="category.html">Bag<span class="number">(53)</span></a>
 						</li>
 
 						<li class="main-nav-list">
 							<input type="checkbox" id="Clothes">
-							<label for="Clothes"><span class="lnr lnr-arrow-right"></span>Clothes<span class="number">(53)</span></label>
-							<ul>
-								<li class="main-nav-list child"><a href="#">Adidas<span class="number">(13)</span></a></li>
-								<li class="main-nav-list child"><a href="#">Nike<span class="number">(09)</span></a></li>
-								<li class="main-nav-list child"><a href="#">Conver<span class="number">(17)</span></a></li>
-								<li class="main-nav-list child"><a href="#">Bitis<span class="number">(01)</span></a></li>
-							</ul>
+							<a href="category.html">Clothes<span class="number">(53)</span></a>
 						</li>
 
 						<li class="main-nav-list">
 							<input type="checkbox" id="Watch">
-							<label for="Watch"><span class="lnr lnr-arrow-right"></span>Watch<span class="number">(53)</span></label>
-							<ul>
-								<li class="main-nav-list child"><a href="#">Adidas<span class="number">(13)</span></a></li>
-								<li class="main-nav-list child"><a href="#">Nike<span class="number">(09)</span></a></li>
-								<li class="main-nav-list child"><a href="#">Conver<span class="number">(17)</span></a></li>
-								<li class="main-nav-list child"><a href="#">Bitis<span class="number">(01)</span></a></li>
-							</ul>
+							<a href="category.html">Watch<span class="number">(53)</span></a>
 						</li>
 					</ul>
 				</div>
 			</div>
-
+		</div>
+	</div>
 
 <!-- Start Best Seller -->
 <section class="lattest-product-area pb-40 category-list">
@@ -645,5 +647,6 @@
 		</div>
 	</div>
 </div>
+</header>
 </body>
 </html>
