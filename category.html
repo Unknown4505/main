@@ -26,57 +26,23 @@
 	<link rel="stylesheet" href="css/nouislider.min.css">
 	<link rel="stylesheet" href="css/bootstrap.css">
 	<link rel="stylesheet" href="css/main.css">
+	<link rel="stylesheet" href="css/search.css">
+	<link rel="stylesheet" href="css/category.css">
+
 	<style>
-		/* Basic styles for collapsible sections */
-		.sidebar-categories .main-categories {
-			list-style-type: none;
-			padding: 0;
+		/* Ẩn thông báo kết quả tìm kiếm theo mặc định */
+		.results-header {
+			display: none; /* Mặc định ẩn */
+			font-size: 24px;
+			font-weight: bold;
+			margin: 20px 0; /* Thêm khoảng cách phía trên và dưới */
+			color: #333;
 		}
 
-		.main-nav-list input[type="checkbox"] {
-			display: none;
+		/* Hiển thị khi có từ khóa tìm kiếm (tùy chỉnh thủ công) */
+		.show {
+			display: block; /* Hiển thị khi cần */
 		}
-
-		.main-nav-list label {
-			display: block;
-			cursor: pointer;
-		}
-
-		.main-nav-list ul {
-			display: none;
-			list-style-type: none;
-			padding-left: 20px;
-		}
-
-		.main-nav-list input[type="checkbox"]:checked ~ ul {
-			display: block;
-		}
-		/* Đảm bảo các mục trong danh sách nằm ngang và chia đều */
-		.horizontal-categories .main-categories {
-			list-style-type: none;
-			padding: 0;
-			display: flex;
-			justify-content: space-between; /* Chia đều khoảng cách giữa các khung */
-			margin: 20px 0;
-		}
-
-		.horizontal-categories .main-nav-list {
-			flex: 1; /* Đảm bảo các khung có kích thước bằng nhau */
-			background-color: #ADD8E6;
-			display: flex;
-			align-items: center;
-			justify-content: center;
-			border: 1px solid #ddd; /* Viền cho mỗi khung */
-			padding: 15px;
-			box-sizing: border-box; /* Đảm bảo padding không làm tăng kích thước khung */
-			text-align: center;
-		}
-
-		.horizontal-categories label {
-			cursor: pointer;
-			margin-left: 5px;
-		}
-
 	</style>
 </head>
 
@@ -85,8 +51,9 @@
 <!-- Start Header Area -->
 <header class="header_area sticky-header">
 	<div class="main_menu">
-		<nav class="navbar navbar-expand-lg navbar-light main_box">
+		<nav class="navbar navbar-expand-lg navbar-light main_box custom-menu">
 			<div class="container">
+				<!-- Logo -->
 				<a class="navbar-brand logo_h" href="index.html"><img src="img/logo.png" alt=""></a>
 				<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
 						aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -94,14 +61,16 @@
 					<span class="icon-bar"></span>
 					<span class="icon-bar"></span>
 				</button>
+
+				<!-- Menu Links -->
 				<div class="collapse navbar-collapse offset" id="navbarSupportedContent">
 					<ul class="nav navbar-nav menu_nav ml-auto">
-						<li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
-						<li class="nav-item submenu dropdown active">
-							<a href="#" class="nav-link dropdown-toggle" role="button" aria-haspopup="true"
+						<li class="nav-item active"><a class="nav-link" href="index.html">Home</a></li>
+						<li class="nav-item submenu dropdown">
+							<a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
 							   aria-expanded="false">Shop</a>
 							<ul class="dropdown-menu">
-								<li class="nav-item active"><a class="nav-link" href="category.html">Shop Category</a></li>
+								<li class="nav-item"><a class="nav-link" href="category.html">Shop Category</a></li>
 								<li class="nav-item"><a class="nav-link" href="single-product.html">Product Details</a></li>
 								<li class="nav-item"><a class="nav-link" href="checkout.html">Product Checkout</a></li>
 								<li class="nav-item"><a class="nav-link" href="cart.html">Shopping Cart</a></li>
@@ -109,7 +78,7 @@
 							</ul>
 						</li>
 						<li class="nav-item submenu dropdown">
-							<a href="#" class="nav-link dropdown-toggle" role="button" aria-haspopup="true"
+							<a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
 							   aria-expanded="false">Blog</a>
 							<ul class="dropdown-menu">
 								<li class="nav-item"><a class="nav-link" href="blog.html">Blog</a></li>
@@ -117,26 +86,45 @@
 							</ul>
 						</li>
 						<li class="nav-item submenu dropdown">
-							<a href="#" class="nav-link dropdown-toggle" role="button" aria-haspopup="true"
+							<a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
 							   aria-expanded="false">Pages</a>
 							<ul class="dropdown-menu">
-								<li class="nav-item"><a class="nav-link" href="login.html">Login</a></li>
+								<li class="nav-item"><a class="nav-link" href="login.html">Log in</a></li>
 								<li class="nav-item"><a class="nav-link" href="tracking.html">Tracking</a></li>
 								<li class="nav-item"><a class="nav-link" href="elements.html">Elements</a></li>
 							</ul>
 						</li>
 						<li class="nav-item"><a class="nav-link" href="contact.html">Contact</a></li>
 					</ul>
+
+					<!-- Search Input Box -->
+					<input type="checkbox" id="search-toggle" class="search-toggle" hidden>
+					<div class="search_input">
+						<form id="search-form" action="category.html" method="GET" class="d-flex justify-content-between">
+							<input type="text" class="search-input" name="query" placeholder="Search Here" required>
+							<button type="submit" class="search-btn">
+								<span class="lnr lnr-magnifier"></span> <!-- Kính lúp -->
+							</button>
+							<label for="search-toggle" class="lnr lnr-cross" title="Close Search"></label>
+						</form>
+					</div>
+
+					<!-- Search Icon and Cart -->
 					<ul class="nav navbar-nav navbar-right">
 						<li class="nav-item"><a href="#" class="cart"><span class="ti-bag"></span></a></li>
 						<li class="nav-item">
-							<button class="search"><span class="lnr lnr-magnifier" id="search"></span></button>
+							<!-- Search Button with Magnifier Icon -->
+							<label for="search-toggle" class="search-icon">
+								<span class="lnr lnr-magnifier"></span>
+							</label>
 						</li>
 					</ul>
 				</div>
 			</div>
 		</nav>
 	</div>
+</header>
+<!-- End Header -->
 
 	<!-- Start Banner Area -->
 	<section class="banner-area organic-breadcrumb">
@@ -154,6 +142,12 @@
 		</div>
 	</section>
 	<!-- End Banner Area -->
+
+<!-- Hiển thị dòng kết quả tìm kiếm -->
+<div class="results-header">
+	<p>Search Results for "<strong>Your Search Term</strong>"</p>
+</div>
+
 
 	<!-- Start Category Section -->
 	<div class="container">

@@ -1,30 +1,86 @@
-/* search.css */
-
-body {
-    font-family: Arial, sans-serif;
-    margin: 0;
-    padding: 0;
+/* Định dạng cho navbar */
+.navbar {
+    position: relative;
+    z-index: 999;
 }
 
-h1 {
-    text-align: center;
-    margin-top: 20px;
-}
-
-form {
+/* Cân đối các mục trên thanh menu */
+.collapse.navbar-collapse {
     display: flex;
-    justify-content: center;
-    margin-top: 20px;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
 }
 
-form input[type="text"] {
-    padding: 10px;
-    font-size: 16px;
-    margin-right: 10px;
+/* Định dạng cho các mục trong thanh menu */
+.navbar-nav .nav-item {
+    text-align: center;
+    flex-grow: 1;
 }
 
-form button {
-    padding: 10px;
-    font-size: 16px;
+/* Điều chỉnh khoảng cách giữa các mục trong menu */
+.navbar-nav .nav-item a {
+    padding: 0 15px;
+}
+
+/* Định dạng cho ô tìm kiếm */
+.search_input {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100%;
+    background: linear-gradient(to right, #FF6F00, #FFA726); /* Màu nền gradient */
+    padding: 10px 20px;
+    z-index: 998;
+    transform: translateY(-20px); /* Di chuyển lên 20px khi ẩn */
+    opacity: 0; /* Ẩn ô tìm kiếm */
+    transition: transform 0.5s ease-in-out, opacity 0.5s ease-in-out; /* Hiệu ứng mượt mà */
+}
+
+/* Hiển thị ô tìm kiếm khi checkbox được chọn (hiệu ứng trượt) */
+.search-toggle:checked + .search_input {
+    transform: translateY(0); /* Trở về vị trí ban đầu khi hiển thị */
+    opacity: 1; /* Hiển thị ô tìm kiếm */
+}
+
+/* Định dạng cho ô input */
+.search-input {
+    border: none;
+    border-bottom: 0.5px solid black; /* Viền dưới màu đen */
+    background-color: transparent;
+    color: #ffffff; /* Chữ màu đen */
+    width: 80%; /* Giới hạn chiều rộng input */
+    margin-right: 6px;
+    outline: none;
+}
+
+/* Định dạng cho nút "Search" */
+.search-btn {
+    background-color: white; /* Nút trắng để tương phản */
+    border: none;
+    padding: 5px 10px;
+    color: #FF6F00; /* Màu chữ cam */
     cursor: pointer;
+    border-radius: 0px;
+}
+
+/* Định dạng cho biểu tượng kính lúp và nút đóng */
+.search-icon, .lnr-cross {
+    cursor: pointer;
+    display: inline-block;
+    padding: 5px;
+    color: #FF6F00;
+}
+
+/* Canh hộp tìm kiếm bên phải biểu tượng kính lúp */
+.search-icon {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+}
+
+/* Nút đóng "X" */
+.lnr-cross {
+    color: white;
 }

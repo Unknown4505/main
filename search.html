@@ -1,20 +1,11 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Search</title>
-    <link rel="stylesheet" href="search.css"> <!-- Liên kết tới file CSS tìm kiếm -->
-</head>
-<body>
-<header>
-    <h1>Tìm kiếm</h1>
-</header>
-<main>
-    <form action="index.html" method="GET">
-        <input type="text" name="query" placeholder="search" required>
-        <button type="submit">Tìm kiếm</button>
+<!-- Search Input Box -->
+<div class="search_input" id="search_input_box">
+    <!-- Form gửi nội dung tìm kiếm đến category.html -->
+    <form action="category.html" method="GET" class="d-flex justify-content-between">
+        <input type="text" class="search-input" name="query" placeholder="Search Here">
+        <!-- Nút Search (submit) -->
+        <button type="submit" class="search-btn">
+            Search
+        </button>
     </form>
-</main>
-</body>
-</html>
+</div>

@@ -1,0 +1,50 @@
+/* Basic styles for collapsible sections */
+.sidebar-categories .main-categories {
+    list-style-type: none;
+    padding: 0;
+}
+
+.main-nav-list input[type="checkbox"] {
+    display: none;
+}
+
+.main-nav-list label {
+    display: block;
+    cursor: pointer;
+}
+
+.main-nav-list ul {
+    display: none;
+    list-style-type: none;
+    padding-left: 20px;
+}
+
+.main-nav-list input[type="checkbox"]:checked ~ ul {
+    display: block;
+}
+
+/* Ensure horizontal categories and equal spacing */
+.horizontal-categories .main-categories {
+    list-style-type: none;
+    padding: 0;
+    display: flex;
+    justify-content: space-between; /* Distribute spacing evenly between items */
+    margin: 20px 0;
+}
+
+.horizontal-categories .main-nav-list {
+    flex: 1; /* Ensure equal size for each item */
+    background-color: #ADD8E6;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid #ddd; /* Border for each item */
+    padding: 15px;
+    box-sizing: border-box; /* Ensure padding doesn't affect box size */
+    text-align: center;
+}
+
+.horizontal-categories label {
+    cursor: pointer;
+    margin-left: 5px;
+}
