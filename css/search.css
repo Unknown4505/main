@@ -84,3 +84,107 @@
 .lnr-cross {
     color: white;
 }
+
+
+/* banner area css
+============================================================================================ */
+.banner-area {
+    background: url(../img/banner/banner-bg.jpg) center no-repeat;
+    background-size: cover;
+    position: relative;
+    padding-top: 100px; /* Khoảng cách từ trên cùng đến banner */
+    padding-bottom: 50px; /* Khoảng cách từ dưới đến banner */
+}
+
+.fullscreen {
+    @media (max-width: 768px) {
+        height: 650px !important;
+    }
+}
+
+.slider {
+    display: flex;
+    width: 100%; /* Kích thước đủ để chứa các slide */
+    overflow: hidden; /* Ẩn các phần thừa */
+}
+
+.slide {
+    width: 100%; /* Mỗi slide chiếm 100% */
+    flex-shrink: 0; /* Không thu nhỏ slide */
+    display: flex;
+    align-items: center; /* Căn giữa theo chiều dọc */
+}
+.hidden {
+    display: none; /* Ẩn slide */
+}
+
+@keyframes slideAnimation {
+    0% {
+        transform: translateX(0);
+    }
+    25% {
+        transform: translateX(0);
+    }
+    30% {
+        transform: translateX(-50%);
+    }
+    55% {
+        transform: translateX(-50%);
+    }
+    60% {
+        transform: translateX(0);
+    }
+    100% {
+        transform: translateX(0);
+    }
+}
+
+.banner-content {
+    padding-left: 10px;
+    @media (max-width: 991px) {
+        padding-left: 0;
+    }
+    h1 {
+        font-size: 60px;
+        line-height: 66px;
+        font-weight: 700;
+        margin-bottom: 30px;
+        @media (max-width: 767px) {
+            font-size: 35px;
+            line-height: 46px;
+        }
+    }
+    p {
+        margin: 0;
+    }
+}
+
+.banner-img {
+    @media (max-width: 991px) {
+        display: none;
+    }
+}
+
+/* Arrow Controls */
+.arrow {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 30px;
+    color: #fff;
+    cursor: pointer;
+    z-index: 1;
+}
+
+.arrow.left {
+    left: 10px;
+}
+
+.arrow.right {
+    right: 10px;
+}
+
+
+
+
+
