@@ -1,0 +1,93 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f0f2f5;
+    display: flex;
+    justify-content: center;  /* Căn giữa theo chiều ngang */
+    align-items: center;      /* Căn giữa theo chiều dọc */
+    height: 100vh;            /* Chiều cao bằng 100% chiều cao của cửa sổ trình duyệt */
+    margin: 0;
+    padding: 20px;
+    overflow: auto;           /* Cho phép cuộn khi nội dung quá lớn */
+}
+
+.profile-container {
+    background-color: white;
+    border-radius: 20px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+    width: 70%; /* Độ rộng mở rộng hơn để dễ căn giữa */
+    max-width: 1200px; /* Giới hạn độ rộng tối đa */
+    padding: 40px;
+    text-align: center;
+    transition: transform 0.3s ease;
+    margin: 0 auto; /* Căn giữa phần tử theo chiều ngang */
+}
+
+
+
+.profile-container:hover {
+    transform: translateY(-10px);
+}
+
+/* Phần header có màu cam */
+.profile-header {
+    background-color: #FF9800; /* Màu cam */
+    padding: 20px 0; /* Khoảng cách trên dưới trong header */
+    margin-bottom: 30px;
+    border-radius: 15px 15px 0 0; /* Bo tròn góc phía trên */
+    color: white;
+}
+
+.profile-name {
+    font-size: 36px; /* Tăng kích thước chữ */
+    font-weight: bold;
+    margin-bottom: 5px;
+    color: white; /* Màu chữ trắng trong header */
+}
+
+.profile-email {
+    font-size: 18px; /* Kích thước chữ cho email */
+    color: #f4f4f4; /* Màu chữ trắng nhạt */
+}
+
+.profile-details {
+    text-align: left;
+    margin-top: 30px;
+}
+
+.profile-details h2 {
+    font-size: 24px; /* Tăng kích thước chữ cho tiêu đề */
+    margin-bottom: 20px;
+    color: #555;
+    text-transform: none;
+}
+
+.profile-info p {
+    margin: 15px 0;
+    font-size: 20px; /* Tăng kích thước chữ cho thông tin */
+    color: #444;
+}
+
+.profile-info strong {
+    color: #000;
+}
+
+.profile-info {
+    line-height: 1.7;
+}
+
+/* Thêm chút bóng mờ để hiện đại hơn */
+.profile-info p {
+    border-bottom: 1px solid #e0e0e0;
+    padding-bottom: 10px;
+}
+
+/* Phần thân của trang được làm rõ hơn */
+body {
+    background-color: #eaeaea;
+}
