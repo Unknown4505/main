@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="shortcut icon" href="img/fav.png">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Product</title>
+    <link rel="stylesheet" href="css/add-product.css"> <!-- Đường dẫn đến file CSS -->
+    <link rel="stylesheet" href="css/linearicons.css">
+    <link rel="stylesheet" href="css/font-awesome.min.css">
+    <link rel="stylesheet" href="css/themify-icons.css">
+    <link rel="stylesheet" href="css/bootstrap.css">
+    <link rel="stylesheet" href="css/owl.carousel.css">
+    <link rel="stylesheet" href="css/nice-select.css">
+    <link rel="stylesheet" href="css/nouislider.min.css">
+    <link rel="stylesheet" href="css/ion.rangeSlider.css" />
+    <link rel="stylesheet" href="css/ion.rangeSlider.skinFlat.css" />
+    <link rel="stylesheet" href="css/magnific-popup.css">
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/User1234.css">
+    <link rel="stylesheet" href="css/search.css">
+</head>
+<body>
+<!-- Start Header Area -->
+<header class="header_area sticky-header">
+    <div class="main_menu">
+        <nav class="navbar navbar-expand-lg navbar-light main_box">
+            <div class="container">
+                <!-- Brand and toggle get grouped for better mobile display -->
+                <a class="navbar-brand logo_h" href="index.html"><img src="img/logo.png" alt=""></a>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+                        aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <!-- Collect the nav links, forms, and other content for toggling -->
+                <div class="collapse navbar-collapse offset" id="navbarSupportedContent">
+                    <ul class="nav navbar-nav menu_nav ml-auto">
+                        <li class="nav-item active"><a class="nav-link" href="admin.html">Home</a></li>
+                        <li class="nav-item">
+                        <li class="nav-item"><a href="ManageCustomerOrder.html" class="nav-link">Manage Customer Order</a></li>
+                        </li>
+
+                        <li class="nav-item">
+                            <a href="shop.html" class="nav-link">Shop</a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a href="shop.html" class="nav-link">Shop</a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a href="shop.html" class="nav-link">Shop</a>
+                        </li>
+
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </div>
+</header>
+<!-- End Header Area -->
+<div class="admin-container">
+    <h1>Add Product</h1>
+    <!-- Form để thêm hoặc chỉnh sửa sản phẩm -->
+    <form id="product-form">
+        <label for="product-name">Product Name</label>
+        <input type="text" id="product-name" placeholder="Enter Product">
+
+        <label for="product-price">Price</label>
+        <input type="number" id="product-price" placeholder="Enter Product Price">
+
+        <label for="product-quantity">Quantity</label>
+        <input type="number" id="product-quantity" placeholder="Enter Quantity">
+
+        <label for="product-description">Product Description</label>
+        <textarea id="product-description" rows="3" ></textarea>
+
+        <label for="product-image">Product Image</label>
+        <input type="file" id="product-image">
+
+        <button type="submit">Add Product</button>
+    </form>
+</div>
+</header>
+</body>
+</html>
