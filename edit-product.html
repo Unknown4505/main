@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <link rel="shortcut icon" href="img/fav.png">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chỉnh sửa Sản phẩm</title>
+  <link rel="stylesheet" href="css/edit-product.css"> <!-- CSS file -->
+  <link rel="stylesheet" href="css/linearicons.css">
+  <link rel="stylesheet" href="css/font-awesome.min.css">
+  <link rel="stylesheet" href="css/themify-icons.css">
+  <link rel="stylesheet" href="css/bootstrap.css">
+  <link rel="stylesheet" href="css/owl.carousel.css">
+  <link rel="stylesheet" href="css/nice-select.css">
+  <link rel="stylesheet" href="css/nouislider.min.css">
+  <link rel="stylesheet" href="css/ion.rangeSlider.css" />
+  <link rel="stylesheet" href="css/ion.rangeSlider.skinFlat.css" />
+  <link rel="stylesheet" href="css/magnific-popup.css">
+  <link rel="stylesheet" href="css/main.css">
+  <link rel="stylesheet" href="css/User1234.css">
+  <link rel="stylesheet" href="css/search.css">
+</head>
+<body>
+<body>
+<!-- Start Header Area -->
+<header class="header_area sticky-header">
+  <div class="main_menu">
+    <nav class="navbar navbar-expand-lg navbar-light main_box">
+      <div class="container">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <a class="navbar-brand logo_h" href="index.html"><img src="img/logo.png" alt=""></a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse offset" id="navbarSupportedContent">
+          <ul class="nav navbar-nav menu_nav ml-auto">
+            <li class="nav-item active"><a class="nav-link" href="admin.html">Home</a></li>
+            <li class="nav-item">
+            <li class="nav-item"><a href="ManageCustomerOrder.html" class="nav-link">Manage Customer Order</a></li>
+            </li>
+
+            <li class="nav-item">
+              <a href="shop.html" class="nav-link">Shop</a>
+            </li>
+
+            <li class="nav-item">
+              <a href="shop.html" class="nav-link">Shop</a>
+            </li>
+
+            <li class="nav-item">
+              <a href="shop.html" class="nav-link">Shop</a>
+            </li>
+
+          </ul>
+        </div>
+      </div>
+    </nav>
+  </div>
+</header>
+<!-- End Header Area -->
+<div class="product-detail-container">
+  <!-- Thông tin sản phẩm hiện tại -->
+  <div class="product-info">
+    <img class="img-fluid" src="img/product/p2.jpg" alt="">
+    <div class="product-details">
+      <h2>Faded SkyBlu Denim Jeans</h2>
+      <p class="product-price">$149.99</p>
+      <p><strong>Category:</strong> Household</p>
+      <p><strong>Availability:</strong> In Stock</p>
+      <p class="product-description">
+        Mill Oil is an innovative oil-filled radiator with the most modern technology.
+        If you are looking for something that can make your interior look awesome,
+        and at the same time give you the pleasant warm feeling during the winter.
+      </p>
+      <div class="quantity-wrapper">
+      </div>
+      <button class="add-to-cart-btn">Fix Product</button>
+    </div>
+  </div>
+
+  <!-- Form chỉnh sửa sản phẩm -->
+  <div class="product-edit-form">
+    <h2>Fix Product</h2>
+    <form action="update_product.php" method="POST" enctype="multipart/form-data">
+      <div class="form-group">
+        <label for="product-name">Product Name</label>
+        <input type="text" id="product-name" name="product_name" value="Faded SkyBlu Denim Jeans" required>
+      </div>
+
+      <div class="form-group">
+        <label for="product-price">Price</label>
+        <input type="number" id="product-price" name="product_price" value="149.99" required>
+      </div>
+
+      <div class="form-group">
+        <label for="product-description">Decription Product</label>
+        <textarea id="product-description" name="product_description" rows="4" required>
+  Mill Oil is an innovative oil-filled radiator with the most modern technology.If you are looking for something that can make your interior look awesome,and at the same time give you the pleasant warm feeling during the winter.
+                    </textarea>
+      </div>
+
+      <div class="form-group">
+        <label for="product-image">Change Image</label>
+        <input type="file" id="product-image" name="product_image">
+      </div>
+
+    </form>
+  </div>
+</div>
+</header>
+</body>
+</html>
