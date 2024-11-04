@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="shortcut icon" href="img/fav.png">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shoe Store Dashboard</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #fff5e6;
+            margin: 0;
+            padding: 0;
+            color: #333;
+        }
+
+        header {
+            background-color: #e67e22;
+            padding: 15px;
+            text-align: center;
+            color: #fff;
+            text-transform: uppercase;
+            font-weight: bold;
+            letter-spacing: 1px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        footer {
+            background-color: #333;
+            padding: 10px;
+            color: #fff;
+            text-align: center;
+            font-size: 0.9em;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .dashboard-container {
+            width: 80%;
+            margin: 20px auto;
+            padding: 20px;
+            background: linear-gradient(135deg, #ffffff, #ffe5cc);
+            border-radius: 12px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+            transition: transform 0.3s ease, background-color 0.3s ease;
+        }
+
+        .dashboard-container:hover {
+            transform: scale(1.02);
+            background-color: #ffebd2;
+        }
+
+        h3 {
+            margin-top: 0;
+            color: #e67e22;
+            border-bottom: 2px solid #e67e22;
+            padding-bottom: 5px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            text-align: center;
+            background-color: #ffeb99;
+            border-radius: 8px;
+            padding: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .section {
+            margin-top: 30px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+            background-color: #fff;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        table, th, td {
+            border: 1px solid #ddd;
+        }
+
+        th, td {
+            padding: 15px;
+            text-align: left;
+            position: relative;
+        }
+
+        th {
+            background-color: #ff7043;
+            color: #fff;
+            text-transform: uppercase;
+            transition: background-color 0.3s ease;
+        }
+
+        th:hover {
+            background-color: #ff5252;
+        }
+
+        td {
+            background-color: rgba(255, 245, 230, 0.9);
+            transition: background-color 0.3s ease;
+        }
+
+        tr:nth-child(even) td {
+            background-color: rgba(230, 247, 255, 0.9);
+        }
+
+        tr:nth-child(odd) td {
+            background-color: rgba(255, 255, 230, 0.9);
+        }
+
+        tr:hover td {
+            background-color: #e0f7fa;
+        }
+
+        .highlight {
+            background-color: #ffd699;
+            font-weight: bold;
+            color: #333;
+            border-left: 4px solid #ff9800;
+        }
+
+        a {
+            color: #673ab7;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        a:hover {
+            color: #311b92;
+            text-decoration: underline;
+        }
+
+        .total-revenue {
+            font-weight: bold;
+            color: #4caf50;
+            font-size: 1.2em;
+            text-align: center;
+            margin-top: 20px;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+        }
+
+        .most-sold, .least-sold {
+            font-style: italic;
+            color: #ff9800;
+            text-align: center;
+            font-size: 1.1em;
+            padding: 5px;
+            background-color: #fff3e0;
+            border-radius: 4px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Animation */
+        .dashboard-container, .section, table, th, td, p {
+            animation: fadeInUp 0.5s ease both;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+</head>
+<body>
+<header>
+    Shoe Store Sales Dashboard
+</header>
+
+<div class="dashboard-container">
+    <div class="section">
+        <h3>Sales Statistics</h3>
+        <table>
+            <thead>
+            <tr>
+                <th>Product</th>
+                <th>Quantity Sold</th>
+                <th>Total Revenue (USD)</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td>ADDIDAS NEW HAMMER SOLE FOR SPORTS PERSON</td>
+                <td>12</td>
+                <td>3,600</td>
+            </tr>
+            <tr class="highlight">
+                <td>ADDIDAS NEW HAMMER SOLE FOR SPORTS PERSON</td>
+                <td>8</td>
+                <td>4,000</td>
+            </tr>
+            <tr>
+                <td>ADDIDAS NEW HAMMER SOLE FOR SPORTS PERSON</td>
+                <td>5</td>
+                <td>1,500</td>
+            </tr>
+            </tbody>
+        </table>
+        <p class="total-revenue">Total Revenue: 9,100 USD</p>
+        <p class="most-sold">Best-selling Product: ADDIDAS NEW HAMMER SOLE FOR SPORTS PERSON</p>
+        <p class="least-sold">Least Sold Product: ADDIDAS NEW HAMMER SOLE FOR SPORTS PERSON</p>
+    </div>
+
+    <div class="section">
+        <h3>Top 5 Customers by Revenue</h3>
+        <table>
+            <thead>
+            <tr>
+                <th>Customer Name</th>
+                <th>Total Revenue (USD)</th>
+                <th>View Invoice</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td>Nguyen Van A</td>
+                <td>5,000</td>
+                <td><a href="#">View Invoice</a></td>
+            </tr>
+            <tr>
+                <td>Tran Thi B</td>
+                <td>4,200</td>
+                <td><a href="#">View Invoice</a></td>
+            </tr>
+            <tr>
+                <td>Pham Van C</td>
+                <td>3,800</td>
+                <td><a href="#">View Invoice</a></td>
+            </tr>
+            <tr>
+                <td>Le Thi D</td>
+                <td>3,200</td>
+                <td><a href="#">View Invoice</a></td>
+            </tr>
+            <tr>
+                <td>Vo Thi E</td>
+                <td>2,700</td>
+                <td><a href="#">View Invoice</a></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<footer>
+    &copy; 2024 Shoe Store. All rights reserved.
+</footer>
+</body>
+</html>
