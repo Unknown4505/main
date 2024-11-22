@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Register Account</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #fde5c8; /* Light orange background */
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      color: #000000;
+    }
+    .registration-form {
+      background: #ffffff;
+      padding: 30px;
+      border-radius: 12px;
+      width: 100%;
+      max-width: 400px;
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+      border: 1px solid #ddd;
+    }
+    .registration-form h1 {
+      margin-bottom: 20px;
+      font-size: 28px;
+      font-weight: bold;
+      text-align: center;
+      color: #333333;
+    }
+    .registration-form label {
+      font-size: 14px;
+      margin-bottom: 5px;
+      display: block;
+      color: #666666;
+    }
+    .registration-form input {
+      width: 100%;
+      padding: 12px;
+      margin-bottom: 20px;
+      border: 1px solid #cccccc;
+      border-radius: 8px;
+      background-color: #f9f9f9;
+      font-size: 14px;
+    }
+    .registration-form input:focus {
+      outline: none;
+      border-color: #f57c00;
+      box-shadow: 0 0 5px rgba(245, 124, 0, 0.5);
+    }
+    .registration-form button {
+      width: 100%;
+      padding: 12px;
+      background-color: #ffa726; /* Lighter orange */
+      border: none;
+      color: #ffffff;
+      font-size: 16px;
+      font-weight: bold;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+    .registration-form button:hover {
+      background-color: #fb8c00;
+    }
+    .registration-form .footer {
+      text-align: center;
+      margin-top: 15px;
+      font-size: 14px;
+      color: #333333;
+    }
+    .registration-form .footer a {
+      color: #f57c00;
+      text-decoration: none;
+      font-weight: bold;
+      cursor: pointer;
+    }
+    .registration-form .footer a:hover {
+      text-decoration: underline;
+    }
+
+    /* Custom Notification */
+    .notification {
+      display: none;
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background-color: #ffffff;
+      border: 2px solid #ffa726;
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+      padding: 20px;
+      text-align: center;
+      border-radius: 10px;
+      z-index: 1000;
+      width: 300px;
+    }
+    .notification h2 {
+      margin: 0 0 10px;
+      color: #333333;
+    }
+    .notification p {
+      margin: 0;
+      color: #666666;
+    }
+    .notification button {
+      margin-top: 20px;
+      padding: 10px 20px;
+      border: none;
+      background-color: #ffa726;
+      color: #ffffff;
+      font-weight: bold;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+    .notification button:hover {
+      background-color: #fb8c00;
+    }
+  </style>
+  <script>
+    function registerSuccess(event) {
+      event.preventDefault(); // Prevent form submission
+      const notification = document.getElementById('notification');
+      notification.style.display = 'block'; // Show notification
+    }
+
+    function closeNotification() {
+      const notification = document.getElementById('notification');
+      notification.style.display = 'none'; // Hide notification
+    }
+
+    function redirectToLogin(event) {
+      event.preventDefault(); // Ngăn hành vi mặc định của liên kết
+      window.location.href = "login.html"; // Chuyển hướng đến trang đăng nhập
+    }
+  </script>
+</head>
+<body>
+<div class="registration-form">
+  <h1>Register Account</h1>
+  <form onsubmit="registerSuccess(event)">
+    <label for="fullname">Full Name</label>
+    <input type="text" id="fullname" name="fullname" placeholder="Enter your full name" required>
+
+    <label for="password">Password</label>
+    <input type="password" id="password" name="password" placeholder="Enter your password" required>
+
+    <label for="confirm-password">Confirm Password</label>
+    <input type="password" id="confirm-password" name="confirm_password" placeholder="Confirm your password" required>
+
+    <button type="submit">Register</button>
+
+    <div class="footer">
+      <p>Already have an account? <a href="" onclick="redirectToLogin(event)">Log in</a></p>
+    </div>
+  </form>
+</div>
+
+<!-- Custom Notification -->
+<div id="notification" class="notification">
+  <h2>Registration Successful!</h2>
+  <p>You have successfully registered your account.</p>
+  <button onclick="closeNotification()">Close</button>
+</div>
+</body>
+</html>
