@@ -18,54 +18,117 @@
 
 	<!-- CSS -->
 	<link rel="stylesheet" href="css/linearicons.css">
-	<link rel="stylesheet" href="css/owl.carousel.css">
-	<link rel="stylesheet" href="css/themify-icons.css">
 	<link rel="stylesheet" href="css/font-awesome.min.css">
+	<link rel="stylesheet" href="css/themify-icons.css">
+	<link rel="stylesheet" href="css/bootstrap.css">
+	<link rel="stylesheet" href="css/owl.carousel.css">
 	<link rel="stylesheet" href="css/nice-select.css">
 	<link rel="stylesheet" href="css/nouislider.min.css">
-	<link rel="stylesheet" href="css/bootstrap.css">
+	<link rel="stylesheet" href="css/ion.rangeSlider.css" />
+	<link rel="stylesheet" href="css/ion.rangeSlider.skinFlat.css" />
+	<link rel="stylesheet" href="css/magnific-popup.css">
 	<link rel="stylesheet" href="css/main.css">
+	<link rel="stylesheet" href="css/Z_banner.scss">
+	<link rel="stylesheet" href="css/search.css">
+	<link rel="stylesheet" href="css/category.css">
 	<style>
-		body {
-			font-family: Arial, sans-serif;
-			background-color: #f4f4f4;
-			margin: 0;
-			padding: 20px;
+		/* Ẩn thông báo kết quả tìm kiếm theo mặc định */
+		.results-header {
+			display: none; /* Mặc định ẩn */
+			font-size: 24px;
+			font-weight: bold;
+			margin: 20px 0; /* Thêm khoảng cách phía trên và dưới */
+			color: #333;
 		}
-		.container {
-			max-width: 600px;
-			margin: auto;
-			background: #fff;
-			padding: 20px;
+
+		/* Hiển thị khi có từ khóa tìm kiếm (tùy chỉnh thủ công) */
+		.show {
+			display: block; /* Hiển thị khi cần */
+		}
+		/* Đổi màu nền khung sản phẩm */
+		.horizontal-categories {
+			background-color: #ffffff; /* Màu xanh nước biển */
+			padding: 10px;
 			border-radius: 5px;
-			box-shadow: 0 0 10px rgba(0,0,0,0.1);
 		}
-		h2 {
+
+		/* Đổi màu chữ và kiểu chữ của các sản phẩm */
+		.horizontal-categories .main-categories .main-nav-list a {
+			color: #0b0b0b; /* Màu chữ trắng */
+			font-weight: bold;
+			text-decoration: none;
+		}
+
+		/* Tô sáng sản phẩm khi di chuột qua */
+		.horizontal-categories .main-categories .main-nav-list a:hover {
+			color: #0b0b0b; /* Màu chữ khi di chuột qua */
+		}
+		.filter-form-container {
+			display: none;
+			margin-top: 20px;
 			text-align: center;
 		}
-		label {
+
+		#toggleFilter:checked ~ .filter-form-container {
 			display: block;
+		}
+
+		.filter-button {
+			display: inline-block;
+			background-color: #007bff;
+			color: white;
+			padding: 10px 20px;
+			font-size: 16px;
+			border-radius: 5px;
+			cursor: pointer;
+			text-align: center;
+		}
+
+		.filter-button:hover {
+			background-color: #0056b3;
+		}
+
+		.filter-form {
+			display: inline-block;
+			background-color: #f9f9f9;
+			border: 1px solid #ddd;
+			padding: 20px;
+			border-radius: 10px;
+			box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+		}
+
+		.filter-form label {
+			display: block;
+			font-weight: bold;
 			margin-bottom: 5px;
 		}
-		input, textarea {
+
+		.filter-form input,
+		.filter-form select {
 			width: 100%;
 			padding: 10px;
-			margin-bottom: 10px;
-			border: 1px solid #ddd;
+			margin-bottom: 15px;
+			border: 1px solid #ccc;
 			border-radius: 5px;
+			box-sizing: border-box;
 		}
-		button {
-			width: 100%;
-			padding: 10px;
-			background: #5cb85c;
+
+		.apply-filter-button {
+			background-color: #007bff;
 			color: white;
 			border: none;
+			padding: 10px 20px;
+			font-size: 16px;
 			border-radius: 5px;
 			cursor: pointer;
 		}
-		button:hover {
-			background: #4cae4c;
+
+		.apply-filter-button:hover {
+			background-color: #0056b3;
 		}
+
+
+
 	</style>
 </head>
 
@@ -76,6 +139,7 @@
 	<div class="main_menu">
 		<nav class="navbar navbar-expand-lg navbar-light main_box">
 			<div class="container">
+				<!-- Brand and toggle get grouped for better mobile display -->
 				<a class="navbar-brand logo_h" href="index.html"><img src="img/logo.png" alt=""></a>
 				<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
 						aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -83,47 +147,58 @@
 					<span class="icon-bar"></span>
 					<span class="icon-bar"></span>
 				</button>
+				<!-- Collect the nav links, forms, and other content for toggling -->
 				<div class="collapse navbar-collapse offset" id="navbarSupportedContent">
 					<ul class="nav navbar-nav menu_nav ml-auto">
-						<li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
-						<li class="nav-item submenu dropdown">
-							<a href="#" class="nav-link dropdown-toggle">Shop</a>
-							<ul class="dropdown-menu">
-								<li class="nav-item"><a class="nav-link" href="category.html">Shop Category</a></li>
-								<li class="nav-item"><a class="nav-link" href="single-product.html">Product Details</a></li>
-								<li class="nav-item"><a class="nav-link" href="checkout.html">Product Checkout</a></li>
-								<li class="nav-item"><a class="nav-link" href="cart.html">Shopping Cart</a></li>
-								<li class="nav-item"><a class="nav-link" href="confirmation.html">Confirmation</a></li>
-							</ul>
+						<li class="nav-item active"><a class="nav-link" href="index.html">Home</a></li>
+						<li class="nav-item"><a class="nav-link" href="category.html">Shop Category</a></li>
+						<ul class="dropdown-menu">
+							<li class="nav-item"><a class="nav-link" href="confirmation.html">Confirmation</a></li>
+						</ul>
+						</li>
+						<li class="nav-item"><a class="nav-link" href="cart.html">Shopping Cart</a></li>
+						<ul class="dropdown-menu">
+						</ul>
 						</li>
 						<li class="nav-item submenu dropdown">
-							<a href="#" class="nav-link dropdown-toggle">Blog</a>
-							<ul class="dropdown-menu">
-								<li class="nav-item"><a class="nav-link" href="blog.html">Blog</a></li>
-								<li class="nav-item"><a class="nav-link" href="single-blog.html">Blog Details</a></li>
-							</ul>
+							<a class="nav-link" href="index.html">Log out</a>
 						</li>
-						<li class="nav-item submenu dropdown">
-							<a href="#" class="nav-link dropdown-toggle">Pages</a>
-							<ul class="dropdown-menu">
-								<li class="nav-item"><a class="nav-link" href="login.html">Login</a></li>
-								<li class="nav-item"><a class="nav-link" href="tracking.html">Tracking</a></li>
-								<li class="nav-item"><a class="nav-link" href="elements.html">Elements</a></li>
-							</ul>
-						</li>
-						<li class="nav-item active"><a class="nav-link" href="contact.html">Contact</a></li>
+						<li class="nav-item"><a class="nav-link" href="contact.html">Contact</a></li>
 					</ul>
+					<!-- Search Input Box -->
+					<input type="checkbox" id="search-toggle" class="search-toggle" hidden>
+					<div class="search_input">
+						<form id="search-form" action="category.html" method="GET" class="d-flex justify-content-between">
+							<input type="text" class="search-input" name="query" placeholder="Search Here" required>
+							<button type="submit" class="search-btn">
+								<span class="lnr lnr-magnifier"></span>
+							</button>
+							<label for="search-toggle" class="lnr lnr-cross" title="Close Search"></label>
+						</form>
+					</div>
+
+					<!-- Search Icon and Cart -->
 					<ul class="nav navbar-nav navbar-right">
 						<li class="nav-item"><a href="#" class="cart"><span class="ti-bag"></span></a></li>
 						<li class="nav-item">
-							<a href="#search_input_box" class="search"><span class="lnr lnr-magnifier"></span></a>
+							<!-- Search Button with Magnifier Icon -->
+							<label for="search-toggle" class="search-icon">
+								<span class="lnr lnr-magnifier"></span>
+							</label>
+						</li>
+					</ul>
+					<ul class="nav navbar-nav navbar-right">
+						<li class="nav-item">
+							<a class="nav-link user-btn" href="User.html">
+								<span class="username">User1234</span>
+								<span class="lnr lnr-user"></span>
+							</a>
 						</li>
 					</ul>
 				</div>
 			</div>
 		</nav>
 	</div>
-</header>
 <!-- End Header Area -->
 
 <!-- Start Banner Area -->
