@@ -1,1 +1,144 @@
-
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <link rel="shortcut icon" href="img/fav.png">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Hóa Đơn Giao Dịch</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f4f4f9;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+    .container {
+      width: 90%;
+      max-width: 700px;
+      padding: 30px;
+      border: 1px solid #ccc;
+      border-radius: 10px;
+      background-color: white;
+      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+    }
+    h2 {
+      text-align: center;
+      color: #333;
+      margin-bottom: 20px;
+    }
+    .info-group {
+      margin-bottom: 20px;
+    }
+    .info-group label {
+      display: block;
+      font-weight: bold;
+      color: #555;
+      margin-bottom: 5px;
+    }
+    .info-group .info {
+      display: block;
+      width: 100%;
+      padding: 12px;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      background-color: #f8f8f8;
+      color: #333;
+      font-size: 15px;
+      pointer-events: none;
+    }
+    .product-info {
+      margin-bottom: 20px;
+    }
+    .product-info .info {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 20px;
+      padding: 10px 15px;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      background-color: #f8f8f8;
+      margin-bottom: 10px;
+    }
+    .buttons {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      margin-top: 20px;
+    }
+    .button {
+      padding: 10px 20px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 16px;
+    }
+    .back-btn {
+      background-color: #6c757d;
+      color: white;
+      text-decoration: none;
+      text-align: center;
+      display: inline-block;
+    }
+    .back-btn:hover {
+      background-color: #5a6268;
+    }
+    .footer {
+      text-align: center;
+      margin-top: 30px;
+      font-size: 14px;
+      color: #888;
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+  <h2>Hóa Đơn Giao Dịch</h2>
+  <div class="info-group">
+    <label>Tên khách hàng:</label>
+    <div class="info">Nguyễn Văn A</div>
+  </div>
+  <div class="info-group">
+    <label>Số điện thoại:</label>
+    <div class="info">0123456789</div>
+  </div>
+  <div class="info-group">
+    <label>Địa chỉ nhận hàng:</label>
+    <div class="info">123 Đường ABC, Phường XYZ, TP. Hồ Chí Minh</div>
+  </div>
+  <div class="info-group">
+    <label>Phương thức thanh toán:</label>
+    <div class="info">Thanh toán khi nhận hàng</div>
+  </div>
+  <div class="info-group">
+    <label>Mã giao dịch:</label>
+    <div class="info">GiaoDich12345</div>
+  </div>
+  <div class="info-group">
+    <label>Ngày tháng năm:</label>
+    <div class="info">26/11/2024</div>
+  </div>
+  <div class="info-group product-info">
+    <label>Sản phẩm và số lượng:</label>
+    <div class="info">
+      <span>Addidas New Hammer Sole For Sports Person</span>
+      <span>Số lượng: 2</span>
+    </div>
+    <div class="info">
+      <span>Addidas New Hammer Sole For Sports Person</span>
+      <span>Số lượng: 5</span>
+    </div>
+  </div>
+  <div class="buttons">
+    <a href="static2.html" class="button back-btn">Quay lại</a>
+  </div>
+  <div class="footer">
+    Cảm ơn quý khách đã sử dụng dịch vụ của chúng tôi!
+  </div>
+</div>
+</body>
+</html>
