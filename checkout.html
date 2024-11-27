@@ -22,17 +22,17 @@
     <link rel="stylesheet" href="css/main.css">
 
     <style>
-        /* Điều chỉnh kích thước và kiểu dáng cho nút thanh toán */
+        /* Điều chỉnh kích thước và kiểu dáng cho nút */
         .primary-btn {
-            padding: 8px 20px;  /* Giảm kích thước nút */
-            font-size: 14px;  /* Thay đổi cỡ chữ */
-            border-radius: 5px;  /* Bo góc nút */
+            padding: 8px 20px;
+            font-size: 14px;
+            border-radius: 5px;
             border: none;
-            transition: background-color 0.3s ease;  /* Hiệu ứng chuyển màu khi di chuột */
+            transition: background-color 0.3s ease;
         }
 
         .primary-btn:hover {
-            background-color: #f06c4d;  /* Màu nền khi hover */
+            background-color: #f06c4d;
             cursor: pointer;
         }
     </style>
@@ -88,7 +88,7 @@
     <div class="container">
         <div class="billing_details">
             <div class="row">
-                <div class="col-lg-8">
+                <div class="col-lg-12">
                     <h3>Billing Details</h3>
                     <form class="row contact_form" action="#" method="post" novalidate="novalidate">
                         <div class="col-md-6 form-group p_star">
@@ -113,58 +113,27 @@
                         <div class="col-md-12 form-group">
                             <textarea class="form-control" name="message" id="message" rows="1" placeholder="Notes about your order, e.g. special notes for delivery.">Please leave the package at the front door.</textarea>
                         </div>
-                    </form>
-
-                    <!-- Added Address Section -->
-                    <h3>Delivery Address</h3>
-                    <form class="row contact_form" action="#" method="post" novalidate="novalidate">
+                        <!-- Địa chỉ nhận hàng -->
                         <div class="col-md-12 form-group p_star">
-                            <input type="text" class="form-control" id="address" name="address" placeholder="Address" value="123 Street, City, Vietnam">
+                            <input type="text" class="form-control" id="shipping-address" name="shipping-address" placeholder="Địa chỉ nhận hàng" value="123 Street, City, Vietnam">
                         </div>
+                        <!-- Thành phố -->
                         <div class="col-md-6 form-group p_star">
-                            <input type="text" class="form-control" id="city" name="city" placeholder="City" value="Hanoi">
+                            <input type="text" class="form-control" id="city" name="city" placeholder="Thành phố" value="Hanoi">
                         </div>
+                        <!-- Ngày và thời gian giao hàng -->
                         <div class="col-md-6 form-group p_star">
-                            <input type="text" class="form-control" id="postal-code" name="postal-code" placeholder="Postal Code" value="100000">
+                            <input type="datetime-local" class="form-control" id="delivery-datetime" name="delivery-datetime" value="2024-12-01T10:00">
                         </div>
                     </form>
                 </div>
-
-                <div class="col-lg-4">
-                    <div class="order_box">
-                        <h2>Your Order</h2>
-                        <ul class="list">
-                            <li><a href="#">Product <span> $15.00</span></a></li>
-                            <li><a href="#">Product <span> $10.00</span></a></li>
-                            <li><a href="#">Product <span> $5.00</span></a></li>
-                        </ul>
-                        <div class="row">
-                            <div class="col-md-6">
-                                <h5>Subtotal</h5>
-                            </div>
-                            <div class="col-md-6">
-                                <h5>$30.00</h5>
-                            </div>
-                            <div class="col-md-6">
-                                <h5>Shipping</h5>
-                            </div>
-                            <div class="col-md-6">
-                                <h5>Free</h5>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-6">
-                                <h5>Total</h5>
-                            </div>
-                            <div class="col-md-6">
-                                <h5>$30.00</h5>
-                            </div>
-                        </div>
-                        <div class="button-group d-flex justify-content-between">
-                            <button class="primary-btn" type="submit">Thanh toán khi nhận hàng</button>
-                            <button class="primary-btn" type="button" id="vnpay-button">Thanh toán VNPAY</button>
-                        </div>
-                    </div>
+            </div>
+            <div class="row mt-4">
+                <div class="col-md-12 text-center">
+                    <!-- Nút Thanh toán khi nhận hàng -->
+                    <button class="primary-btn" id="cod-button">Thanh toán khi nhận hàng</button>
+                    <!-- Nút Thanh toán VNPAY -->
+                    <button class="primary-btn" id="vnpay-button" data-toggle="modal" data-target="#vnpayModal">Thanh toán VNPAY</button>
                 </div>
             </div>
         </div>
@@ -173,7 +142,7 @@
 <!--================End Checkout Area =================-->
 
 <!-- Modal VNPAY -->
-<div class="modal" id="vnpayModal" tabindex="-1" role="dialog" aria-labelledby="vnpayModalLabel" aria-hidden="true">
+<div class="modal fade" id="vnpayModal" tabindex="-1" role="dialog" aria-labelledby="vnpayModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -183,40 +152,39 @@
                 </button>
             </div>
             <div class="modal-body">
-                <form action="#" method="POST">
+                <form>
                     <div class="form-group">
-                        <label for="fullname">Họ và Tên</label>
-                        <input type="text" class="form-control" id="fullname" name="fullname" placeholder="Nhập họ và tên" required>
+                        <label for="full-name">Họ và Tên</label>
+                        <input type="text" class="form-control" id="full-name" placeholder="Nhập họ và tên">
+                    </div>
+                    <div class="form-group">
+                        <label for="account-number">Số tài khoản</label>
+                        <input type="text" class="form-control" id="account-number" placeholder="Nhập số tài khoản">
                     </div>
                     <div class="form-group">
                         <label for="email">Email</label>
-                        <input type="email" class="form-control" id="email" name="email" placeholder="Nhập email" required>
+                        <input type="email" class="form-control" id="email" placeholder="Nhập email">
                     </div>
                     <div class="form-group">
-                        <label for="phone">Số điện thoại</label>
-                        <input type="text" class="form-control" id="phone" name="phone" placeholder="Nhập số điện thoại" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="bank-account">Số tài khoản ngân hàng</label>
-                        <input type="text" class="form-control" id="bank-account" name="bank-account" placeholder="Nhập số tài khoản" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="bank">Chọn ngân hàng</label>
-                        <select class="form-control" id="bank" name="bank" required>
-                            <option value="vietcombank">Vietcombank</option>
-                            <option value="techcombank">Techcombank</option>
-                            <option value="agribank">Agribank</option>
-                            <option value="mbbank">MB Bank</option>
-                            <option value="bidv">BIDV</option>
-                            <option value="vietnameximbank">VietinBank</option>
+                        <label for="bank-select">Chọn ngân hàng</label>
+                        <select class="form-control" id="bank-select">
+                            <option>Vietcombank</option>
+                            <option>VietinBank</option>
+                            <option>Techcombank</option>
+                            <option>MB Bank</option>
+                            <option>Sacombank</option>
+                            <option>Momo</option>
                         </select>
                     </div>
                     <div class="form-group">
-                        <label for="amount">Số tiền cần chuyển</label>
-                        <input type="text" class="form-control" id="amount" name="amount" value="$30.00" disabled>
+                        <label for="payment-amount">Số tiền cần thanh toán</label>
+                        <input type="text" class="form-control" id="payment-amount" value="500,000 VND" disabled>
                     </div>
-                    <button type="submit" class="btn btn-primary">Xác nhận thanh toán</button>
                 </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
+                <button type="button" class="btn btn-primary" id="confirm-payment">Xác nhận thanh toán</button>
             </div>
         </div>
     </div>
@@ -227,15 +195,19 @@
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
-<!-- JavaScript để hiển thị modal khi nhấn vào nút VNPAY -->
+<!-- JavaScript để hiển thị thông báo khi nhấn nút -->
 <script>
-    // Khi người dùng nhấn nút Thanh toán VNPAY
-    document.querySelector('#vnpay-button').addEventListener('click', function() {
-        // Hiển thị modal VNPAY
-        $('#vnpayModal').modal('show');
+    // Thêm sự kiện khi nhấn nút "Thanh toán khi nhận hàng"
+    document.querySelector('#cod-button').addEventListener('click', function() {
+        alert('Cảm ơn bạn đã sử dụng dịch vụ của chúng tôi!');
+    });
+
+    // Sự kiện khi nhấn "Xác nhận thanh toán"
+    document.querySelector('#confirm-payment').addEventListener('click', function() {
+        alert('Thanh toán thành công!');
+        $('#vnpayModal').modal('hide');
     });
 </script>
 
 </body>
-
 </html>
