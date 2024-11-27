@@ -1,174 +1,287 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="vi">
+
 <head>
-  <link rel="shortcut icon" href="img/fav.png">
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Shoe Store Sales Dashboard</title>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+  <title>Top 5 Khách Hàng</title>
   <style>
+    /* General Styles */
     body {
-      font-family: 'Poppins', sans-serif;
-      background-color: #f4f9fc; /* Màu xanh nhạt, dễ nhìn */
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
       margin: 0;
       padding: 0;
-      color: #333; /* Chữ đen dễ đọc */
+      background-color: #eaf4f8;
+      color: #333;
+      display: flex;
     }
 
-    header {
-      background-color: #4f7b9d; /* Màu xanh dương trung tính */
-      padding: 15px;
-      text-align: center;
-      color: #fff;
-      text-transform: uppercase;
-      font-weight: bold;
-      letter-spacing: 1px;
-      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    .container {
+      width: 90%;
+      max-width: 1200px;
+      margin: 30px auto;
     }
 
-    .dashboard-container {
-      width: 80%;
-      margin: 20px auto;
-      padding: 20px;
-      background: linear-gradient(135deg, #e0f1f8, #c3dff0); /* Màu chuyển sắc xanh lạnh */
-      border-radius: 12px;
-      box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+    /* Sidebar */
+    .sidebar {
+      width: 250px;
+      background-color: #2c3e50;
+      color: white;
+      padding: 20px 15px;
+      min-height: 100vh;
     }
 
-    h3 {
-      margin-top: 0;
-      color: #4f7b9d; /* Màu xanh dương đậm */
-      border-bottom: 2px solid #4f7b9d;
-      padding-bottom: 5px;
-      text-transform: uppercase;
-      letter-spacing: 1px;
-      text-align: center;
-      background-color: #b3d9e6; /* Xanh dương nhạt */
-      border-radius: 8px;
+    .sidebar .logo-header {
+      display: flex;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+
+    .sidebar .logo-header img {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      margin-right: 10px;
+    }
+
+    .sidebar .logo-header h2 {
+      color: white;
+      font-size: 22px;
+      margin: 0;
+    }
+
+    .sidebar ul {
+      list-style: none;
+      padding: 0;
+    }
+
+    .sidebar ul li {
+      margin: 15px 0;
+    }
+
+    .sidebar ul li a {
+      color: white;
+      text-decoration: none;
+      font-size: 18px;
+      display: block;
       padding: 10px;
+      border-radius: 5px;
+      transition: background 0.3s;
     }
 
+    .sidebar ul li a:hover {
+      background-color: #34495e;
+    }
+
+    /* Dropdown Menu */
+    .dropdown {
+      position: relative;
+    }
+
+    .dropdown-menu {
+      display: none;
+      position: absolute;
+      top: 100%;
+      left: 0;
+      background-color: #34495e;
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      border-radius: 5px;
+      z-index: 10;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+    }
+
+    .dropdown-menu li {
+      margin: 0;
+    }
+
+    .dropdown-menu li a {
+      display: block;
+      padding: 10px 20px;
+      color: white;
+      text-decoration: none;
+      border-bottom: 1px solid #2c3e50;
+      transition: background 0.3s;
+    }
+
+    .dropdown-menu li a:hover {
+      background-color: #2c3e50;
+    }
+
+    .dropdown:hover .dropdown-menu {
+      display: block;
+    }
+
+    /* Main Content */
+    .main-content {
+      flex: 1;
+      padding: 20px;
+    }
+
+    /* Header Section */
+    .main-header {
+      background-color: #0073e6;
+      color: #ffffff;
+      padding: 20px 0;
+      text-align: center;
+    }
+
+    .main-header h1 {
+      font-size: 32px;
+      margin: 0;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .main-header p {
+      margin: 5px 0 0;
+      font-size: 16px;
+      font-style: italic;
+    }
+
+    /* Footer Section */
+    .main-footer {
+      background-color: #004b8d;
+      color: #ffffff;
+      text-align: center;
+      padding: 15px 0;
+      margin-top: 30px;
+      font-size: 14px;
+    }
+
+    .main-footer a {
+      color: #00cfff;
+      text-decoration: none;
+    }
+
+    .main-footer a:hover {
+      text-decoration: underline;
+    }
+
+    /* Table Styles */
     table {
       width: 100%;
       border-collapse: collapse;
-      margin-top: 10px;
-      background-color: #fff;
-      border-radius: 8px;
-      overflow: hidden;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      background-color: #ffffff;
     }
 
-    table, th, td {
-      border: 1px solid #c6d8e6; /* Màu viền xanh nhạt */
-    }
-
-    th, td {
-      padding: 15px;
+    th,
+    td {
       text-align: left;
+      padding: 15px;
+      font-size: 16px;
+      border: 1px solid #cccccc;
     }
 
     th {
-      background-color: #4f7b9d; /* Xanh dương đậm */
-      color: #fff;
-      text-transform: uppercase;
-    }
-
-    tr:nth-child(even) td {
-      background-color: #f0f8ff; /* Xanh rất nhạt */
-    }
-
-    tr:nth-child(odd) td {
-      background-color: #f9f9f9; /* Nền sáng */
-    }
-
-    tr:hover td {
-      background-color: #d1e8f2; /* Màu nhẹ khi hover */
-    }
-
-    .highlight {
-      background-color: #d0e7f1; /* Màu xanh dương nhạt hơn */
-      font-weight: bold;
-      color: #333;
-      border-left: 4px solid #4f7b9d;
-    }
-
-    .btn-details {
-      background-color: #4f7b9d; /* Nút xanh dương */
-      color: #fff;
-      border: none;
-      padding: 10px 15px;
-      border-radius: 4px;
-      cursor: pointer;
+      background-color: #4a90e2;
+      color: white;
       text-transform: uppercase;
       font-weight: bold;
     }
 
-    .btn-details:hover {
-      background-color: #3e6687; /* Màu xanh dương đậm hơn khi hover */
+    tr:nth-child(odd) {
+      background-color: #f0f9ff;
     }
 
-    .total-revenue {
+    tr:nth-child(even) {
+      background-color: #ffffff;
+    }
+
+    tr:hover {
+      background-color: #d7efff;
+      transition: background-color 0.3s ease;
+    }
+
+    .view-details a {
+      color: #0073e6;
       font-weight: bold;
-      color: #2196f3; /* Màu xanh dương */
-      font-size: 1.2em;
-      text-align: center;
-      margin-top: 20px;
+      text-decoration: none;
     }
 
-    footer {
-      background-color: #333;
-      padding: 10px;
-      color: #fff;
-      text-align: center;
-      font-size: 0.9em;
-      position: fixed;
-      bottom: 0;
-      width: 100%;
-      box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1);
+    .view-details a:hover {
+      text-decoration: underline;
     }
   </style>
 </head>
-<body>
-<header>
-  Shoe Store Sales Dashboard
-</header>
 
-<div class="dashboard-container">
-  <h3>Sales Statistics</h3>
-  <table>
-    <thead>
-    <tr>
-      <th>Product</th>
-      <th>Quantity Sold</th>
-      <th>Total Revenue (USD)</th>
-      <th>Details</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr>
-      <td>ADDIDAS NEW HAMMER SOLE FOR SPORTS PERSON</td>
-      <td>12</td>
-      <td>3,600</td>
-      <td><button class="btn-details">Xem chi tiết</button></td>
-    </tr>
-    <tr class="highlight">
-      <td>ADDIDAS NEW HAMMER SOLE FOR SPORTS PERSON</td>
-      <td>8</td>
-      <td>4,000</td>
-      <td><button class="btn-details">Xem chi tiết</button></td>
-    </tr>
-    <tr>
-      <td>ADDIDAS NEW HAMMER SOLE FOR SPORTS PERSON</td>
-      <td>5</td>
-      <td>1,500</td>
-      <td><button class="btn-details">Xem chi tiết</button></td>
-    </tr>
-    </tbody>
-  </table>
-  <p class="total-revenue">Total Revenue: 9,100 USD</p>
+<body>
+<!-- Sidebar -->
+<div class="sidebar">
+  <div class="logo-header">
+    <img src="img/fav.png" alt="Admin Logo">
+    <h2>Karma Shop</h2>
+  </div>
+  <ul>
+    <li><a href="#home">Trang chủ</a></li>
+    <li><a href="managerp.html">Quản lí sản phẩm</a></li>
+    <li><a href="manager-user.html">Quản lí người dùng</a></li>
+    <li><a href="ManageCustomerOrder.html">Quản lí đơn hàng</a></li>
+    <li class="dropdown">
+      <a href="#statistics">Thống kê</a>
+      <ul class="dropdown-menu">
+        <li><a href="static2.html">Sản phẩm</a></li>
+        <li><a href="static.html">Người dùng</a></li>
+      </ul>
+    </li>
+  </ul>
 </div>
 
-<footer>
-  &copy; 2024 Shoe Store. All rights reserved.
-</footer>
+<!-- Main Content -->
+<div class="main-content">
+  <!-- Header Section -->
+  <header class="main-header">
+    <h1>Quản Lý Khách Hàng</h1>
+    <p>Theo dõi doanh thu của các khách hàng hàng đầu</p>
+  </header>
+
+  <div class="container">
+    <!-- Table Section -->
+    <table>
+      <thead>
+      <tr>
+        <th>Tên Khách Hàng</th>
+        <th>Tổng Doanh Thu (VNĐ)</th>
+        <th>Hành Động</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr>
+        <td>Nguyễn Văn A</td>
+        <td>120.000.000</td>
+        <td class="view-details"><a href="chitietgiaodich.html">Xem Chi Tiết</a></td>
+      </tr>
+      <tr>
+        <td>Trần Thị B</td>
+        <td>100.000.000</td>
+        <td class="view-details"><a href="chitietgiaodich.html">Xem Chi Tiết</a></td>
+      </tr>
+      <tr>
+        <td>Phạm Văn C</td>
+        <td>90.000.000</td>
+        <td class="view-details"><a href="chitietgiaodich.html">Xem Chi Tiết</a></td>
+      </tr>
+      <tr>
+        <td>Lê Thị D</td>
+        <td>75.000.000</td>
+        <td class="view-details"><a href="chitietgiaodich.html">Xem Chi Tiết</a></td>
+      </tr>
+      <tr>
+        <td>Võ Thị E</td>
+        <td>65.000.000</td>
+        <td class="view-details"><a href="chitietgiaodich.html">Xem Chi Tiết</a></td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Footer Section -->
+  <footer class="main-footer">
+    <p>&copy; 2024 Công Ty Của Bạn. Mọi quyền được bảo lưu. | <a href="#">Chính Sách Bảo Mật</a> | <a href="#">Điều Khoản Sử Dụng</a></p>
+  </footer>
+</div>
 </body>
+
 </html>
