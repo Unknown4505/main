@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en" class="no-js">
+
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta charset="UTF-8">
+    <title>Karma Shop - Order Management</title>
+    <link rel="stylesheet" href="css/bootstrap.css">
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/ManageCustomerOrder.css">
+
+</head>
+
+<body>
+<header class="header">
+    <h1>Quản Lí Đơn Hàng</h1>
+</header>
+
+<div class="admin-container">
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <div class="logo-header">
+            <img src="img/fav.png" alt="Admin Logo">
+            <h2>Karma Shop</h2>
+        </div>
+        <ul>
+            <li><a href="#home">Trang chủ</a></li>
+            <li><a href="managerp.html">Quản lí sản phẩm</a></li>
+            <li><a href="#users">Quản lí người dùng</a></li>
+            <li><a href="#orders">Quản lí đơn hàng</a></li>
+            <li class="dropdown">
+                <a href="#statistics">Thống kê</a>
+                <ul class="dropdown-menu">
+                    <li><a href="#revenue">Doanh thu</a></li>
+                    <li><a href="#user-stats">Người dùng</a></li>
+                </ul>
+            </li>
+
+        </ul>
+    </div>
+
+    <div class="container">
+        <!-- Thông báo cập nhật trạng thái -->
+        <div class="alert" id="status-alert">
+            <span>Trạng thái đã được cập nhật thành công!</span>
+            <span class="close-btn" onclick="closeAlert()">&times;</span>
+        </div>
+
+        <div class="container">
+            <!-- Filter Section -->
+            <form id="filter-form" class="filter-section" action="ManageCustomerOrderFiltered.html" method="get">
+                <h2>Lọc và Sắp xếp Đơn hàng</h2>
+
+                <label for="status">Trạng thái:</label>
+                <select id="status" name="status">
+                    <option value="all">Tất cả</option>
+                    <option value="Đã xác nhận">Đã xác nhận</option>
+                    <option value="Hoàn thành">Hoàn thành</option>
+                    <option value="Hủy bỏ">Hủy bỏ</option>
+                </select>
+
+                <label for="from-date">Từ ngày:</label>
+                <input type="date" id="from-date" name="from-date">
+
+                <label for="to-date">Đến ngày:</label>
+                <input type="date" id="to-date" name="to-date">
+
+                <button type="submit" class="apply-btn">Áp dụng</button>
+            </form>
+
+            <!-- Order Table -->
+            <form action="#" method="post">
+                <table>
+                    <thead>
+                    <tr>
+                        <th>Mã Đơn hàng</th>
+                        <th>Tên Khách hàng</th>
+                        <th>Số Điện Thoại</th>
+                        <th>Ngày Đặt hàng</th>
+                        <th>Trạng thái</th>
+                        <th>Địa chỉ giao hàng</th>
+                        <th>Chi Tiết</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td>OD001</td>
+                        <td>N.T.L Nguyen</td>
+                        <td>0901234567</td>
+                        <td>2024-10-01</td>
+                        <td>
+                            <select onchange="showAlert()">
+                                <option value="confirmed" selected>Đã xác nhận</option>
+                                <option value="completed">Hoàn thành</option>
+                                <option value="cancelled">Hủy bỏ</option>
+                            </select>
+                        </td>
+                        <td>Quận 1, HCMC</td>
+                        <td><a href="viewdetail.html" class="details-btn">Xem chi tiết</a></td>
+                    </tr>
+                    <tr>
+                        <td>OD004</td>
+                        <td>V.K Nguyen</td>
+                        <td>0923456789</td>
+                        <td>2024-10-12</td>
+                        <td>
+                            <select onchange="showAlert()">
+                                <option value="confirmed" selected>Đã xác nhận</option>
+                                <option value="completed">Hoàn thành</option>
+                                <option value="cancelled">Hủy bỏ</option>
+                            </select>
+                        </td>
+                        <td>Quận 4, HCMC</td>
+                        <td><a href="viewdetail.html" class="details-btn">Xem chi tiết</a></td>
+                    </tr>
+                    <tr>
+                        <td>OD005</td>
+                        <td>L.N.Q Võ</td>
+                        <td>0934567890</td>
+                        <td>2024-10-15</td>
+                        <td>
+                            <select onchange="showAlert()">
+                                <option value="confirmed">Đã xác nhận</option>
+                                <option value="completed" selected>Hoàn thành</option>
+                                <option value="cancelled">Hủy bỏ</option>
+                            </select>
+                        </td>
+                        <td>Quận 5, HCMC</td>
+                        <td><a href="viewdetail.html" class="details-btn">Xem chi tiết</a></td>
+                    </tr>
+
+                    </tbody>
+                </table>
+            </form>
+        </div>
+
+        <!-- JavaScript -->
+        <script>
+            // Hiển thị thông báo khi trạng thái được thay đổi
+            function showAlert() {
+                var alert = document.getElementById('status-alert');
+                alert.classList.add('show');
+
+                // Tự động ẩn thông báo sau 3 giây
+                setTimeout(function() {
+                    alert.classList.remove('show');
+                }, 3000);  // Thời gian hiển thị là 3 giây
+            }
+
+            // Đóng thông báo khi nhấn nút đóng
+            function closeAlert() {
+                document.getElementById('status-alert').classList.remove('show');
+            }
+        </script>
+
+</body>
+</html>

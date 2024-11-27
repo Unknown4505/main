@@ -1,0 +1,96 @@
+/* Basic body styles */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #303030;
+    color: #121111;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    box-sizing: border-box;
+}
+
+/* Header styles */
+    header {
+        width:100%;
+        background: #ff9800;
+        color: #fff;
+        padding: 20px 0;
+        text-align: center;
+    }
+
+h1 {
+    font-weight: bold;
+    margin: 0;
+}
+
+/* Container styles */
+.container {
+    width: 120%; /* Chiều rộng container 90% màn hình */
+    margin-left:10px; /* Căn giữa container */
+    display: flex;
+    flex-direction: column;
+}
+
+
+/* Table styles */
+.horizontal-tables {
+    display: flex;
+    flex-wrap: nowrap; /* Không cho phép bảng xuống dòng */
+    justify-content: space-between; /* Dàn đều các bảng */
+    width: 138.35%; /* Chiếm toàn bộ chiều ngang */
+    margin-left: -25px;
+}
+
+table {
+    flex: 1 1 auto; /* Để bảng tự điều chỉnh kích thước */
+    min-width: 400px; /* Đảm bảo bảng không quá nhỏ */
+    max-width: 100%; /* Chiếm toàn bộ không gian khi co dãn */
+    margin: 0;
+    border-collapse: collapse;
+    background-color: #fff;
+    border: 1px solid black;
+    height:259.5%;
+}
+
+th, td {
+    height: 81.7px; /* Đặt chiều cao cố định */
+    padding: 0; /* Loại bỏ khoảng cách trong ô */
+    text-align: center;
+    vertical-align: middle; /* Nội dung căn giữa theo chiều dọc */
+    border: 1px solid black;
+}
+
+
+th {
+    background-color: #ffcc80;
+    font-weight: bold;
+}
+
+/* Responsive styles */
+@media (max-width: 768px) {
+    .horizontal-tables {
+        flex-direction: column; /* Bảng xếp dọc trên màn hình nhỏ */
+    }
+
+    table {
+        width: 180%; /* Mỗi bảng chiếm toàn bộ chiều ngang */
+    }
+}
+
+
+/* Button styles */
+.details-btn {
+    background-color: #ff9800;
+    color: #fff;
+    padding: 8px 15px;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+    text-decoration: none;
+}
+
+.details-btn:hover {
+    background-color: #e68a00;
+}
