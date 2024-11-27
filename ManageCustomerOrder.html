@@ -6,7 +6,7 @@
   <meta charset="UTF-8">
   <title>Karma Shop - Order Management</title>
   <link rel="stylesheet" href="css/main.css">
-  <link rel="stylesheet" href="css/ManageCustomerOrder.css">
+  <link rel="stylesheet" href="ManageCustomerOrder.css">
 
 </head>
 
@@ -25,13 +25,13 @@
     <ul>
       <li><a href="#home">Trang chủ</a></li>
       <li><a href="managerp.html">Quản lí sản phẩm</a></li>
-      <li><a href="#users">Quản lí người dùng</a></li>
-      <li><a href="#orders">Quản lí đơn hàng</a></li>
+      <li><a href="manager-user.html">Quản lí người dùng</a></li>
+      <li><a href="ManageCustomerOrder.html">Quản lí đơn hàng</a></li>
       <li class="dropdown">
         <a href="#statistics">Thống kê</a>
         <ul class="dropdown-menu">
-          <li><a href="#revenue">Doanh thu</a></li>
-          <li><a href="#user-stats">Người dùng</a></li>
+          <li><a href="thongkesanpham.html">Doanh thu</a></li>
+          <li><a href="static2.html">Người dùng</a></li>
         </ul>
       </li>
 
@@ -48,7 +48,7 @@
     <div class="container">
       <!-- Filter Section -->
       <form id="filter-form" class="filter-section" action="ManageCustomerOrderFiltered.html" method="get">
-        <h2>Lọc và Sắp Xếp Đơn Hàng</h2>
+        <h2>Lọc và Sắp xếp Đơn hàng</h2>
 
         <label for="status">Trạng thái:</label>
         <select id="status" name="status">
@@ -72,13 +72,13 @@
         <table>
           <thead>
           <tr>
-            <th>Mã đơn hàng</th>
-            <th>Tên khách hàng</th>
-            <th>Số điện thoại</th>
-            <th>Ngày đặt hàng</th>
+            <th>Mã Đơn hàng</th>
+            <th>Tên Khách hàng</th>
+            <th>Số Điện Thoại</th>
+            <th>Ngày Đặt hàng</th>
             <th>Trạng thái</th>
             <th>Địa chỉ giao hàng</th>
-            <th>Chi tiết</th>
+            <th>Chi Tiết</th>
           </tr>
           </thead>
           <tbody>
@@ -195,6 +195,6 @@
         document.getElementById('status-alert').classList.remove('show');
       }
     </script>
-
+  </div>
 </body>
 </html>
