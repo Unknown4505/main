@@ -1,134 +1,254 @@
-body {
-    font-family: Arial, sans-serif;
-    margin: 0;
+/* Thiết lập toàn bộ trang */
+html, body {
+    height: 100%;
+    margin-left: (100%-250px);
     padding: 0;
-    background: linear-gradient(to bottom, #ffffff, #ff9800);
-    min-height: 100vh;
-    color: #333; /* Màu chữ đậm hơn so với màu đen */
-}
-
-.order-details.active {
-    display: block;
-}
-
-.container {
-    width: 90%;
-    margin: auto;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column; /* Để nội dung giãn đều */
     overflow: hidden;
 }
 
+.admin-container {
+    display: flex; /* Sidebar và nội dung chính theo hàng ngang */
+    flex: 1; /* Chiếm đầy chiều cao */
+}
+
+/* Cấu trúc cơ bản của body */
+body {
+    background-color: #303030; /* Nền xám tối */
+    display: flex;
+    min-height: 100vh; /* Đảm bảo chiều cao toàn màn hình */
+    flex-direction: column;
+}
+
+/* Header */
 header {
+    position: fixed;
+    top: 0;
+    left: 250px;
+    width: calc(100% - 250px); /* Lấy chiều rộng còn lại sau sidebar */
     background: #ff9800;
     color: #fff;
-    padding: 20px 0; /* Tăng khoảng cách cho header */
+    padding: 10px 0;
+    z-index: 1000; /* Đảm bảo header luôn ở trên cùng */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 60px;
+}
+
+/* Tiêu đề trong header */
+header h1 {
+    font-size: 20px;
+    font-weight: bold;
+    margin: 0;
     text-align: center;
-    font-weight: bold; /* Chữ đậm cho tiêu đề */
 }
 
-h1, h2 {
-    font-weight: bold; /* Chữ đậm cho tiêu đề */
-    margin: 0; /* Xóa margin cho h1 và h2 */
+/* Sidebar */
+.sidebar {
+    width: 250px;
+    height: 100vh; /* Đảm bảo chiều cao sidebar luôn bằng màn hình */
+    background-color: #2c3e50;
+    color: #ffffff;
+    padding: 20px 15px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1); /* Thêm bóng */
 }
 
-h2 {
-    margin-top: 20px; /* Thêm khoảng cách trên cho h2 */
+/* Nội dung của Sidebar */
+.sidebar .logo-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
 }
 
+.sidebar .logo-header img {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    margin-right: 10px;
+}
+
+.sidebar .logo-header h2 {
+    font-size: 22px;
+    margin: 0;
+    color: white; /* Đổi màu chữ thành trắng */
+}
+
+.sidebar ul {
+    list-style: none;
+    padding: 0;
+}
+
+.sidebar ul li {
+    margin: 15px 0;
+}
+
+.sidebar ul li a {
+    color: white;
+    text-decoration: none;
+    font-size: 18px;
+    display: block;
+    padding: 10px;
+    border-radius: 5px;
+    transition: background 0.3s;
+}
+
+.sidebar ul li a:hover {
+    background-color: #34495e;
+}
+
+/* Main Content */
+.main-content {
+    margin: 0; /* Xóa khoảng cách thừa */
+    margin-left: 250px; /* Tránh tràn vào sidebar */
+    margin-top: 0; /* Đặt khoảng cách cho header */
+    padding: 0 500px; /* Chỉnh padding phù hợp */
+    background-color: #ecf0f1;
+    min-height: calc(100vh - 60px); /* Trừ chiều cao của header */
+    box-sizing: border-box;
+    min-left:calc(100%-250px);
+}
+
+/* Table Styles */
 table {
-    width: 100%;
-    margin-top: 20px;
+    width: 121%;
     border-collapse: collapse;
+    margin-top: 0; /* Xóa khoảng cách trên table */
+    margin-left: 20px; /* Canh giữa bảng nếu cần */
+    border: 2px soid black; /* Viền đen cho toàn bộ bảng */
 }
 
-table, th, td {
-    border: 1px solid #ddd;
-}
-
-th, td {
-    padding: 12px; /* Tăng padding cho các ô trong bảng */
+table th, table td {
     text-align: center;
+    padding: 27px;
+    border: 1px solid black; /* Viền đen cho các ô trong bảng */
 }
 
 th {
-    background-color: #ffcc80; /* Màu nền cho tiêu đề bảng */
-    font-weight: bold; /* Chữ đậm cho tiêu đề */
+    background-color: #ffcc80;
+    color: black;
+    font-weight: bold;
 }
 
-.filter-section, .sort-section {
-    margin: 20px 0;
-    background-color: #f9f9f9; /* Thêm màu nền cho khu vực lọc và sắp xếp */
-    padding: 15px; /* Thêm padding cho khu vực lọc và sắp xếp */
-    border-radius: 5px; /* Bo tròn các góc */
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Thêm bóng nhẹ */
-}
-
-.filter-section label, .sort-section label {
-    margin-right: 10px;
-    font-weight: bold; /* Chữ đậm cho nhãn */
-}
-
-.filter-section select, .filter-section input,
-.sort-section select, .sort-section input {
-    padding: 5px;
-    border: 1px solid #ddd; /* Thêm đường viền cho các trường nhập */
-    border-radius: 3px; /* Bo tròn các góc cho các trường nhập */
-}
-
-button {
-    background-color: #ff9800; /* Màu nền cho nút */
-    color: #fff; /* Màu chữ cho nút */
-    border: none; /* Xóa viền cho nút */
-    padding: 8px 15px; /* Padding cho nút */
-    border-radius: 3px; /* Bo tròn các góc cho nút */
-    cursor: pointer; /* Thay đổi con trỏ khi di chuột lên nút */
-    font-weight: bold; /* Chữ đậm cho nút */
-}
-
-button:hover {
-    background-color: #e68a00; /* Màu nền khi hover vào nút */
-}
-
-/* Cập nhật màu nền và màu chữ cho ô View Details */
-a {
-    color: #fff; /* Màu chữ trắng */
-    background-color: #ff9800; /* Màu nền giống như màu nền của trang */
-    padding: 5px 10px; /* Thêm padding để nút có diện tích lớn hơn */
-    border-radius: 3px; /* Bo tròn các góc */
-    display: inline-block; /* Để nút hiển thị dưới dạng khối */
-    transition: background-color 0.3s; /* Hiệu ứng chuyển màu nền khi hover */
-}
-
-a:hover {
-    background-color: #e68a00; /* Màu nền khi hover vào nút */
-    text-decoration: none; /* Xóa gạch chân khi hover */
-}
-
-/* Hide checkbox */
-.details-checkbox {
-    display: none;
-}
-
-/* Style for the details section */
-/* Style for the details section */
-/* Style for the details section */
-.order-details {
-    display: none;
-    background-color: transparent; /* Thay đổi từ #f9f9f9 sang transparent */
-    padding: 15px;
-    /*border: 1px solid #ddd; /* Bạn có thể xóa dòng này nếu không muốn có viền */
-    margin-top: 10px;
-    transition: max-height 0.5s ease-in-out;
-    overflow: hidden;
+tbody td {
+    background-color: white;
+    color: black;
 }
 
 
-/* Show details when checkbox is checked */
-.details-checkbox:checked + .order-details {
-    display: block;
-}
-
-/* Optional styling for the checkbox label to make it clickable */
-.label {
-    display: block;
+/* Button styles */
+.details-btn {
+    background-color: #ff9800;
+    color: #fff;
+    padding: 8px 15px;
+    border: none;
+    border-radius: 3px;
     cursor: pointer;
+    text-decoration: none;
+}
+
+.details-btn:hover {
+    background-color: #e68a00;
+}
+
+/* Filter Section Styles */
+.filter-section {
+    flex: 1; /* Đảm bảo cả hai phần tử chiếm cùng một vùng ngang */
+    width: 119.5%; /* Đảm bảo filter giãn đủ chiều ngang */
+    margin-top: 60.8px;
+    margin-bottom: 0; /* Xóa khoảng cách dưới filter */
+    margin-left: 22px;
+    padding: 10px 20px; /* Khoảng cách bên trong hợp lý */
+    box-sizing: border-box; /* Đảm bảo padding không làm tràn */
+    background-color: #f9f9f9;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.apply-btn {
+    background-color: #ff9800;
+    color: #fff;
+    padding: 8px 15px;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+    font-weight: bold;
+    text-decoration: none;
+    display: inline-block;
+    margin-top: 10px;
+}
+
+.apply-btn:hover {
+    background-color: #e68a00;
+}
+
+/* Style cho thông báo */
+.alert {
+    display: none;
+    background-color: #4CAF50;
+    color: white;
+    padding: 15px;
+    margin-bottom: 20px;
+    border-radius: 5px;
+    font-size: 16px;
+    text-align: center;
+    position: fixed;
+    top: 10px;
+    right: 10px;
+    z-index: 1000;
+}
+
+.alert.show {
+    display: block;
+}
+
+.close-btn {
+    margin-left: 15px;
+    color: white;
+    font-size: 18px;
+    cursor: pointer;
+}
+
+/* Dropdown styles */
+.dropdown {
+    position: relative;
+}
+
+.dropdown-menu {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    background-color: #34495e;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    border-radius: 5px;
+    z-index: 10;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+}
+
+.dropdown-menu li {
+    margin: 0;
+}
+
+.dropdown-menu li a {
+    display: block;
+    padding: 10px 20px;
+    color: white;
+    text-decoration: none;
+    border-bottom: 1px solid #2c3e50;
+    transition: background 0.3s;
+}
+
+.dropdown-menu li a:hover {
+    background-color: #2c3e50;
+}
+
+.dropdown:hover .dropdown-menu {
+    display: block;
 }
