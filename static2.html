@@ -1,1 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <link rel="shortcut icon" href="img/fav.png">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Shoe Store Sales Dashboard</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+      background-color: #f4f9fc; /* Màu xanh nhạt, dễ nhìn */
+      margin: 0;
+      padding: 0;
+      color: #333; /* Chữ đen dễ đọc */
+    }
 
+    header {
+      background-color: #4f7b9d; /* Màu xanh dương trung tính */
+      padding: 15px;
+      text-align: center;
+      color: #fff;
+      text-transform: uppercase;
+      font-weight: bold;
+      letter-spacing: 1px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    .dashboard-container {
+      width: 80%;
+      margin: 20px auto;
+      padding: 20px;
+      background: linear-gradient(135deg, #e0f1f8, #c3dff0); /* Màu chuyển sắc xanh lạnh */
+      border-radius: 12px;
+      box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+    }
+
+    h3 {
+      margin-top: 0;
+      color: #4f7b9d; /* Màu xanh dương đậm */
+      border-bottom: 2px solid #4f7b9d;
+      padding-bottom: 5px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      text-align: center;
+      background-color: #b3d9e6; /* Xanh dương nhạt */
+      border-radius: 8px;
+      padding: 10px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 10px;
+      background-color: #fff;
+      border-radius: 8px;
+      overflow: hidden;
+    }
+
+    table, th, td {
+      border: 1px solid #c6d8e6; /* Màu viền xanh nhạt */
+    }
+
+    th, td {
+      padding: 15px;
+      text-align: left;
+    }
+
+    th {
+      background-color: #4f7b9d; /* Xanh dương đậm */
+      color: #fff;
+      text-transform: uppercase;
+    }
+
+    tr:nth-child(even) td {
+      background-color: #f0f8ff; /* Xanh rất nhạt */
+    }
+
+    tr:nth-child(odd) td {
+      background-color: #f9f9f9; /* Nền sáng */
+    }
+
+    tr:hover td {
+      background-color: #d1e8f2; /* Màu nhẹ khi hover */
+    }
+
+    .highlight {
+      background-color: #d0e7f1; /* Màu xanh dương nhạt hơn */
+      font-weight: bold;
+      color: #333;
+      border-left: 4px solid #4f7b9d;
+    }
+
+    .btn-details {
+      background-color: #4f7b9d; /* Nút xanh dương */
+      color: #fff;
+      border: none;
+      padding: 10px 15px;
+      border-radius: 4px;
+      cursor: pointer;
+      text-transform: uppercase;
+      font-weight: bold;
+    }
+
+    .btn-details:hover {
+      background-color: #3e6687; /* Màu xanh dương đậm hơn khi hover */
+    }
+
+    .total-revenue {
+      font-weight: bold;
+      color: #2196f3; /* Màu xanh dương */
+      font-size: 1.2em;
+      text-align: center;
+      margin-top: 20px;
+    }
+
+    footer {
+      background-color: #333;
+      padding: 10px;
+      color: #fff;
+      text-align: center;
+      font-size: 0.9em;
+      position: fixed;
+      bottom: 0;
+      width: 100%;
+      box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1);
+    }
+  </style>
+</head>
+<body>
+<header>
+  Shoe Store Sales Dashboard
+</header>
+
+<div class="dashboard-container">
+  <h3>Sales Statistics</h3>
+  <table>
+    <thead>
+    <tr>
+      <th>Product</th>
+      <th>Quantity Sold</th>
+      <th>Total Revenue (USD)</th>
+      <th>Details</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+      <td>ADDIDAS NEW HAMMER SOLE FOR SPORTS PERSON</td>
+      <td>12</td>
+      <td>3,600</td>
+      <td><button class="btn-details">Xem chi tiết</button></td>
+    </tr>
+    <tr class="highlight">
+      <td>ADDIDAS NEW HAMMER SOLE FOR SPORTS PERSON</td>
+      <td>8</td>
+      <td>4,000</td>
+      <td><button class="btn-details">Xem chi tiết</button></td>
+    </tr>
+    <tr>
+      <td>ADDIDAS NEW HAMMER SOLE FOR SPORTS PERSON</td>
+      <td>5</td>
+      <td>1,500</td>
+      <td><button class="btn-details">Xem chi tiết</button></td>
+    </tr>
+    </tbody>
+  </table>
+  <p class="total-revenue">Total Revenue: 9,100 USD</p>
+</div>
+
+<footer>
+  &copy; 2024 Shoe Store. All rights reserved.
+</footer>
+</body>
+</html>
