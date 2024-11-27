@@ -35,68 +35,90 @@
 
 <!-- Start Header Area -->
 <header class="header_area sticky-header">
-	<div class="main_menu">
-		<nav class="navbar navbar-expand-lg navbar-light main_box">
-			<div class="container">
-				<!-- Brand and toggle get grouped for better mobile display -->
-				<a class="navbar-brand logo_h" href="index.html"><img src="img/logo.png" alt=""></a>
-				<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
-						aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-					<span class="icon-bar"></span>
-					<span class="icon-bar"></span>
-					<span class="icon-bar"></span>
-				</button>
-				<!-- Collect the nav links, forms, and other content for toggling -->
-				<div class="collapse navbar-collapse offset" id="navbarSupportedContent">
-					<ul class="nav navbar-nav menu_nav ml-auto">
-						<li class="nav-item active"><a class="nav-link" href="index.html">Home</a></li>
-						<li class="nav-item"><a class="nav-link" href="category.html">Shop Category</a></li>
-						<ul class="dropdown-menu">
-							<li class="nav-item"><a class="nav-link" href="confirmation.html">Confirmation</a></li>
-						</ul>
-						</li>
-						<li class="nav-item"><a class="nav-link" href="cart.html">Shopping Cart</a></li>
-						<ul class="dropdown-menu">
-						</ul>
-						</li>
-						<li class="nav-item submenu dropdown">
-							<a class="nav-link" href="index.html">Log out</a>
-						</li>
-					</ul>
-					<!-- Search Input Box -->
-					<input type="checkbox" id="search-toggle" class="search-toggle" hidden>
-					<div class="search_input">
-						<form id="search-form" action="category.html" method="GET" class="d-flex justify-content-between">
-							<input type="text" class="search-input" name="query" placeholder="Search Here" required>
-							<button type="submit" class="search-btn">
-								<span class="lnr lnr-magnifier"></span>
-							</button>
-							<label for="search-toggle" class="lnr lnr-cross" title="Close Search"></label>
-						</form>
-					</div>
+    <div class="main_menu">
+        <nav class="navbar navbar-expand-lg navbar-light main_box">
+            <div class="container">
+                <!-- Brand and toggle get grouped for better mobile display -->
+                <a class="navbar-brand logo_h" href="index.html"><img src="img/logo.png" alt=""></a>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+                        aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <!-- Collect the nav links, forms, and other content for toggling -->
+                <div class="collapse navbar-collapse offset" id="navbarSupportedContent">
+                    <ul class="nav navbar-nav menu_nav ml-auto">
+                        <li class="nav-item active"><a class="nav-link" href="index2.html">Trang chủ</a></li>
+                        <li class="nav-item submenu dropdown">
+                            <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+                               aria-expanded="false">Sản phẩm</a>
+                            <ul class="dropdown-menu">
+                                <li class="nav-item"><a class="nav-link" href="index2.html"Adidas</a></li>
+                                <li class="nav-item"><a class="nav-link" href="index2.html">Van</a></li>
+                                <li class="nav-item"><a class="nav-link" href="index2.html">shop</a></li>
+                            </ul>
+                        </li>
 
-					<!-- Search Icon and Cart -->
-					<ul class="nav navbar-nav navbar-right">
-						<li class="nav-item"><a href="#" class="cart"><span class="ti-bag"></span></a></li>
-						<li class="nav-item">
-							<!-- Search Button with Magnifier Icon -->
-							<label for="search-toggle" class="search-icon">
-								<span class="lnr lnr-magnifier"></span>
-							</label>
-						</li>
-					</ul>
-					<ul class="nav navbar-nav navbar-right">
-						<li class="nav-item">
-							<a class="nav-link user-btn" href="User.html">
-								<span class="username">User1234</span>
-								<span class="lnr lnr-user"></span>
-							</a>
-						</li>
-					</ul>
-				</div>
-			</div>
-		</nav>
-	</div>
+                        <li class="nav-item"><a class="nav-link" href="#">Checkout</a></li>
+                        <ul class="dropdown-menu">
+
+                        </ul>
+                        </li>
+                        <li class="nav-item submenu dropdown">
+                        </li>
+                    </ul>
+                    <!-- Search Input Box -->
+                    <input type="checkbox" id="search-toggle" class="search-toggle" hidden>
+                    <div class="search_input">
+                        <form id="search-form" action="category.html" method="GET" class="d-flex justify-content-between">
+                            <input type="text" class="search-input" name="query" placeholder="Search Here" required>
+                            <button type="submit" class="search-btn">
+                                <span class="lnr lnr-magnifier"></span>
+                            </button>
+                            <label for="search-toggle" class="lnr lnr-cross" title="Close Search"></label>
+                        </form>
+                    </div>
+
+                    <!-- Search Icon and Cart -->
+                    <ul class="nav navbar-nav navbar-right">
+                        <li class="nav-item"><a href="cart.html" class="cart"><span class="ti-bag"></span></a></li>
+                        <li class="nav-item">
+                            <!-- Search Button with Magnifier Icon -->
+                            <label for="search-toggle" class="search-icon">
+                                <span class="lnr lnr-magnifier"></span>
+                            </label>
+                        </li>
+                    </ul>
+
+
+                    <!-- User Dropdown -->
+                    <ul class="nav navbar-nav navbar-right">
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle user-btn" href="" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <span class="username">Người dùng</span>
+                                <span class="lnr lnr-user"></span>
+                            </a>
+                            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                <a class="dropdown-item" href=User.html>Tiểu sử</a>
+                                <a class="dropdown-item" href="settings.html">Lịch sử giao dịch</a>
+                                <div class="dropdown-divider"></div>
+                                <a class="dropdown-item" href="logout.html">Đăng suất</a>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </div>
+</header>
+<!-- Bootstrap and jQuery -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>
+    <!-- end header -->
 
 <!-- Start Banner Area -->
 <section class="banner-area organic-breadcrumb">
