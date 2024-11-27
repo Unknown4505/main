@@ -1,7 +1,9 @@
 <!DOCTYPE html>
-<html lang="zxx" class="no-js">
-
+<html lang="vi">
 <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Giao diện Admin</title>
   <!-- Mobile Specific Meta -->
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <!-- Favicon-->
@@ -16,726 +18,187 @@
   <meta charset="UTF-8">
   <!-- Site Title -->
   <title>Karma Shop</title>
-  <!--
-      CSS
-      ============================================= -->
-  <link rel="stylesheet" href="css/linearicons.css">
-  <link rel="stylesheet" href="css/font-awesome.min.css">
-  <link rel="stylesheet" href="css/themify-icons.css">
-  <link rel="stylesheet" href="css/bootstrap.css">
-  <link rel="stylesheet" href="css/owl.carousel.css">
-  <link rel="stylesheet" href="css/nice-select.css">
-  <link rel="stylesheet" href="css/nouislider.min.css">
-  <link rel="stylesheet" href="css/ion.rangeSlider.css" />
-  <link rel="stylesheet" href="css/ion.rangeSlider.skinFlat.css" />
-  <link rel="stylesheet" href="css/magnific-popup.css">
-  <link rel="stylesheet" href="css/main.css">
-  <link rel="stylesheet" href="css/search.css">
-</head>
 <style>
-  /* The Modal (background overlay) */
-  .modal {
-    display: none; /* Hidden by default */
-    position: fixed; /* Stay in place */
-    z-index: 1; /* Sit on top */
-    left: 0;
-    top: 0;
-    width: 100%; /* Full width */
-    height: 100%; /* Full height */
-    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+  /* Admin Container */
+  .admin-container {
+    display: flex;
+    min-height: 100vh;
   }
 
-  /* Modal Content (the box) */
-  .modal-content {
-    background-color: #fefefe;
+  /* Sidebar */
+  .sidebar {
+    width: 250px;
+    background-color: #2c3e50;
+    color: white;
+    padding: 20px 15px;
+  }
+
+  .sidebar .logo-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+  }
+
+  .sidebar .logo-header img {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    margin-right: 10px;
+  }
+
+  .sidebar .logo-header h2 {
+    color: white;
+    font-size: 22px;
+    margin: 0;
+  }
+
+  .sidebar ul {
+    list-style: none;
+    padding: 0;
+  }
+
+  .sidebar ul li {
+    margin: 15px 0;
+  }
+
+  .sidebar ul li a {
+    color: white;
+    text-decoration: none;
+    font-size: 18px;
+    display: block;
+    padding: 10px;
+    border-radius: 5px;
+    transition: background 0.3s;
+  }
+
+  .sidebar ul li a:hover {
+    background-color: #34495e;
+  }
+
+  /* Main Content */
+  .main-content {
+    flex: 1;
     padding: 20px;
-    border: 1px solid #888;
-    width: 300px; /* Width of the modal */
-    position: fixed;
-    top: 50%; /* Position vertically at 50% */
-    left: 50%; /* Position horizontally at 50% */
-    transform: translate(-50%, -50%); /* Translate it to be centered */
-    text-align: center;
-    z-index: 2; /* Ensure it appears above the modal background */
+    background-color: #ecf0f1;
   }
 
-  /* Buttons */
-  .modal-buttons {
-    margin-top: 20px;
+  .main-content h1 {
+    font-size: 28px;
+    margin-bottom: 20px;
   }
 
-  .modal-buttons .btn {
+  /* Dashboard Cards */
+  .dashboard {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+  }
+
+  .card {
+    flex: 1 1 calc(20% - 20px);
+    background-color: white;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 15px;
+    box-shadow: 0 2px 4px
+  }
+  /* Đặt dropdown là relative để menu con hiển thị đúng vị trí */
+  .dropdown {
+    position: relative;
+  }
+
+  /* Menu con bị ẩn mặc định */
+  .dropdown-menu {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    background-color: #34495e;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    border-radius: 5px;
+    z-index: 10;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+  }
+
+  /* Các mục trong menu con */
+  .dropdown-menu li {
+    margin: 0;
+  }
+
+  .dropdown-menu li a {
+    display: block;
     padding: 10px 20px;
-    margin: 10px;
-    cursor: pointer;
-    background-color: #f0f0f0;
-    border: none;
-    font-size: 16px;
+    color: white;
+    text-decoration: none;
+    border-bottom: 1px solid #2c3e50;
+    transition: background 0.3s;
   }
 
-  .modal-buttons .btn:hover {
-    background-color: #ddd;
+  .dropdown-menu li a:hover {
+    background-color: #2c3e50;
+  }
+
+  /* Hiển thị menu con khi di chuột vào dropdown */
+  .dropdown:hover .dropdown-menu {
+    display: block;
   }
 
 </style>
-
+</head>
 <body>
-<!-- Start Header Area -->
-<header class="header_area sticky-header">
-  <div class="main_menu">
-    <nav class="navbar navbar-expand-lg navbar-light main_box">
-      <div class="container">
-        <!-- Brand and toggle get grouped for better mobile display -->
-        <a class="navbar-brand logo_h" href="index.html"><img src="img/logo.png" alt=""></a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
-                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-          <span class="icon-bar"></span>
-          <span class="icon-bar"></span>
-          <span class="icon-bar"></span>
-        </button>
-        <!-- Collect the nav links, forms, and other content for toggling -->
-        <div class="collapse navbar-collapse offset" id="navbarSupportedContent">
-          <ul class="nav navbar-nav menu_nav ml-auto">
-            <li class="nav-item active"><a class="nav-link" href="admin.html">Home</a></li>
-            <li class="nav-item">
-            <li class="nav-item"><a href="ManageCustomerOrder.html" class="nav-link">Manage Customer Order</a></li>
-            </li>
+<div class="admin-container">
+  <!-- Sidebar -->
+  <div class="sidebar">
+    <div class="logo-header">
+      <img src="img/fav.png" alt="Admin Logo">
+      <h2>Karma Shop</h2>
+    </div>
+    <ul>
+      <li><a href="#home">Trang chủ</a></li>
+      <li><a href="managerp.html">Quản lí sản phẩm</a></li>
+      <li><a href="#users">Quản lí người dùng</a></li>
+      <li><a href="#orders">Quản lí đơn hàng</a></li>
+      <li class="dropdown">
+        <a href="#statistics">Thống kê</a>
+        <ul class="dropdown-menu">
+          <li><a href="#revenue">Doanh thu</a></li>
+          <li><a href="#user-stats">Người dùng</a></li>
+        </ul>
+      </li>
 
-            <li class="nav-item">
- <a href="static.html" class="nav-link">STATIC</a>
-            </li>
-
-            <li class="nav-item">
-              <a href="shop.html" class="nav-link">Shop</a>
-            </li>
-
-            <li class="nav-item">
-              <a href="shop.html" class="nav-link">Shop</a>
-            </li>
-
-          </ul>
-        </div>
-      </div>
-    </nav>
+    </ul>
   </div>
-</header>
-<!-- End Header Area -->
 
-<section class="owl-carousel active-product-area section_gap">
-  <!-- single product slide -->
-  <div class="single-product-slider">
-    <div class="container">
-      <div class="row justify-content-center">
-        <div class="col-lg-6 text-center">
-          <div class="section-title">
-            <h1>Latest Products</h1>
-            <p>Here are the most selected products in the store.</p>
-          </div>
-          <div class="prd-bottom">
-            <a href="add-product.html" class="social-info">
-              <span class="icon">+</span>
-              <p class="hover-text">Add Product</p>
-            </a></div>
-        </div>
-
+  <!-- Main Content -->
+  <div class="main-content">
+    <h1>Thông tin quản trị</h1>
+    <div class="dashboard">
+      <div class="card">
+        <h3>Tổng thu</h3>
+        <p>500,000,000 VND</p>
       </div>
-      <div class="row">
-        <!-- single product -->
-        <div class="col-lg-3 col-md-6">
-          <div class="single-product">
-            <img class="img-fluid" src="img/product/p1.jpg" alt="">
-            <div class="product-details">
-              <h6>addidas New Hammer sole
-                for Sports person</h6>
-              <div class="price">
-                <h6>$150.00</h6>
-                <h6 class="l-through">$210.00</h6>
-              </div>
-
-              <div class="prd-bottom">
-                <!-- Trigger the modal -->
-                <a href="#" class="social-info" onclick="document.getElementById('confirmModal').style.display='block'; return false;">
-                  <span class="icon">−</span>
-                  <p class="hover-text">Delete Product</p>
-                </a>
-                <a href="edit-product.html" class="social-info">
-                  <span class="icon">↔</span>
-                  <p class="hover-text">Edit Product</p>
-                </a>
-              </div>
-
-              <!-- The Modal -->
-              <div id="confirmModal" class="modal">
-                <div class="modal-content">
-                  <p>Are you sure you want to delete this product?</p>
-                  <div class="modal-buttons">
-                    <a href="admin.html"><button class="btn">Yes</button></a>
-                    <button class="btn" onclick="document.getElementById('confirmModal').style.display='none'">No</button>
-                  </div>
-                </div>
-              </div>
-              <!-- The Modal -->
-            </div>
-          </div>
-        </div>
-        <!-- single product -->
-        <div class="col-lg-3 col-md-6">
-          <div class="single-product">
-            <img class="img-fluid" src="img/product/p2.jpg" alt="">
-            <div class="product-details">
-              <h6>addidas New Hammer sole
-                for Sports person</h6>
-              <div class="price">
-                <h6>$150.00</h6>
-                <h6 class="l-through">$210.00</h6>
-              </div>
-              <div class="prd-bottom">
-                <!-- Trigger the modal -->
-                <a href="#" class="social-info" onclick="document.getElementById('confirmModal').style.display='block'; return false;">
-                  <span class="icon">−</span>
-                  <p class="hover-text">Delete Product</p>
-                </a>
-                <a href="edit-product.html" class="social-info">
-                  <span class="icon">↔</span>
-                  <p class="hover-text">Edit Product</p>
-                </a>
-              </div>
-
-              <!-- The Modal -->
-              <div id="confirmModal" class="modal">
-                <div class="modal-content">
-                  <p>Are you sure you want to delete this product?</p>
-                  <div class="modal-buttons">
-                    <a href="admin.html"><button class="btn">Yes</button></a>
-                    <button class="btn" onclick="document.getElementById('confirmModal').style.display='none'">No</button>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <!-- single product -->
-        <div class="col-lg-3 col-md-6">
-          <div class="single-product">
-            <img class="img-fluid" src="img/product/p3.jpg" alt="">
-            <div class="product-details">
-              <h6>addidas New Hammer sole
-                for Sports person</h6>
-              <div class="price">
-                <h6>$150.00</h6>
-                <h6 class="l-through">$210.00</h6>
-              </div>
-              <div class="prd-bottom">
-                <!-- Trigger the modal -->
-                <a href="#" class="social-info" onclick="document.getElementById('confirmModal').style.display='block'; return false;">
-                  <span class="icon">−</span>
-                  <p class="hover-text">Delete Product</p>
-                </a>
-                <a href="edit-product.html" class="social-info">
-                  <span class="icon">↔</span>
-                  <p class="hover-text">Edit Product</p>
-                </a>
-              </div>
-
-              <!-- The Modal -->
-              <div id="confirmModal" class="modal">
-                <div class="modal-content">
-                  <p>Are you sure you want to delete this product?</p>
-                  <div class="modal-buttons">
-                    <a href="admin.html"><button class="btn">Yes</button></a>
-                    <button class="btn" onclick="document.getElementById('confirmModal').style.display='none'">No</button>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <!-- single product -->
-        <div class="col-lg-3 col-md-6">
-          <div class="single-product">
-            <img class="img-fluid" src="img/product/p4.jpg" alt="">
-            <div class="product-details">
-              <h6>addidas New Hammer sole
-                for Sports person</h6>
-              <div class="price">
-                <h6>$150.00</h6>
-                <h6 class="l-through">$210.00</h6>
-              </div>
-              <div class="prd-bottom">
-                <!-- Trigger the modal -->
-                <a href="#" class="social-info" onclick="document.getElementById('confirmModal').style.display='block'; return false;">
-                  <span class="icon">−</span>
-                  <p class="hover-text">Delete Product</p>
-                </a>
-                <a href="edit-product.html" class="social-info">
-                  <span class="icon">↔</span>
-                  <p class="hover-text">Edit Product</p>
-                </a>
-              </div>
-
-              <!-- The Modal -->
-              <div id="confirmModal" class="modal">
-                <div class="modal-content">
-                  <p>Are you sure you want to delete this product?</p>
-                  <div class="modal-buttons">
-                    <a href="admin.html"><button class="btn">Yes</button></a>
-                    <button class="btn" onclick="document.getElementById('confirmModal').style.display='none'">No</button>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <!-- single product -->
-        <div class="col-lg-3 col-md-6">
-          <div class="single-product">
-            <img class="img-fluid" src="img/product/p5.jpg" alt="">
-            <div class="product-details">
-              <h6>addidas New Hammer sole
-                for Sports person</h6>
-              <div class="price">
-                <h6>$150.00</h6>
-                <h6 class="l-through">$210.00</h6>
-              </div>
-              <div class="prd-bottom">
-                <!-- Trigger the modal -->
-                <a href="#" class="social-info" onclick="document.getElementById('confirmModal').style.display='block'; return false;">
-                  <span class="icon">−</span>
-                  <p class="hover-text">Delete Product</p>
-                </a>
-                <a href="edit-product.html" class="social-info">
-                  <span class="icon">↔</span>
-                  <p class="hover-text">Edit Product</p>
-                </a>
-              </div>
-
-              <!-- The Modal -->
-              <div id="confirmModal" class="modal">
-                <div class="modal-content">
-                  <p>Are you sure you want to delete this product?</p>
-                  <div class="modal-buttons">
-                    <a href="admin.html"><button class="btn">Yes</button></a>
-                    <button class="btn" onclick="document.getElementById('confirmModal').style.display='none'">No</button>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <!-- single product -->
-        <div class="col-lg-3 col-md-6">
-          <div class="single-product">
-            <img class="img-fluid" src="img/product/p6.jpg" alt="">
-            <div class="product-details">
-              <h6>addidas New Hammer sole
-                for Sports person</h6>
-              <div class="price">
-                <h6>$150.00</h6>
-                <h6 class="l-through">$210.00</h6>
-              </div>
-              <div class="prd-bottom">
-                <!-- Trigger the modal -->
-                <a href="#" class="social-info" onclick="document.getElementById('confirmModal').style.display='block'; return false;">
-                  <span class="icon">−</span>
-                  <p class="hover-text">Delete Product</p>
-                </a>
-                <a href="edit-product.html" class="social-info">
-                  <span class="icon">↔</span>
-                  <p class="hover-text">Edit Product</p>
-                </a>
-              </div>
-
-              <!-- The Modal -->
-              <div id="confirmModal" class="modal">
-                <div class="modal-content">
-                  <p>Are you sure you want to delete this product?</p>
-                  <div class="modal-buttons">
-                    <a href="admin.html"><button class="btn">Yes</button></a>
-                    <button class="btn" onclick="document.getElementById('confirmModal').style.display='none'">No</button>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <!-- single product -->
-        <div class="col-lg-3 col-md-6">
-          <div class="single-product">
-            <img class="img-fluid" src="img/product/p7.jpg" alt="">
-            <div class="product-details">
-              <h6>addidas New Hammer sole
-                for Sports person</h6>
-              <div class="price">
-                <h6>$150.00</h6>
-                <h6 class="l-through">$210.00</h6>
-              </div>
-              <div class="prd-bottom">
-                <!-- Trigger the modal -->
-                <a href="#" class="social-info" onclick="document.getElementById('confirmModal').style.display='block'; return false;">
-                  <span class="icon">−</span>
-                  <p class="hover-text">Delete Product</p>
-                </a>
-                <a href="edit-product.html" class="social-info">
-                  <span class="icon">↔</span>
-                  <p class="hover-text">Edit Product</p>
-                </a>
-              </div>
-
-              <!-- The Modal -->
-              <div id="confirmModal" class="modal">
-                <div class="modal-content">
-                  <p>Are you sure you want to delete this product?</p>
-                  <div class="modal-buttons">
-                    <a href="admin.html"><button class="btn">Yes</button></a>
-                    <button class="btn" onclick="document.getElementById('confirmModal').style.display='none'">No</button>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <!-- single product -->
-        <div class="col-lg-3 col-md-6">
-          <div class="single-product">
-            <img class="img-fluid" src="img/product/p8.jpg" alt="">
-            <div class="product-details">
-              <h6>addidas New Hammer sole
-                for Sports person</h6>
-              <div class="price">
-                <h6>$150.00</h6>
-                <h6 class="l-through">$210.00</h6>
-              </div>
-              <div class="prd-bottom">
-                <!-- Trigger the modal -->
-                <a href="#" class="social-info" onclick="document.getElementById('confirmModal').style.display='block'; return false;">
-                  <span class="icon">−</span>
-                  <p class="hover-text">Delete Product</p>
-                </a>
-                <a href="edit-product.html" class="social-info">
-                  <span class="icon">↔</span>
-                  <p class="hover-text">Edit Product</p>
-                </a>
-              </div>
-
-              <!-- The Modal -->
-              <div id="confirmModal" class="modal">
-                <div class="modal-content">
-                  <p>Are you sure you want to delete this product?</p>
-                  <div class="modal-buttons">
-                    <a href="admin.html"><button class="btn">Yes</button></a>
-                    <button class="btn" onclick="document.getElementById('confirmModal').style.display='none'">No</button>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
+      <div class="card">
+        <h3>Số lượng người dùng</h3>
+        <p>1,200</p>
+      </div>
+      <div class="card">
+        <h3>Số lượng sản phẩm</h3>
+        <p>350</p>
+      </div>
+      <div class="card">
+        <h3>Số lượng đơn hàng</h3>
+        <p>780</p>
+      </div>
+      <div class="card">
+        <h3>Tình trạng shop</h3>
+        <p>Hoạt động</p>
       </div>
     </div>
   </div>
-  <!-- single product slide -->
-  <div class="single-product-slider">
-    <div class="container">
-      <div class="row justify-content-center">
-        <div class="col-lg-6 text-center">
-          <div class="section-title">
-            <h1>Coming Products</h1>
-            <p>Here are the products we are launching this upcoming in December.</p>
-          </div>
-        </div>
-      </div>
-      <div class="row">
-        <!-- single product -->
-        <div class="col-lg-3 col-md-6">
-          <div class="single-product">
-            <img class="img-fluid" src="img/product/p6.jpg" alt="">
-            <div class="product-details">
-              <h6>addidas New Hammer sole
-                for Sports person</h6>
-              <div class="price">
-                <h6>$150.00</h6>
-                <h6 class="l-through">$210.00</h6>
-              </div>
-              <div class="prd-bottom">
-                <!-- Trigger the modal -->
-                <a href="#" class="social-info" onclick="document.getElementById('confirmModal').style.display='block'; return false;">
-                  <span class="icon">−</span>
-                  <p class="hover-text">Delete Product</p>
-                </a>
-                <a href="edit-product.html" class="social-info">
-                  <span class="icon">↔</span>
-                  <p class="hover-text">Edit Product</p>
-                </a>
-              </div>
+</div>
 
-              <!-- The Modal -->
-              <div id="confirmModal" class="modal">
-                <div class="modal-content">
-                  <p>Are you sure you want to delete this product?</p>
-                  <div class="modal-buttons">
-                    <a href="admin.html"><button class="btn">Yes</button></a>
-                    <button class="btn" onclick="document.getElementById('confirmModal').style.display='none'">No</button>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <!-- single product -->
-        <div class="col-lg-3 col-md-6">
-          <div class="single-product">
-            <img class="img-fluid" src="img/product/p8.jpg" alt="">
-            <div class="product-details">
-              <h6>addidas New Hammer sole
-                for Sports person</h6>
-              <div class="price">
-                <h6>$150.00</h6>
-                <h6 class="l-through">$210.00</h6>
-              </div>
-              <div class="prd-bottom">
-                <!-- Trigger the modal -->
-                <a href="#" class="social-info" onclick="document.getElementById('confirmModal').style.display='block'; return false;">
-                  <span class="icon">−</span>
-                  <p class="hover-text">Delete Product</p>
-                </a>
-                <a href="edit-product.html" class="social-info">
-                  <span class="icon">↔</span>
-                  <p class="hover-text">Edit Product</p>
-                </a>
-              </div>
 
-              <!-- The Modal -->
-              <div id="confirmModal" class="modal">
-                <div class="modal-content">
-                  <p>Are you sure you want to delete this product?</p>
-                  <div class="modal-buttons">
-                    <a href="admin.html"><button class="btn">Yes</button></a>
-                    <button class="btn" onclick="document.getElementById('confirmModal').style.display='none'">No</button>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <!-- single product -->
-        <div class="col-lg-3 col-md-6">
-          <div class="single-product">
-            <img class="img-fluid" src="img/product/p3.jpg" alt="">
-            <div class="product-details">
-              <h6>addidas New Hammer sole
-                for Sports person</h6>
-              <div class="price">
-                <h6>$150.00</h6>
-                <h6 class="l-through">$210.00</h6>
-              </div>
-              <div class="prd-bottom">
-                <!-- Trigger the modal -->
-                <a href="#" class="social-info" onclick="document.getElementById('confirmModal').style.display='block'; return false;">
-                  <span class="icon">−</span>
-                  <p class="hover-text">Delete Product</p>
-                </a>
-                <a href="edit-product.html" class="social-info">
-                  <span class="icon">↔</span>
-                  <p class="hover-text">Edit Product</p>
-                </a>
-              </div>
-
-              <!-- The Modal -->
-              <div id="confirmModal" class="modal">
-                <div class="modal-content">
-                  <p>Are you sure you want to delete this product?</p>
-                  <div class="modal-buttons">
-                    <a href="admin.html"><button class="btn">Yes</button></a>
-                    <button class="btn" onclick="document.getElementById('confirmModal').style.display='none'">No</button>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <!-- single product -->
-        <div class="col-lg-3 col-md-6">
-          <div class="single-product">
-            <img class="img-fluid" src="img/product/p5.jpg" alt="">
-            <div class="product-details">
-              <h6>addidas New Hammer sole
-                for Sports person</h6>
-              <div class="price">
-                <h6>$150.00</h6>
-                <h6 class="l-through">$210.00</h6>
-              </div>
-              <div class="prd-bottom">
-                <!-- Trigger the modal -->
-                <a href="#" class="social-info" onclick="document.getElementById('confirmModal').style.display='block'; return false;">
-                  <span class="icon">−</span>
-                  <p class="hover-text">Delete Product</p>
-                </a>
-                <a href="edit-product.html" class="social-info">
-                  <span class="icon">↔</span>
-                  <p class="hover-text">Edit Product</p>
-                </a>
-              </div>
-
-              <!-- The Modal -->
-              <div id="confirmModal" class="modal">
-                <div class="modal-content">
-                  <p>Are you sure you want to delete this product?</p>
-                  <div class="modal-buttons">
-                    <a href="admin.html"><button class="btn">Yes</button></a>
-                    <button class="btn" onclick="document.getElementById('confirmModal').style.display='none'">No</button>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <!-- single product -->
-        <div class="col-lg-3 col-md-6">
-          <div class="single-product">
-            <img class="img-fluid" src="img/product/p1.jpg" alt="">
-            <div class="product-details">
-              <h6>addidas New Hammer sole
-                for Sports person</h6>
-              <div class="price">
-                <h6>$150.00</h6>
-                <h6 class="l-through">$210.00</h6>
-              </div>
-              <div class="prd-bottom">
-                <!-- Trigger the modal -->
-                <a href="#" class="social-info" onclick="document.getElementById('confirmModal').style.display='block'; return false;">
-                  <span class="icon">−</span>
-                  <p class="hover-text">Delete Product</p>
-                </a>
-                <a href="edit-product.html" class="social-info">
-                  <span class="icon">↔</span>
-                  <p class="hover-text">Edit Product</p>
-                </a>
-              </div>
-
-              <!-- The Modal -->
-              <div id="confirmModal" class="modal">
-                <div class="modal-content">
-                  <p>Are you sure you want to delete this product?</p>
-                  <div class="modal-buttons">
-                    <a href="admin.html"><button class="btn">Yes</button></a>
-                    <button class="btn" onclick="document.getElementById('confirmModal').style.display='none'">No</button>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <!-- single product -->
-        <div class="col-lg-3 col-md-6">
-          <div class="single-product">
-            <img class="img-fluid" src="img/product/p4.jpg" alt="">
-            <div class="product-details">
-              <h6>addidas New Hammer sole
-                for Sports person</h6>
-              <div class="price">
-                <h6>$150.00</h6>
-                <h6 class="l-through">$210.00</h6>
-              </div>
-              <div class="prd-bottom">
-                <!-- Trigger the modal -->
-                <a href="#" class="social-info" onclick="document.getElementById('confirmModal').style.display='block'; return false;">
-                  <span class="icon">−</span>
-                  <p class="hover-text">Delete Product</p>
-                </a>
-                <a href="edit-product.html" class="social-info">
-                  <span class="icon">↔</span>
-                  <p class="hover-text">Edit Product</p>
-                </a>
-              </div>
-
-              <!-- The Modal -->
-              <div id="confirmModal" class="modal">
-                <div class="modal-content">
-                  <p>Are you sure you want to delete this product?</p>
-                  <div class="modal-buttons">
-                    <a href="admin.html"><button class="btn">Yes</button></a>
-                    <button class="btn" onclick="document.getElementById('confirmModal').style.display='none'">No</button>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <!-- single product -->
-        <div class="col-lg-3 col-md-6">
-          <div class="single-product">
-            <img class="img-fluid" src="img/product/p1.jpg" alt="">
-            <div class="product-details">
-              <h6>addidas New Hammer sole
-                for Sports person</h6>
-              <div class="price">
-                <h6>$150.00</h6>
-                <h6 class="l-through">$210.00</h6>
-              </div>
-              <div class="prd-bottom">
-                <!-- Trigger the modal -->
-                <a href="#" class="social-info" onclick="document.getElementById('confirmModal').style.display='block'; return false;">
-                  <span class="icon">−</span>
-                  <p class="hover-text">Delete Product</p>
-                </a>
-                <a href="edit-product.html" class="social-info">
-                  <span class="icon">↔</span>
-                  <p class="hover-text">Edit Product</p>
-                </a>
-              </div>
-
-              <!-- The Modal -->
-              <div id="confirmModal" class="modal">
-                <div class="modal-content">
-                  <p>Are you sure you want to delete this product?</p>
-                  <div class="modal-buttons">
-                    <a href="admin.html"><button class="btn">Yes</button></a>
-                    <button class="btn" onclick="document.getElementById('confirmModal').style.display='none'">No</button>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <!-- single product -->
-        <div class="col-lg-3 col-md-6">
-          <div class="single-product">
-            <img class="img-fluid" src="img/product/p8.jpg" alt="">
-            <div class="product-details">
-              <h6>addidas New Hammer sole
-                for Sports person</h6>
-              <div class="price">
-                <h6>$150.00</h6>
-                <h6 class="l-through">$210.00</h6>
-              </div>
-              <div class="prd-bottom">
-                <!-- Trigger the modal -->
-                <a href="#" class="social-info" onclick="document.getElementById('confirmModal').style.display='block'; return false;">
-                  <span class="icon">−</span>
-                  <p class="hover-text">Delete Product</p>
-                </a>
-                <a href="edit-product.html" class="social-info">
-                  <span class="icon">↔</span>
-                  <p class="hover-text">Edit Product</p>
-                </a>
-              </div>
-              <!-- The Modal -->
-              <div id="confirmModal" class="modal">
-                <div class="modal-content">
-                  <p>Are you sure you want to delete this product?</p>
-                  <div class="modal-buttons">
-                    <a href="admin.html"><button class="btn">Yes</button></a>
-                    <button class="btn" onclick="document.getElementById('confirmModal').style.display='none'">No</button>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-<!-- start footer Area -->
 </body>
 </html>
