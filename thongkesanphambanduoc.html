@@ -1,1 +1,126 @@
 
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Danh Sách Hàng Đã Mua</title>
+  <style>
+    body {
+      font-family: 'Arial', sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f0f4f8;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding-top: 20px;
+    }
+    h1 {
+      color: #2c3e50;
+      font-size: 36px;
+      margin-bottom: 30px;
+    }
+    table {
+      width: 90%;
+      max-width: 1200px;
+      border-collapse: collapse;
+      margin-bottom: 30px;
+      background-color: #ffffff;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+    }
+    thead {
+      background-color: #3498db;
+      color: white;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      font-size: 16px;
+    }
+    th, td {
+      padding: 20px;
+      text-align: left;
+      border: 1px solid #ddd;
+    }
+    th {
+      font-weight: bold;
+    }
+    tbody tr:nth-child(even) {
+      background-color: #f9f9f9;
+    }
+    tbody tr:nth-child(odd) {
+      background-color: #fdfdfd;
+    }
+    tbody tr:hover {
+      background-color: #ecf0f1;
+      cursor: pointer;
+    }
+    td a.details-button {
+      display: inline-block;
+      padding: 10px 20px;
+      background-color: #2980b9;
+      color: white;
+      text-decoration: none;
+      border-radius: 6px;
+      font-size: 14px;
+      text-align: center;
+      transition: background-color 0.3s;
+    }
+    td a.details-button:hover {
+      background-color: #1c5986;
+    }
+    .footer {
+      text-align: center;
+      padding: 10px;
+      font-size: 14px;
+      color: #7f8c8d;
+      margin-top: 30px;
+    }
+  </style>
+</head>
+<body>
+
+<h1>Danh Sách Hàng Đã Mua</h1>
+
+<table>
+  <thead>
+  <tr>
+    <th>ID Đơn Hàng</th>
+    <th>Số Lượng</th>
+    <th>Tên Sản Phẩm</th>
+    <th>Họ Tên Khách Hàng</th>
+    <th>Hành Động</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr>
+    <td>DH001</td>
+    <td>2</td>
+    <td>Adidas New Hammer Sole For Sports Person</td>
+    <td>Ngô Đức Huy</td>
+    <td><a href="chitietthongkesanpham.html" class="details-button">Xem Chi Tiết</a></td>
+  </tr>
+  <tr>
+    <td>DH002</td>
+    <td>1</td>
+    <td>Adidas New Hammer Sole For Sports Person</td>
+    <td>Ngô Đức Huy</td>
+    <td><a href="chitietthongkesanpham.html" class="details-button">Xem Chi Tiết</a></td>
+  </tr>
+  <tr>
+    <td>DH003</td>
+    <td>3</td>
+    <td>Adidas New Hammer Sole For Sports Person</td>
+    <td>Ngô Đức Huy</td>
+    <td><a href="chitietthongkesanpham.html" class="details-button">Xem Chi Tiết</a></td>
+  </tr>
+  </tbody>
+</table>
+
+<div class="footer">
+  &copy; 2024 Cửa Hàng Giày. Tất cả các quyền được bảo lưu.
+</div>
+
+</body>
+</html>
