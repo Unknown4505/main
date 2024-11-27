@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Giao diện Admin</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="shortcut icon" href="img/fav.png">
+    <meta name="author" content="CodePixar">
+    <meta name="description" content="">
+    <meta name="keywords" content="">
+    <meta charset="UTF-8">
+    <title>Karma Shop</title>
+    <style>
+        /* Admin Container */
+        .admin-container {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: 250px;
+            background-color: #2c3e50;
+            color: white;
+            padding: 20px 15px;
+        }
+
+        .sidebar .logo-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .sidebar .logo-header img {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            margin-right: 10px;
+        }
+
+        .sidebar .logo-header h2 {
+            color: white;
+            font-size: 22px;
+            margin: 0;
+        }
+
+        .sidebar ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .sidebar ul li {
+            margin: 15px 0;
+        }
+
+        .sidebar ul li a {
+            color: white;
+            text-decoration: none;
+            font-size: 18px;
+            display: block;
+            padding: 10px;
+            border-radius: 5px;
+            transition: background 0.3s;
+        }
+
+        .sidebar ul li a:hover {
+            background-color: #34495e;
+        }
+
+        /* Main Content */
+        .main-content {
+            flex: 1;
+            padding: 20px;
+            background-color: #ecf0f1;
+        }
+
+        .main-content h1 {
+            font-size: 28px;
+            margin-bottom: 20px;
+        }
+
+        /* Bảng quản lý người dùng */
+        .user-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        .user-table th, .user-table td {
+            padding: 10px;
+            text-align: center;
+            border: 1px solid #ddd;
+        }
+
+        .user-table th {
+            background-color: #34495e;
+            color: white;
+        }
+
+        .user-table td {
+            background-color: white;
+        }
+
+        .dropdown {
+            width: 100%;
+        }
+
+        .dropdown select {
+            width: 100%;
+            padding: 5px;
+            border-radius: 5px;
+            border: 1px solid #ddd;
+            background-color: #fff;
+            font-size: 14px;
+            cursor: pointer;
+        }
+        /* Đặt dropdown là relative để menu con hiển thị đúng vị trí */
+        .dropdown {
+            position: relative;
+        }
+
+        /* Menu con bị ẩn mặc định */
+        .dropdown-menu {
+            display: none;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            background-color: #34495e;
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            border-radius: 5px;
+            z-index: 10;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Các mục trong menu con */
+        .dropdown-menu li {
+            margin: 0;
+        }
+
+        .dropdown-menu li a {
+            display: block;
+            padding: 10px 20px;
+            color: white;
+            text-decoration: none;
+            border-bottom: 1px solid #2c3e50;
+            transition: background 0.3s;
+        }
+
+        .dropdown-menu li a:hover {
+            background-color: #2c3e50;
+        }
+
+        /* Hiển thị menu con khi di chuột vào dropdown */
+        .dropdown:hover .dropdown-menu {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+<div class="admin-container">
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <div class="logo-header">
+            <img src="img/fav.png" alt="Admin Logo">
+            <h2>Karma Shop</h2>
+        </div>
+        <ul>
+            <li><a href="#home">Trang chủ</a></li>
+            <li><a href="managerp.html">Quản lí sản phẩm</a></li>
+            <li><a href="manager-user.html">Quản lí người dùng</a></li>
+            <li><a href="#orders">Quản lí đơn hàng</a></li>
+            <li class="dropdown">
+                <a href="#statistics">Thống kê</a>
+                <ul class="dropdown-menu">
+                    <li><a href="#revenue">Doanh thu</a></li>
+                    <li><a href="#user-stats">Người dùng</a></li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <h1>Quản lý Người Dùng</h1>
+
+        <!-- Bảng Quản lý Người Dùng -->
+        <table class="user-table">
+            <thead>
+            <tr>
+                <th>Mã Khách Hàng</th>
+                <th>Tên Khách Hàng</th>
+                <th>Địa Chỉ Email</th>
+                <th>Số Điện Thoại</th>
+                <th>Trạng Thái</th>
+                <th>Ngày Đăng Ký</th>
+                <th>Cài Đặt</th>
+            </tr>
+            </thead>
+            <tbody>
+            <!-- Dữ liệu khách hàng (8 dòng) -->
+            <tr>
+                <td>KH001</td>
+                <td>Nguyễn Văn A</td>
+                <td>nguyenvana@example.com</td>
+                <td>0901234567</td>
+                <td>Còn hoạt động</td>
+                <td>2023-08-15</td>
+                <td>
+                    <div class="dropdown">
+                        <select onchange="handleAction(this.value, 'KH001')">
+                            <option value="unlock">Hoạt Động</option>
+                            <option value="lock">Khóa tài khoản</option>
+                        </select>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td>KH002</td>
+                <td>Trần Thị B</td>
+                <td>tranthib@example.com</td>
+                <td>0902345678</td>
+                <td>Còn hoạt động</td>
+                <td>2023-09-10</td>
+                <td>
+                    <div class="dropdown">
+                        <select onchange="handleAction(this.value, 'KH002')">
+                            <option value="unlock">Hoạt Động</option>
+                            <option value="lock">Khóa tài khoản</option>
+                        </select>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td>KH003</td>
+                <td>Lê Quang C</td>
+                <td>lequangc@example.com</td>
+                <td>0903456789</td>
+                <td>Còn hoạt động</td>
+                <td>2023-07-20</td>
+                <td>
+                    <div class="dropdown">
+                        <select onchange="handleAction(this.value, 'KH003')">
+                            <option value="unlock">Hoạt Động</option>
+                            <option value="lock">Khóa tài khoản</option>
+                        </select>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td>KH004</td>
+                <td>Phạm Minh D</td>
+                <td>phamminhd@example.com</td>
+                <td>0904567890</td>
+                <td>Còn hoạt động</td>
+                <td>2023-06-10</td>
+                <td>
+                    <div class="dropdown">
+                        <select onchange="handleAction(this.value, 'KH004')">
+                            <option value="unlock">Hoạt Động</option>
+                            <option value="lock">Khóa tài khoản</option>
+                        </select>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td>KH005</td>
+                <td>Ngô Minh E</td>
+                <td>ngominhe@example.com</td>
+                <td>0905678901</td>
+                <td>Còn hoạt động</td>
+                <td>2023-05-25</td>
+                <td>
+                    <div class="dropdown">
+                        <select onchange="handleAction(this.value, 'KH005')">
+                            <option value="unlock">Hoạt Động</option>
+                            <option value="lock">Khóa tài khoản</option>
+                        </select>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td>KH006</td>
+                <td>Đỗ Thị F</td>
+                <td>dothif@example.com</td>
+                <td>0906789012</td>
+                <td>Còn hoạt động</td>
+                <td>2023-04-30</td>
+                <td>
+                    <div class="dropdown">
+                        <select onchange="handleAction(this.value, 'KH006')">
+                            <option value="unlock">Hoạt Động</option>
+                            <option value="lock">Khóa tài khoản</option>
+                        </select>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td>KH007</td>
+                <td>Vũ Anh G</td>
+                <td>vuanhg@example.com</td>
+                <td>0907890123</td>
+                <td>Còn hoạt động</td>
+                <td>2023-03-22</td>
+                <td>
+                    <div class="dropdown">
+                        <select onchange="handleAction(this.value, 'KH007')">
+                            <option value="unlock">Hoạt Động</option>
+                            <option value="lock">Khóa tài khoản</option>
+                        </select>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td>KH008</td>
+                <td>Mai Lan H</td>
+                <td>mailanh@example.com</td>
+                <td>0908901234</td>
+                <td>Còn hoạt động</td>
+                <td>2023-02-18</td>
+                <td>
+                    <div class="dropdown">
+                        <select onchange="handleAction(this.value, 'KH008')">
+                            <option value="unlock">Hoạt Động</option>
+                            <option value="lock">Khóa tài khoản</option>
+                        </select>
+                    </div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<script>
+    function handleAction(action, customerId) {
+        if (action === "lock") {
+            if (confirm("Bạn có chắc chắn muốn khóa tài khoản của khách hàng " + customerId + " không?")) {
+                alert("Tài khoản " + customerId + " đã được khóa.");
+                // Thực hiện thao tác khóa tài khoản ở đây (có thể gửi yêu cầu đến server)
+            }
+        } else if (action === "unlock") {
+            if (confirm("Bạn có chắc chắn muốn mở lại tài khoản của khách hàng " + customerId + " không?")) {
+                alert("Tài khoản " + customerId + " đã được mở lại.");
+                // Thực hiện thao tác mở lại tài khoản ở đây (có thể gửi yêu cầu đến server)
+            }
+        }
+    }
+</script>
+
+</body>
+</html>
