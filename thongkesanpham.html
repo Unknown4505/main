@@ -1,162 +1,125 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="vi">
 <head>
-    <link rel="shortcut icon" href="img/fav.png">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Product Statistics</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <title>Danh Sách Hàng Đã Mua</title>
     <style>
         body {
-            font-family: 'Poppins', sans-serif;
-            background-color: #d1e6f1; /* Xanh dương nhạt */
+            font-family: 'Arial', sans-serif;
             margin: 0;
             padding: 0;
-            color: #333; /* Chữ đen */
+            background-color: #f0f4f8;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding-top: 20px;
         }
-
-        header {
-            background-color: #0077b6; /* Xanh dương đậm */
-            padding: 15px;
-            text-align: center;
-            color: #fff; /* Chữ trắng */
-            text-transform: uppercase;
-            font-weight: bold;
-            letter-spacing: 1px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        h1 {
+            color: #2c3e50;
+            font-size: 36px;
+            margin-bottom: 30px;
         }
-
-        .container {
-            width: 80%;
-            margin: 20px auto;
-            padding: 20px;
-            background: linear-gradient(135deg, #a2c8f1, #c7dff9); /* Chuyển sắc xanh dương nhạt */
-            border-radius: 12px;
-            box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
-        }
-
-        h3 {
-            margin-top: 0;
-            color: #005b7f; /* Xanh dương đậm */
-            border-bottom: 2px solid #0077b6;
-            padding-bottom: 5px;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            text-align: center;
-            background-color: #cfe9f9; /* Xanh dương nhạt hơn */
-            border-radius: 8px;
-            padding: 10px;
-        }
-
         table {
-            width: 100%;
+            width: 90%;
+            max-width: 1200px;
             border-collapse: collapse;
-            margin-top: 10px;
-            background-color: #f9fbfd; /* Nền sáng, dễ nhìn */
-            border-radius: 8px;
+            margin-bottom: 30px;
+            background-color: #ffffff;
+            border-radius: 12px;
             overflow: hidden;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
         }
-
-        table, th, td {
-            border: 1px solid #82c3e2; /* Viền xanh dương sáng */
+        thead {
+            background-color: #3498db;
+            color: white;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-size: 16px;
         }
-
         th, td {
-            padding: 15px;
+            padding: 20px;
             text-align: left;
-            color: #333; /* Chữ đen */
+            border: 1px solid #ddd;
         }
-
         th {
-            background-color: #0077b6; /* Xanh dương đậm */
-            color: #fff; /* Chữ trắng */
-            text-transform: uppercase;
-        }
-
-        tr:nth-child(even) td {
-            background-color: #e9f2f8; /* Xanh dương nhạt */
-        }
-
-        tr:nth-child(odd) td {
-            background-color: #f9fbfd; /* Nền sáng */
-        }
-
-        tr:hover td {
-            background-color: #b0e0e6; /* Xanh dương nhẹ khi hover */
-        }
-
-        .btn-details {
-            background-color: #0077b6; /* Nút xanh dương đậm */
-            color: #fff; /* Chữ trắng */
-            border: none;
-            padding: 10px 15px;
-            border-radius: 4px;
-            cursor: pointer;
-            text-transform: uppercase;
             font-weight: bold;
-            text-decoration: none;
+        }
+        tbody tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        tbody tr:nth-child(odd) {
+            background-color: #fdfdfd;
+        }
+        tbody tr:hover {
+            background-color: #ecf0f1;
+            cursor: pointer;
+        }
+        td a.details-button {
             display: inline-block;
-        }
-
-        .btn-details:hover {
-            background-color: #005f75; /* Xanh dương đậm hơn khi hover */
-        }
-
-        footer {
-            background-color: #005b7f; /* Xanh dương đậm */
-            padding: 10px;
-            color: #fff;
+            padding: 10px 20px;
+            background-color: #2980b9;
+            color: white;
+            text-decoration: none;
+            border-radius: 6px;
+            font-size: 14px;
             text-align: center;
-            font-size: 0.9em;
-            position: fixed;
-            bottom: 0;
-            width: 100%;
-            box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1);
+            transition: background-color 0.3s;
+        }
+        td a.details-button:hover {
+            background-color: #1c5986;
+        }
+        .footer {
+            text-align: center;
+            padding: 10px;
+            font-size: 14px;
+            color: #7f8c8d;
+            margin-top: 30px;
         }
     </style>
 </head>
 <body>
-<header>
-    Product Statistics
-</header>
 
-<div class="container">
-    <h3>Product List</h3>
-    <table>
-        <thead>
-        <tr>
-            <th>ID</th>
-            <th>Product Name</th>
-            <th>Details</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr>
-            <td>1</td>
-            <td>ADDIDAS NEW HAMMER SOLE FOR SPORTS PERSON</td>
-            <td><a href="chitietthongkesanpham.html" class="btn-details">Xem chi tiết</a></td>
-        </tr>
-        <tr>
-            <td>2</td>
-            <td>NIKE AIR ZOOM PEGASUS 38</td>
-            <td><a href="chitietthongkesanpham.html" class="btn-details">Xem chi tiết</a></td>
-        </tr>
-        <tr>
-            <td>3</td>
-            <td>PUMA ULTRA 1.3 FG/AG FOOTBALL BOOTS</td>
-            <td><a href="chitietthongkesanpham.html" class="btn-details">Xem chi tiết</a></td>
-        </tr>
-        <tr>
-            <td>4</td>
-            <td>REEBOK RUNNING FUELFOAM</td>
-            <td><a href="chitietthongkesanpham.html" class="btn-details">Xem chi tiết</a></td>
-        </tr>
-        </tbody>
-    </table>
+<h1>Danh Sách Hàng Đã Mua</h1>
+
+<table>
+    <thead>
+    <tr>
+        <th>ID Chuyến Hàng</th>
+        <th>Họ Tên Khách Hàng</th>
+        <th>Tên Sản Phẩm</th>
+        <th>Số Lượng</th>
+        <th>Hành Động</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+        <td>CH001</td>
+        <td>Nguyễn Văn A</td>
+        <td>Adidas New Hammer Sole For Sports Person</td>
+        <td>2</td>
+        <td><a href="chitietgiaodich.html?id=CH001" class="details-button">Xem Chi Tiết</a></td>
+    </tr>
+    <tr>
+        <td>CH002</td>
+        <td>Nguyễn Văn A</td>
+        <td>Nike Air Max 2023</td>
+        <td>1</td>
+        <td><a href="chitietgiaodich.html?id=CH002" class="details-button">Xem Chi Tiết</a></td>
+    </tr>
+    <tr>
+        <td>CH003</td>
+        <td>Nguyễn Văn A</td>
+        <td>Puma Running Shoes</td>
+        <td>3</td>
+        <td><a href="chitietgiaodich.html?id=CH003" class="details-button">Xem Chi Tiết</a></td>
+    </tr>
+    </tbody>
+</table>
+
+<div class="footer">
+    &copy; 2024 Cửa Hàng Giày. Tất cả các quyền được bảo lưu.
 </div>
 
-<footer>
-    &copy; 2024 Shoe Store. All rights reserved.
-</footer>
 </body>
 </html>
