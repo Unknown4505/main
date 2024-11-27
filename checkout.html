@@ -10,6 +10,8 @@
     <meta charset="UTF-8">
     <title>Karma Shop</title>
 
+    <!-- Thêm Bootstrap và các thư viện cần thiết -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="css/linearicons.css">
     <link rel="stylesheet" href="css/owl.carousel.css">
     <link rel="stylesheet" href="css/themify-icons.css">
@@ -18,9 +20,23 @@
     <link rel="stylesheet" href="css/nouislider.min.css">
     <link rel="stylesheet" href="css/bootstrap.css">
     <link rel="stylesheet" href="css/main.css">
-    <link rel="stylesheet" href="css/search.css">
-</head>
 
+    <style>
+        /* Điều chỉnh kích thước và kiểu dáng cho nút thanh toán */
+        .primary-btn {
+            padding: 8px 20px;  /* Giảm kích thước nút */
+            font-size: 14px;  /* Thay đổi cỡ chữ */
+            border-radius: 5px;  /* Bo góc nút */
+            border: none;
+            transition: background-color 0.3s ease;  /* Hiệu ứng chuyển màu khi di chuột */
+        }
+
+        .primary-btn:hover {
+            background-color: #f06c4d;  /* Màu nền khi hover */
+            cursor: pointer;
+        }
+    </style>
+</head>
 
 <body>
 
@@ -29,7 +45,6 @@
     <div class="main_menu">
         <nav class="navbar navbar-expand-lg navbar-light main_box">
             <div class="container">
-                <!-- Brand and toggle get grouped for better mobile display -->
                 <a class="navbar-brand logo_h" href="index.html"><img src="img/logo.png" alt=""></a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
                         aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -37,230 +52,190 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <!-- Collect the nav links, forms, and other content for toggling -->
                 <div class="collapse navbar-collapse offset" id="navbarSupportedContent">
                     <ul class="nav navbar-nav menu_nav ml-auto">
                         <li class="nav-item active"><a class="nav-link" href="index2.html">Home</a></li>
                         <li class="nav-item"><a class="nav-link" href="category.html">Shop Category</a></li>
-                            <ul class="dropdown-menu">
-                                <li class="nav-item"><a class="nav-link" href="confirmation.html">Confirmation</a></li>
-                            </ul>
-                        </li>
                         <li class="nav-item"><a class="nav-link" href="#">Shop</a></li>
-                        <ul class="dropdown-menu">
-                            </ul>
-                        </li>
                         <li class="nav-item submenu dropdown">
                             <a class="nav-link" href="index.html">Log out</a>
-                        </li>
-                    </ul>
-                    <!-- Search Input Box -->
-                    <input type="checkbox" id="search-toggle" class="search-toggle" hidden>
-                    <div class="search_input">
-                        <form id="search-form" action="ResultOfSearch.html" method="GET" class="d-flex justify-content-between">
-                            <input type="text" class="search-input" name="query" placeholder="Search Here" required>
-                            <button type="submit" class="search-btn">
-                                <span class="lnr lnr-magnifier"></span>
-                            </button>
-                            <label for="search-toggle" class="lnr lnr-cross" title="Close Search"></label>
-                        </form>
-                    </div>
-
-                    <!-- Search Icon and Cart -->
-                    <ul class="nav navbar-nav navbar-right">
-                        <li class="nav-item"><a href="cart.html" class="cart"><span class="ti-bag"></span></a></li>
-                        <li class="nav-item">
-                            <!-- Search Button with Magnifier Icon -->
-                            <label for="search-toggle" class="search-icon">
-                                <span class="lnr lnr-magnifier"></span>
-                            </label>
-                        </li>
-                    </ul>
-                    <ul class="nav navbar-nav navbar-right">
-                        <li class="nav-item">
-                            <a class="nav-link user-btn" href="User.html">
-                                <span class="username">User1234</span>
-                                <span class="lnr lnr-user"></span>
-                            </a>
                         </li>
                     </ul>
                 </div>
             </div>
         </nav>
     </div>
-<!-- End Header Area -->
+</header>
 
-    <!-- Start Banner Area -->
-    <section class="banner-area organic-breadcrumb">
-        <div class="container">
-            <div class="breadcrumb-banner d-flex flex-wrap align-items-center justify-content-end">
-                <div class="col-first">
-                    <h1>Checkout</h1>
-                    <nav class="d-flex align-items-center">
-                        <a href="index.html">Home<span class="lnr lnr-arrow-right"></span></a>
-                        <a href="single-product.html">Checkout</a>
-                    </nav>
+<!-- Start Banner Area -->
+<section class="banner-area organic-breadcrumb">
+    <div class="container">
+        <div class="breadcrumb-banner d-flex flex-wrap align-items-center justify-content-end">
+            <div class="col-first">
+                <h1>Checkout</h1>
+                <nav class="d-flex align-items-center">
+                    <a href="index.html">Home<span class="lnr lnr-arrow-right"></span></a>
+                    <a href="single-product.html">Checkout</a>
+                </nav>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- End Banner Area -->
+
+<!--================Checkout Area =================-->
+<section class="checkout_area section_gap">
+    <div class="container">
+        <div class="billing_details">
+            <div class="row">
+                <div class="col-lg-8">
+                    <h3>Billing Details</h3>
+                    <form class="row contact_form" action="#" method="post" novalidate="novalidate">
+                        <div class="col-md-6 form-group p_star">
+                            <input type="text" class="form-control" id="first" name="name" placeholder="First name" value="John">
+                        </div>
+                        <div class="col-md-6 form-group p_star">
+                            <input type="text" class="form-control" id="last" name="name" placeholder="Last name" value="Doe">
+                        </div>
+                        <div class="col-md-6 form-group p_star">
+                            <input type="text" class="form-control" id="number" name="number" placeholder="Phone number" value="0987654321">
+                        </div>
+                        <div class="col-md-6 form-group p_star">
+                            <input type="text" class="form-control" id="email" name="email" placeholder="Email Address" value="johndoe@example.com">
+                        </div>
+                        <div class="col-md-12 form-group p_star">
+                            <select class="country_select">
+                                <option value="1" selected>Viet Nam</option>
+                                <option value="2">United States</option>
+                                <option value="4">Japan</option>
+                            </select>
+                        </div>
+                        <div class="col-md-12 form-group">
+                            <textarea class="form-control" name="message" id="message" rows="1" placeholder="Notes about your order, e.g. special notes for delivery.">Please leave the package at the front door.</textarea>
+                        </div>
+                    </form>
+
+                    <!-- Added Address Section -->
+                    <h3>Delivery Address</h3>
+                    <form class="row contact_form" action="#" method="post" novalidate="novalidate">
+                        <div class="col-md-12 form-group p_star">
+                            <input type="text" class="form-control" id="address" name="address" placeholder="Address" value="123 Street, City, Vietnam">
+                        </div>
+                        <div class="col-md-6 form-group p_star">
+                            <input type="text" class="form-control" id="city" name="city" placeholder="City" value="Hanoi">
+                        </div>
+                        <div class="col-md-6 form-group p_star">
+                            <input type="text" class="form-control" id="postal-code" name="postal-code" placeholder="Postal Code" value="100000">
+                        </div>
+                    </form>
+                </div>
+
+                <div class="col-lg-4">
+                    <div class="order_box">
+                        <h2>Your Order</h2>
+                        <ul class="list">
+                            <li><a href="#">Product <span> $15.00</span></a></li>
+                            <li><a href="#">Product <span> $10.00</span></a></li>
+                            <li><a href="#">Product <span> $5.00</span></a></li>
+                        </ul>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <h5>Subtotal</h5>
+                            </div>
+                            <div class="col-md-6">
+                                <h5>$30.00</h5>
+                            </div>
+                            <div class="col-md-6">
+                                <h5>Shipping</h5>
+                            </div>
+                            <div class="col-md-6">
+                                <h5>Free</h5>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <h5>Total</h5>
+                            </div>
+                            <div class="col-md-6">
+                                <h5>$30.00</h5>
+                            </div>
+                        </div>
+                        <div class="button-group d-flex justify-content-between">
+                            <button class="primary-btn" type="submit">Thanh toán khi nhận hàng</button>
+                            <button class="primary-btn" type="button" id="vnpay-button">Thanh toán VNPAY</button>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
-    </section>
-    <!-- End Banner Area -->
+    </div>
+</section>
+<!--================End Checkout Area =================-->
 
-    <!--================Checkout Area =================-->
-    <section class="checkout_area section_gap">
-        <div class="container">
-            <div class="returning_customer">
-                <div class="check_title">
-                    <h2>Returning Customer? <a href="#">Click here to login</a></h2>
-                </div>
-                <p>If you have shopped with us before, please enter your details in the boxes below. If you are a new customer, please proceed to the Billing & Shipping section.</p>
-                <form class="row contact_form" action="#" method="post" novalidate="novalidate">
-                    <div class="col-md-6 form-group p_star">
-                        <input type="text" class="form-control" id="name" name="name" placeholder="Username or Email">
+<!-- Modal VNPAY -->
+<div class="modal" id="vnpayModal" tabindex="-1" role="dialog" aria-labelledby="vnpayModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="vnpayModalLabel">Thanh toán VNPAY</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form action="#" method="POST">
+                    <div class="form-group">
+                        <label for="fullname">Họ và Tên</label>
+                        <input type="text" class="form-control" id="fullname" name="fullname" placeholder="Nhập họ và tên" required>
                     </div>
-                    <div class="col-md-6 form-group p_star">
-                        <input type="password" class="form-control" id="password" name="password" placeholder="Password">
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        <input type="email" class="form-control" id="email" name="email" placeholder="Nhập email" required>
                     </div>
-                    <div class="col-md-12 form-group">
-                        <button type="submit" value="submit" class="primary-btn">Login</button>
-                        <div class="creat_account">
-                            <input type="checkbox" id="f-option" name="selector">
-                            <label for="f-option">Remember me</label>
-                        </div>
-                        <a class="lost_pass" href="#">Lost your password?</a>
+                    <div class="form-group">
+                        <label for="phone">Số điện thoại</label>
+                        <input type="text" class="form-control" id="phone" name="phone" placeholder="Nhập số điện thoại" required>
                     </div>
+                    <div class="form-group">
+                        <label for="bank-account">Số tài khoản ngân hàng</label>
+                        <input type="text" class="form-control" id="bank-account" name="bank-account" placeholder="Nhập số tài khoản" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="bank">Chọn ngân hàng</label>
+                        <select class="form-control" id="bank" name="bank" required>
+                            <option value="vietcombank">Vietcombank</option>
+                            <option value="techcombank">Techcombank</option>
+                            <option value="agribank">Agribank</option>
+                            <option value="mbbank">MB Bank</option>
+                            <option value="bidv">BIDV</option>
+                            <option value="vietnameximbank">VietinBank</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="amount">Số tiền cần chuyển</label>
+                        <input type="text" class="form-control" id="amount" name="amount" value="$30.00" disabled>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Xác nhận thanh toán</button>
                 </form>
             </div>
-            <div class="cupon_area">
-                <div class="check_title">
-                    <h2>Have a coupon? <a href="#">Click here to enter your code</a></h2>
-                </div>
-                <input type="text" placeholder="Enter coupon code">
-                <a class="tp_btn" href="#">Apply Coupon</a>
-            </div>
-            <div class="billing_details">
-                <div class="row">
-                    <div class="col-lg-8">
-                        <h3>Billing Details</h3>
-                        <form class="row contact_form" action="#" method="post" novalidate="novalidate">
-                            <div class="col-md-6 form-group p_star">
-                                <input type="text" class="form-control" id="first" name="name" placeholder="First name">
-                            </div>
-                            <div class="col-md-6 form-group p_star">
-                                <input type="text" class="form-control" id="last" name="name" placeholder="Last name">
-                            </div>
-                            <div class="col-md-12 form-group">
-                                <input type="text" class="form-control" id="company" name="company" placeholder="Company name">
-                            </div>
-                            <div class="col-md-6 form-group p_star">
-                                <input type="text" class="form-control" id="number" name="number" placeholder="Phone number">
-                            </div>
-                            <div class="col-md-6 form-group p_star">
-                                <input type="text" class="form-control" id="email" name="compemailany" placeholder="Email Address">
-                            </div>
-                            <div class="col-md-12 form-group p_star">
-                                <select class="country_select">
-                                    <option value="1">Viet Nam</option>
-                                    <option value="2">United States</option>
-                                    <option value="4">Japan</option>
-                                </select>
-                            </div>
-                            <div class="col-md-12 form-group">
-                                <textarea class="form-control" name="message" id="message" rows="1" placeholder="Notes about your order, e.g. special notes for delivery."></textarea>
-                            </div>
-                        </form>
-                    </div>
-                    <div class="col-lg-4">
-                        <div class="order_box">
-                            <h2>Your Order</h2>
-                            <ul class="list">
-                                <li><a href="#">Product <span> $15.00</span></a></li>
-                                <li><a href="#">Product <span> $10.00</span></a></li>
-                                <li><a href="#">Product <span> $5.00</span></a></li>
-                            </ul>
-                            <div class="cupon">
-                                <input type="text" placeholder="Enter coupon code">
-                                <a class="tp_btn" href="#">Apply Coupon</a>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <h5>Subtotal</h5>
-                                </div>
-                                <div class="col-md-6">
-                                    <h5>$30.00</h5>
-                                </div>
-                                <div class="col-md-6">
-                                    <h5>Shipping</h5>
-                                </div>
-                                <div class="col-md-6">
-                                    <h5>Free</h5>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <h5>Total</h5>
-                                </div>
-                                <div class="col-md-6">
-                                    <h5>$30.00</h5>
-                                </div>
-                            </div>
-                            <button class="primary-btn" type="submit">Proceed to Pay</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
         </div>
-    </section>
-    <!--================End Checkout Area =================-->
+    </div>
+</div>
 
-    <!-- start footer Area -->
-    <footer class="footer-area section_gap">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-3 col-md-6 col-sm-6">
-                    <div class="single-footer-widget">
-                        <h6>About Us</h6>
-                        <p>We are a team of designers and developers that create high quality HTML Template.</p>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-md-6 col-sm-6">
-                    <div class="single-footer-widget">
-                        <h6>Quick Links</h6>
-                        <ul class="footer-nav">
-                            <li><a href="#">Home</a></li>
-                            <li><a href="#">About</a></li>
-                            <li><a href="#">Shop</a></li>
-                            <li><a href="#">Contact</a></li>
-                        </ul>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-md-6 col-sm-6">
-                    <div class="single-footer-widget">
-                        <h6>Newsletter</h6>
-                        <p>Subscribe to our newsletter for updates and special offers.</p>
-                        <div id="mc_embed_signup">
-                            <form target="_blank" action="#" method="get" class="subscribe_form relative">
-                                <div class="input-group d-flex flex-row">
-                                    <input name="EMAIL" placeholder="Email Address" required="" type="email">
-                                    <button class="btn sub-btn">
-                                        <span class="lnr lnr-arrow-right"></span>
-                                    </button>
-                                </div>
-                                <div class="info"></div>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-md-6 col-sm-6">
-                    <div class="single-footer-widget">
-                        <h6>Contact Us</h6>
-                        <p>123 Street Name, City, Country</p>
-                        <p>+1 234 567 890</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </footer>
-    <!-- End footer Area -->
+<!-- Thêm jQuery và Bootstrap JS -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+<!-- JavaScript để hiển thị modal khi nhấn vào nút VNPAY -->
+<script>
+    // Khi người dùng nhấn nút Thanh toán VNPAY
+    document.querySelector('#vnpay-button').addEventListener('click', function() {
+        // Hiển thị modal VNPAY
+        $('#vnpayModal').modal('show');
+    });
+</script>
+
 </body>
+
 </html>
