@@ -124,6 +124,42 @@
 		.apply-filter-button:hover {
 			background-color: #0056b3;
 		}
+		/* Đảm bảo container sản phẩm hiển thị theo dạng lưới */
+		.lattest-product-area .row {
+			display: flex !important; /* Sử dụng flexbox */
+			flex-wrap: wrap !important; /* Đảm bảo các sản phẩm xuống hàng khi không đủ chỗ */
+			justify-content: space-between !important; /* Căn đều khoảng cách giữa các sản phẩm */
+		}
+
+		/* Chỉnh lại mỗi sản phẩm chiếm 30% chiều rộng để có 3 sản phẩm 1 hàng */
+		.lattest-product-area .single-product {
+			flex: 0 0 30% !important; /* Mỗi sản phẩm chiếm 30% chiều rộng */
+			box-sizing: border-box !important; /* Đảm bảo padding và border không ảnh hưởng kích thước */
+			margin-bottom: 20px !important; /* Khoảng cách giữa các hàng */
+		}
+
+		/* Đảm bảo hình ảnh trong sản phẩm tự động điều chỉnh kích thước */
+		.lattest-product-area .single-product img {
+			width: 80% !important; /* Ảnh vừa với khung sản phẩm */
+			height: auto !important; /* Tự động giữ tỷ lệ ảnh */
+		}
+
+		/* Responsive cho màn hình nhỏ, hiển thị 2 sản phẩm 1 hàng */
+		@media (max-width: 768px) {
+			.lattest-product-area .row {
+				grid-template-columns: repeat(2, 1fr) !important; /* Hiển thị 2 sản phẩm 1 hàng */
+			}
+		}
+
+		/* Responsive cho điện thoại, hiển thị 1 sản phẩm 1 hàng */
+		@media (max-width: 576px) {
+			.lattest-product-area .row {
+				grid-template-columns: 1fr !important; /* Hiển thị 1 sản phẩm 1 hàng */
+			}
+		}
+
+
+
 
 	</style>
 </head>
