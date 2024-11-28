@@ -1,0 +1,31 @@
+/* Định dạng cho khung thông báo không tìm thấy kết quả */
+.search-results {
+    text-align: center;
+    margin-top: 5px; /* Khoảng cách phía trên */
+}
+
+/* Định dạng cho thông báo "Result not found" */
+.search-result-message {
+    display: block; /* Luôn hiển thị thông báo */
+    color: #121111; /* Màu chữ  */
+    font-weight: bold;
+    font-size: 18px; /* Kích thước chữ vừa phải */
+    padding: 10px;
+    max-width: 200px; /* Giới hạn chiều rộng của thông báo */
+    margin: 20px auto; /* Căn giữa thông báo với khoảng cách trên dưới */
+}
+
+/* Hiệu ứng mờ dần khi hiển thị thông báo */
+.search-result-message {
+    animation: fadeIn 1s ease-in-out;
+}
+
+/* Định nghĩa hiệu ứng mờ dần */
+@keyframes fadeIn {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+}
