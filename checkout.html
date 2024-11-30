@@ -267,7 +267,7 @@
     // Sự kiện khi nhấn "Xác nhận thanh toán"
     document.querySelector('#confirm-payment').addEventListener('click', function() {
         alert('Thanh toán thành công!');
-        $('#vnpayModal').modal('hide');
+        window.location.href = 'checkout.html';
     });
 </script>
 <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
