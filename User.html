@@ -5,11 +5,8 @@
     <link rel="shortcut icon" href="img/fav.png">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>User Profile</title>
+    <title>Người dùng</title>
     <link rel="stylesheet" href="css/User.css">
-</head>
-
-<head>
     <!-- Meta tags -->
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link rel="stylesheet" href="css/bootstrap.css">
@@ -32,8 +29,7 @@
                 </button>
                 <div class="collapse navbar-collapse offset" id="navbarSupportedContent">
                     <ul class="nav navbar-nav menu_nav ml-auto">
-                        <li class="nav-item active"><a class="nav-link" href="index2.html">Home</a></li>
-                        <!-- Other menu items -->
+                        <li class="nav-item active"><a class="nav-link" href="index2.html">Trang chủ</a></li>
                     </ul>
                 </div>
             </div>
@@ -43,47 +39,58 @@
     <!-- Start User Profile Section -->
     <div class="profile-container">
         <div class="profile-header">
-            <h1 class="profile-name">User1234</h1>
-            <p class="profile-email">User.1234@example.com</p>
+            <h1 class="profile-name">Người dùng</h1>
+            <p class="profile-email">Người dùng.1234@email.com</p>
         </div>
         <div class="profile-details">
-            <h2>Personal Information</h2>
+            <h2>Thông tin người dùng</h2>
+
+            <!-- Success message -->
+            <div id="success-alert" class="alert alert-success" style="display: none;">
+                <strong>Thành công!</strong> Đã lưu thay đổi của bạn.
+            </div>
 
             <!-- Start form for editing information -->
             <form action="update_profile.php" method="POST" id="edit-profile-form">
                 <div class="profile-info">
-                    <label for="full-name"><strong>Full Name:</strong></label>
+                    <label for="full-name"><strong>Tên đầy đủ:</strong></label>
                     <input type="text" id="full-name" name="full_name" value="User1234"><br>
 
-                    <label for="email"><strong>Email Address:</strong></label>
+                    <label for="email"><strong>Địa chỉ email:</strong></label>
                     <input type="email" id="email" name="email" value="User.1234@example.com"><br>
 
-                    <label for="dob"><strong>Date of Birth:</strong></label>
+                    <label for="dob"><strong>Ngày sinh:</strong></label>
                     <input type="date" id="dob" name="dob" value="2024-01-01"><br>
 
-                    <label for="phone"><strong>Phone Number:</strong></label>
+                    <label for="phone"><strong>Số điện thoại:</strong></label>
                     <input type="text" id="phone" name="phone" value="0905991508"><br>
 
-                    <label for="address"><strong>Address:</strong></label>
+                    <label for="address"><strong>Địa chỉ:</strong></label>
                     <input type="text" id="address" name="address" value="1234 Main St, California, USA"><br>
                 </div>
 
                 <!-- Submit button -->
-                <button type="submit" class="btn btn-primary">Save Changes</button>
+                <button type="submit" class="btn btn-primary">Lưu thay đổi</button>
             </form>
         </div>
     </div>
 
-    <!-- Footer -->
-    <footer class="footer-area section_gap">
-        <div class="container">
-            <div class="row">
-                <!-- Footer content -->
-            </div>
-            <div class="footer-bottom d-flex justify-content-center align-items-center flex-wrap">
-                <p class="footer-text m-0">Copyright @2024 All rights reserved.</p>
-            </div>
-        </div>
-    </footer>
+<!-- JavaScript to handle success message -->
+<script>
+    function showSuccessAlert(event) {
+        event.preventDefault(); // Prevent form submission
+        var alertBox = document.getElementById('success-alert');
+        alertBox.style.display = 'block'; // Show success message
+
+        // Hide success message after 3 seconds
+        setTimeout(function() {
+            alertBox.style.display = 'none';
+        }, 3000);
+    }
+
+    // Attach event listener to the form
+    document.getElementById('edit-profile-form').addEventListener('submit', showSuccessAlert);
+</script>
+</header>
 </body>
 </html>
