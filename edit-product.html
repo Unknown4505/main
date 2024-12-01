@@ -76,7 +76,66 @@
     .product-details .home-btn:hover {
       background-color: #218838;
     }
+    /* CSS cho các nút Add Product và Back to Home */
+    .button-container {
+      display: flex;
+      gap: 10px; /* Khoảng cách giữa các nút */
+      margin-top: 20px;
+    }
 
+    .button-container button {
+      padding: 10px 15px;
+      font-size: 14px; /* Giảm kích thước font chữ */
+      border-radius: 5px;
+      cursor: pointer;
+      width: 150px; /* Chiều rộng nút cố định */
+    }
+
+    .button-container .add-product-btn {
+      background-color: #28a745;
+      color: white;
+    }
+
+    .button-container .add-product-btn:hover {
+      background-color: #218838;
+    }
+
+    .button-container .back-home-btn {
+      background-color: #007bff;
+      color: white;
+    }
+
+    .button-container .back-home-btn:hover {
+      background-color: #0056b3;
+    }
+
+    /* CSS cho nút Choose File */
+    .fake-upload-btn {
+      padding: 10px 15px;
+      font-size: 14px;
+      border-radius: 5px;
+      cursor: pointer;
+      background-color: white; /* Nền màu trắng */
+      color: black; /* Chữ màu đen */
+      border: 1px solid #ccc; /* Thêm viền */
+    }
+
+    .fake-upload-btn:hover {
+      background-color: #f8f8f8; /* Màu nền khi hover */
+    }
+    .fake-upload-btn {
+      padding: 8px 15px;
+      font-size: 14px;
+      border-radius: 5px;
+      cursor: pointer;
+      background-color: white; /* Nền màu trắng */
+      color: black; /* Chữ màu đen */
+      border: 1px solid #000; /* Viền đen */
+    }
+
+    .fake-upload-btn:hover {
+      background-color: #f8f8f8; /* Màu nền khi hover */
+    }
   </style>
 </head>
 <body>
@@ -85,9 +144,9 @@
   <div class="product-info">
     <img class="img-fluid" src="img/product/p2.jpg" alt="Hình ảnh sản phẩm">
     <div class="product-details">
-      <h2>Quần Jeans Faded SkyBlu</h2>
+      <h2>Giày Faded SkyBlu</h2>
       <p class="product-price">149.99 USD</p>
-      <p><strong>Danh mục:</strong> Đồ gia dụng</p>
+      <p><strong>Danh mục:</strong> Đồ thời trang</p>
       <p><strong>Tình trạng:</strong> Còn hàng</p>
       <p class="product-description">
         Mill Oil là một bộ tản nhiệt dầu tiên tiến với công nghệ hiện đại nhất.
@@ -95,10 +154,11 @@
         và đồng thời mang lại cảm giác ấm áp dễ chịu trong mùa đông.
       </p>
 
-      <!-- Nút Sửa Sản phẩm và Quay lại trang chủ -->
-      <div class="action-buttons">
-        <button class="fix-btn" onclick="showAlert()">Sửa Sản phẩm</button>
-        <button class="home-btn" onclick="goBack()">Quay lại Trang chủ</button>
+      <!-- Nút sửa sản phẩm và quay về trang chủ nằm cạnh nhau -->
+      <div class="button-container">
+        <button class="add-product-btn" type="submit">Sửa Sản Phẩm</button> <!-- Thay đổi thành tiếng Việt -->
+        <button href="managerp.html" class="back-home-btn">Quay Về Trang Chủ</button>
+        <!-- Thay đổi thành tiếng Việt -->
       </div>
     </div>
   </div>
