@@ -1,14 +1,14 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="vi">
 <head>
   <link rel="shortcut icon" href="img/fav.png">
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Register Account</title>
+  <title>Đăng Ký Tài Khoản</title>
   <style>
     body {
       font-family: Arial, sans-serif;
-      background-color: #fde5c8; /* Light orange background */
+      background-color: #fde5c8; /* Nền cam nhạt */
       margin: 0;
       padding: 0;
       display: flex;
@@ -56,7 +56,7 @@
     .registration-form button {
       width: 100%;
       padding: 12px;
-      background-color: #ffa726; /* Lighter orange */
+      background-color: #ffa726; /* Cam nhạt hơn */
       border: none;
       color: #ffffff;
       font-size: 16px;
@@ -124,49 +124,49 @@
     }
   </style>
   <script>
-    function registerSuccess(event) {
-      event.preventDefault(); // Prevent form submission
+    function dangKyThanhCong(event) {
+      event.preventDefault(); // Ngăn hành vi mặc định
       const notification = document.getElementById('notification');
-      notification.style.display = 'block'; // Show notification
+      notification.style.display = 'block'; // Hiển thị thông báo
     }
 
-    function closeNotification() {
+    function dongThongBao() {
       const notification = document.getElementById('notification');
-      notification.style.display = 'none'; // Hide notification
+      notification.style.display = 'none'; // Ẩn thông báo
     }
 
-    function redirectToLogin(event) {
+    function chuyenDenTrangDangNhap(event) {
       event.preventDefault(); // Ngăn hành vi mặc định của liên kết
-      window.location.href = "login.html"; // Chuyển hướng đến trang đăng nhập
+      window.location.href = "dangnhap.html"; // Chuyển hướng đến trang đăng nhập
     }
   </script>
 </head>
 <body>
 <div class="registration-form">
-  <h1>Register Account</h1>
-  <form onsubmit="registerSuccess(event)">
-    <label for="fullname">Full Name</label>
-    <input type="text" id="fullname" name="fullname" placeholder="Enter your full name" required>
+  <h1>Đăng Ký Tài Khoản</h1>
+  <form onsubmit="dangKyThanhCong(event)">
+    <label for="fullname">Họ và Tên</label>
+    <input type="text" id="fullname" name="fullname" placeholder="Nhập họ và tên của bạn">
 
-    <label for="password">Password</label>
-    <input type="password" id="password" name="password" placeholder="Enter your password" required>
+    <label for="password">Mật Khẩu</label>
+    <input type="password" id="password" name="password" placeholder="Nhập mật khẩu của bạn">
 
-    <label for="confirm-password">Confirm Password</label>
-    <input type="password" id="confirm-password" name="confirm_password" placeholder="Confirm your password" required>
+    <label for="confirm-password">Xác Nhận Mật Khẩu</label>
+    <input type="password" id="confirm-password" name="confirm_password" placeholder="Xác nhận mật khẩu của bạn">
 
-    <button type="submit">Register</button>
+    <button type="submit">Đăng Ký</button>
 
     <div class="footer">
-      <p>Already have an account? <a href="" onclick="redirectToLogin(event)">Log in</a></p>
+      <p>Bạn đã có tài khoản? <a href="" onclick="chuyenDenTrangDangNhap(event)">Đăng Nhập</a></p>
     </div>
   </form>
 </div>
 
-<!-- Custom Notification -->
+<!-- Thông Báo -->
 <div id="notification" class="notification">
-  <h2>Registration Successful!</h2>
-  <p>You have successfully registered your account.</p>
-  <button onclick="closeNotification()">Close</button>
+  <h2>Đăng Ký Thành Công!</h2>
+  <p>Bạn đã đăng ký tài khoản thành công.</p>
+  <button onclick="dongThongBao()">Đóng</button>
 </div>
 </body>
 </html>
