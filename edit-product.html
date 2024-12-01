@@ -1,78 +1,159 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="vi">
 <head>
   <link rel="shortcut icon" href="img/fav.png">
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Chỉnh sửa Sản phẩm</title>
   <link rel="stylesheet" href="css/edit-product.css"> <!-- CSS file -->
-  <link rel="stylesheet" href="css/linearicons.css">
-  <link rel="stylesheet" href="css/font-awesome.min.css">
-  <link rel="stylesheet" href="css/themify-icons.css">
   <link rel="stylesheet" href="css/bootstrap.css">
-  <link rel="stylesheet" href="css/owl.carousel.css">
-  <link rel="stylesheet" href="css/nice-select.css">
-  <link rel="stylesheet" href="css/nouislider.min.css">
-  <link rel="stylesheet" href="css/ion.rangeSlider.css" />
-  <link rel="stylesheet" href="css/ion.rangeSlider.skinFlat.css" />
-  <link rel="stylesheet" href="css/magnific-popup.css">
-  <link rel="stylesheet" href="css/main.css">
-  <link rel="stylesheet" href="css/User1234.css">
-  <link rel="stylesheet" href="css/search.css">
+  <style>
+    /* CSS cho hộp thông báo tùy chỉnh */
+    .custom-alert {
+      display: none; /* Ẩn ban đầu */
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background-color: white;
+      border: 1px solid #ccc;
+      box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+      width: 300px;
+      padding: 20px;
+      text-align: center;
+      z-index: 1000;
+      border-radius: 10px;
+    }
+
+    .custom-alert p {
+      margin-bottom: 20px;
+    }
+
+    .custom-alert button {
+      padding: 10px 20px;
+      background-color: #28a745;
+      color: white;
+      border: none;
+      cursor: pointer;
+      border-radius: 5px;
+    }
+
+    .custom-alert button:hover {
+      background-color: #218838;
+    }
+
+    .custom-alert .back-btn {
+      background-color: #007bff;
+    }
+
+    .custom-alert .back-btn:hover {
+      background-color: #0056b3;
+    }
+
+    /* CSS cho các nút trong phần chỉnh sửa sản phẩm */
+    .product-details .action-buttons {
+      margin-top: 20px;
+    }
+
+    .product-details button {
+      padding: 10px 15px;
+      margin-right: 10px;
+      background-color: #007bff;
+      color: white;
+      border: none;
+      cursor: pointer;
+      border-radius: 5px;
+    }
+
+    .product-details button:hover {
+      background-color: #0056b3;
+    }
+
+    .product-details .home-btn {
+      background-color: #28a745;
+    }
+
+    .product-details .home-btn:hover {
+      background-color: #218838;
+    }
+
+  </style>
 </head>
 <body>
-<body>
-<!-- Start Header Area -->
-<!-- End Header Area -->
 <div class="product-detail-container">
   <!-- Thông tin sản phẩm hiện tại -->
   <div class="product-info">
-    <img class="img-fluid" src="img/product/p2.jpg" alt="">
+    <img class="img-fluid" src="img/product/p2.jpg" alt="Hình ảnh sản phẩm">
     <div class="product-details">
-      <h2>Faded SkyBlu Denim Jeans</h2>
-      <p class="product-price">$149.99</p>
-      <p><strong>Category:</strong> Household</p>
-      <p><strong>Availability:</strong> In Stock</p>
+      <h2>Quần Jeans Faded SkyBlu</h2>
+      <p class="product-price">149.99 USD</p>
+      <p><strong>Danh mục:</strong> Đồ gia dụng</p>
+      <p><strong>Tình trạng:</strong> Còn hàng</p>
       <p class="product-description">
-        Mill Oil is an innovative oil-filled radiator with the most modern technology.
-        If you are looking for something that can make your interior look awesome,
-        and at the same time give you the pleasant warm feeling during the winter.
+        Mill Oil là một bộ tản nhiệt dầu tiên tiến với công nghệ hiện đại nhất.
+        Nếu bạn đang tìm kiếm một sản phẩm có thể làm cho nội thất của bạn trở nên tuyệt vời,
+        và đồng thời mang lại cảm giác ấm áp dễ chịu trong mùa đông.
       </p>
-      <div class="quantity-wrapper">
+
+      <!-- Nút Sửa Sản phẩm và Quay lại trang chủ -->
+      <div class="action-buttons">
+        <button class="fix-btn" onclick="showAlert()">Sửa Sản phẩm</button>
+        <button class="home-btn" onclick="goBack()">Quay lại Trang chủ</button>
       </div>
-          <button class="add-to-cart-btn" onclick="location.reload();">Fix Product</button>
     </div>
   </div>
 
   <!-- Form chỉnh sửa sản phẩm -->
   <div class="product-edit-form">
-    <h2>Fix Product</h2>
-    <form action="update_product.php" method="POST" enctype="multipart/form-data">
+    <h2>Sửa Sản phẩm</h2>
+    <form>
       <div class="form-group">
-        <label for="product-name">Product Name</label>
-        <input type="text" id="product-name" name="product_name" value="Faded SkyBlu Denim Jeans" required>
+        <label for="product-name">Tên sản phẩm</label>
+        <input type="text" id="product-name" name="product_name" value="Quần Jeans Faded SkyBlu" required>
       </div>
-
       <div class="form-group">
-        <label for="product-price">Price</label>
+        <label for="product-price">Giá sản phẩm</label>
         <input type="number" id="product-price" name="product_price" value="149.99" required>
       </div>
-
       <div class="form-group">
-        <label for="product-description">Decription Product</label>
+        <label for="product-description">Mô tả sản phẩm</label>
         <textarea id="product-description" name="product_description" rows="4" required>
-  Mill Oil is an innovative oil-filled radiator with the most modern technology.If you are looking for something that can make your interior look awesome,and at the same time give you the pleasant warm feeling during the winter.
-                    </textarea>
+                    Mill Oil là một bộ tản nhiệt dầu tiên tiến với công nghệ hiện đại nhất. Nếu bạn đang tìm kiếm một sản phẩm có thể làm cho nội thất của bạn trở nên tuyệt vời, và đồng thời mang lại cảm giác ấm áp dễ chịu trong mùa đông.
+                </textarea>
       </div>
-
       <div class="form-group">
-        <label for="product-image">Change Image</label>
-        <input type="file" id="product-image" name="product_image">
+        <label for="product-image">Thay đổi hình ảnh</label>
+        <button class="fake-upload-btn" type="button">Chọn tệp</button>
       </div>
-
     </form>
   </div>
+
+  <!-- Hộp thông báo tùy chỉnh -->
+  <div id="custom-alert" class="custom-alert">
+    <p>Sản phẩm đã được cập nhật thành công!</p>
+    <button onclick="closeAlert()">Đóng</button>
+  </div>
 </div>
-</header>
+
+<!-- JavaScript -->
+<script>
+  // Hiển thị thông báo khi bấm vào nút Sửa Sản phẩm
+  function showAlert() {
+    var alertBox = document.getElementById('custom-alert');
+    alertBox.style.display = 'block';
+  }
+
+  // Đóng hộp thông báo
+  function closeAlert() {
+    var alertBox = document.getElementById('custom-alert');
+    alertBox.style.display = 'none';
+  }
+
+  // Quay về trang chủ
+  function goBack() {
+    window.location.href = "admin.html"; // Đổi URL thành trang mà bạn muốn chuyển tới
+  }
+</script>
+
 </body>
 </html>
