@@ -4,7 +4,7 @@
     <link rel="shortcut icon" href="img/fav.png">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Add Product</title>
+    <title>Thêm Sản Phẩm</title> <!-- Thay đổi tiêu đề trang thành tiếng Việt -->
     <link rel="stylesheet" href="css/add-product.css"> <!-- Đường dẫn đến file CSS -->
     <link rel="stylesheet" href="css/linearicons.css">
     <link rel="stylesheet" href="css/font-awesome.min.css">
@@ -19,32 +19,168 @@
     <link rel="stylesheet" href="css/main.css">
     <link rel="stylesheet" href="css/User1234.css">
     <link rel="stylesheet" href="css/search.css">
+    <style>
+        /* CSS cho hộp thông báo tùy chỉnh */
+        .custom-alert {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: white;
+            border: 1px solid #ccc;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+            width: 300px;
+            padding: 20px;
+            text-align: center;
+            z-index: 1000;
+            border-radius: 10px;
+        }
+
+        .custom-alert p {
+            margin-bottom: 20px;
+        }
+
+        .custom-alert button {
+            padding: 10px 20px;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+
+        .custom-alert button:hover {
+            background-color: #218838;
+        }
+
+        .custom-alert .back-btn {
+            background-color: #007bff;
+        }
+
+        .custom-alert .back-btn:hover {
+            background-color: #0056b3;
+        }
+
+        /* CSS cho các nút Add Product và Back to Home */
+        .button-container {
+            display: flex;
+            gap: 10px; /* Khoảng cách giữa các nút */
+            margin-top: 20px;
+        }
+
+        .button-container button {
+            padding: 10px 15px;
+            font-size: 14px; /* Giảm kích thước font chữ */
+            border-radius: 5px;
+            cursor: pointer;
+            width: 150px; /* Chiều rộng nút cố định */
+        }
+
+        .button-container .add-product-btn {
+            background-color: #28a745;
+            color: white;
+        }
+
+        .button-container .add-product-btn:hover {
+            background-color: #218838;
+        }
+
+        .button-container .back-home-btn {
+            background-color: #007bff;
+            color: white;
+        }
+
+        .button-container .back-home-btn:hover {
+            background-color: #0056b3;
+        }
+
+        /* CSS cho nút Choose File */
+        .fake-upload-btn {
+            padding: 10px 15px;
+            font-size: 14px;
+            border-radius: 5px;
+            cursor: pointer;
+            background-color: white; /* Nền màu trắng */
+            color: black; /* Chữ màu đen */
+            border: 1px solid #ccc; /* Thêm viền */
+        }
+
+        .fake-upload-btn:hover {
+            background-color: #f8f8f8; /* Màu nền khi hover */
+        }
+        .fake-upload-btn {
+            padding: 8px 15px;
+            font-size: 14px;
+            border-radius: 5px;
+            cursor: pointer;
+            background-color: white; /* Nền màu trắng */
+            color: black; /* Chữ màu đen */
+            border: 1px solid #000; /* Viền đen */
+        }
+
+        .fake-upload-btn:hover {
+            background-color: #f8f8f8; /* Màu nền khi hover */
+        }
+
+    </style>
 </head>
 <body>
-<!-- Start Header Area -->
-<!-- End Header Area -->
 <div class="admin-container">
-    <h1>Add Product</h1>
-    <!-- Form để thêm hoặc chỉnh sửa sản phẩm -->
-    <form id="product-form">
-        <label for="product-name">Product Name</label>
-        <input type="text" id="product-name" placeholder="Enter Product">
+    <h1>Thêm Sản Phẩm</h1> <!-- Thay đổi tiêu đề thành tiếng Việt -->
+    <!-- Form để thêm sản phẩm -->
+    <form id="product-form" onsubmit="showAlert(); return false;"> <!-- prevent form from submitting -->
+        <label for="product-name">Tên Sản Phẩm</label> <!-- Thay đổi thành tiếng Việt -->
+        <input type="text" id="product-name" placeholder="Nhập tên sản phẩm"> <!-- Thay đổi placeholder thành tiếng Việt -->
 
-        <label for="product-price">Price</label>
-        <input type="number" id="product-price" placeholder="Enter Product Price">
+        <label for="product-price">Giá</label> <!-- Thay đổi thành tiếng Việt -->
+        <input type="number" id="product-price" placeholder="Nhập giá sản phẩm"> <!-- Thay đổi placeholder thành tiếng Việt -->
 
-        <label for="product-quantity">Quantity</label>
-        <input type="number" id="product-quantity" placeholder="Enter Quantity">
+        <label for="product-quantity">Số Lượng</label> <!-- Thay đổi thành tiếng Việt -->
+        <input type="number" id="product-quantity" placeholder="Nhập số lượng"> <!-- Thay đổi placeholder thành tiếng Việt -->
 
-        <label for="product-description">Product Description</label>
-        <textarea id="product-description" rows="3" ></textarea>
+        <label for="product-description">Mô Tả Sản Phẩm</label> <!-- Thay đổi thành tiếng Việt -->
+        <textarea id="product-description" rows="3" placeholder="Nhập mô tả sản phẩm"></textarea> <!-- Thay đổi placeholder thành tiếng Việt -->
 
-        <label for="product-image">Product Image</label>
-        <input type="file" id="product-image">
+        <div class="form-group">
+            <label for="product-image">Thêm Ảnh</label> <!-- Thay đổi thành tiếng Việt -->
+            <button class="fake-upload-btn" type="button">Chọn File</button> <!-- Thay đổi thành tiếng Việt -->
+        </div>
 
-        <button type="submit">Add Product</button>
+        <!-- Nút thêm sản phẩm và quay về trang chủ nằm cạnh nhau -->
+        <div class="button-container">
+            <button class="add-product-btn" type="submit">Thêm Sản Phẩm</button> <!-- Thay đổi thành tiếng Việt -->
+            <button href="managerp.html" class="back-home-btn">Quay Về Trang Chủ</button>
+            <!-- Thay đổi thành tiếng Việt -->
+        </div>
     </form>
 </div>
-</header>
+
+<!-- Hộp thông báo tùy chỉnh -->
+<div id="custom-alert" class="custom-alert">
+    <p>Sản phẩm đã được thêm thành công!</p> <!-- Thay đổi thành tiếng Việt -->
+    <button onclick="closeAlert()">Đóng</button> <!-- Thay đổi thành tiếng Việt -->
+</div>
+
+<!-- JavaScript -->
+<script>
+    // Hiển thị thông báo khi bấm vào nút Add Product
+    function showAlert() {
+        var alertBox = document.getElementById('custom-alert');
+        alertBox.style.display = 'block';
+    }
+
+    // Đóng hộp thông báo
+    function closeAlert() {
+        var alertBox = document.getElementById('custom-alert');
+        alertBox.style.display = 'none';
+    }
+
+    // Quay về trang chủ
+    function goBack() {
+        window.location.href = "admin.html"; // Đổi URL thành trang bạn muốn quay về
+    }
+</script>
+
 </body>
 </html>
