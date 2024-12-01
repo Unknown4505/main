@@ -9,14 +9,14 @@
     <style>
         body {
             font-family: 'Poppins', sans-serif;
-            background-color: #e3f2fd;  /* Thay màu nền thành xanh biển nhẹ */
+            background-color: #e3f2fd;
             margin: 0;
             padding: 0;
             color: #333;
         }
 
         header {
-            background-color: #1976d2;  /* Xanh biển đậm */
+            background-color: #1976d2;
             padding: 15px;
             text-align: center;
             color: #fff;
@@ -30,7 +30,7 @@
             width: 80%;
             margin: 20px auto;
             padding: 20px;
-            background: linear-gradient(135deg, #ffffff, #b3e5fc);  /* Nền chuyển màu nhẹ */
+            background: linear-gradient(135deg, #ffffff, #b3e5fc);
             border-radius: 12px;
             box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
         }
@@ -46,6 +46,21 @@
             background-color: #bbdefb;
             border-radius: 8px;
             padding: 10px;
+        }
+
+        .back-button {
+            display: inline-block;
+            margin-bottom: 20px;
+            padding: 8px 15px;
+            background-color: #0277bd;
+            color: #fff;
+            text-decoration: none;
+            border-radius: 5px;
+            font-size: 14px;
+        }
+
+        .back-button:hover {
+            background-color: #01579b;
         }
 
         table {
@@ -67,7 +82,7 @@
         }
 
         th {
-            background-color: #1565c0;  /* Xanh biển đậm */
+            background-color: #1565c0;
             color: #fff;
             text-transform: uppercase;
         }
@@ -93,7 +108,7 @@
 
         .total-revenue {
             font-weight: bold;
-            color: #388e3c;  /* Xanh lá cây */
+            color: #388e3c;
             font-size: 1.2em;
             text-align: center;
             margin-top: 20px;
@@ -122,7 +137,7 @@
         }
 
         .view-details-btn {
-            background-color: #0288d1;  /* Màu xanh biển trung bình */
+            background-color: #0288d1;
             color: white;
             padding: 5px 15px;
             border-radius: 5px;
@@ -135,12 +150,6 @@
         .view-details-btn:hover {
             background-color: #0277bd;
         }
-
-        td .view-details-btn {
-            display: inline-block;
-            margin-left: auto;
-            text-align: center;
-        }
     </style>
 </head>
 <body>
@@ -149,6 +158,7 @@
 </header>
 
 <div class="dashboard-container">
+    <a href="admin.html" class="back-button">Quay lại</a>
     <h3>Thống Kê Bán Hàng</h3>
     <table>
         <thead>
