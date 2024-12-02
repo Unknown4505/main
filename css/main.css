@@ -1965,8 +1965,14 @@ h1, h2, h3, h4, h5, h6 {
   box-shadow: 2.828px 2.828px 15px 0px rgba(0, 0, 0, 0.1); }
 
 .category-list .single-product {
-  margin-top: 30px; }
-
+  margin-top: 30px;
+  flex: 0 0 30%; /* Mỗi sản phẩm chiếm 30% chiều rộng */
+  box-sizing: border-box; /* Đảm bảo padding và border không ảnh hưởng kích thước */
+  padding-top: 10px;
+  padding-right: 20px;
+  padding-bottom: 10px;
+  padding-left: 110px;
+}
 label {
   margin-bottom: 0; }
 
