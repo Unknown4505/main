@@ -98,7 +98,7 @@
     <img class="img-fluid" src="img/product/p2.jpg" alt="Hình ảnh sản phẩm">
     <div class="product-details">
       <h2>Giày Faded SkyBlu</h2>
-      <p class="product-price">2.600.000đ</p>
+      <p class="product-price">2.600.000 VNĐ</p>
       <p><strong>Danh mục:</strong> Đồ thời trang</p>
       <p><strong>Tình trạng:</strong> Còn hàng</p>
       <p class="product-description">
@@ -120,21 +120,17 @@
   <!-- Form chỉnh sửa sản phẩm -->
   <div class="product-edit-form">
     <h2>Chỉnh sửa Sản phẩm</h2>
-    <form>
-      <!-- Phân loại sản phẩm -->
-      <div class="form-group">
-        <label for="product-category">Phân loại sản phẩm</label>
-        <select id="product-category" name="product_category" required>
-          <option value="Adidas">Adidas</option>
-          <option value="Nike">Nike</option>
-          <option value="Puma">Van</option>
-        </select>
-      </div>
-
+    <form onsubmit="return false;"> <!-- Prevent form from submitting -->
       <div class="form-group">
         <label for="product-name">Tên sản phẩm</label>
         <input type="text" id="product-name" name="product_name" value="Giày Faded SkyBlu" required>
       </div>
+      <label for="product-category">Loại Sản Phẩm</label>
+      <select id="product-category">
+        <option value="adidas">Adidas</option>
+        <option value="vans">Vans</option>
+        <option value="nike">Nike</option>
+      </select>
       <div class="form-group">
         <label for="product-price">Giá sản phẩm (VNĐ)</label>
         <input type="number" id="product-price" name="product_price" value="2600000" required>
@@ -166,11 +162,6 @@ Thân thiện với môi trường: Một phần của đôi giày được sả
   function showAlert() {
     var alertBox = document.getElementById('custom-alert');
     alertBox.style.display = 'block';
-
-    // Ẩn thông báo sau 3 giây
-    setTimeout(function() {
-      alertBox.style.display = 'none';
-    }, 3000);
   }
 
   // Đóng hộp thông báo
