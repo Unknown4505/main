@@ -10,14 +10,15 @@
       font-family: 'Arial', sans-serif;
       margin: 0;
       padding: 0;
-      background-color: #f0f4f8;
+      background-color: #ffffff; /* Màu nền trắng */
       display: flex;
       flex-direction: column;
       align-items: center;
       padding-top: 20px;
+      color: #000000; /* Màu chữ đen */
     }
     h1 {
-      color: #2c3e50;
+      color: #000000; /* Màu chữ đen */
       font-size: 36px;
       margin-bottom: 30px;
     }
@@ -26,13 +27,13 @@
       max-width: 1200px;
       border-collapse: collapse;
       margin-bottom: 30px;
-      background-color: #ffffff;
+      background-color: #ffffff; /* Màu nền bảng trắng */
       border-radius: 12px;
       overflow: hidden;
       box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
     }
     thead {
-      background-color: #3498db;
+      background-color: #000000; /* Màu nền header đen */
       color: white;
       text-transform: uppercase;
       letter-spacing: 1px;
@@ -47,10 +48,10 @@
       font-weight: bold;
     }
     tbody tr:nth-child(even) {
-      background-color: #f9f9f9;
+      background-color: #f0f0f0; /* Màu nền dòng chẵn */
     }
     tbody tr:nth-child(odd) {
-      background-color: #fdfdfd;
+      background-color: #ffffff; /* Màu nền dòng lẻ */
     }
     tbody tr:hover {
       background-color: #ecf0f1;
@@ -59,7 +60,7 @@
     td a.details-button {
       display: inline-block;
       padding: 10px 20px;
-      background-color: #2980b9;
+      background-color: #000000; /* Nút đen */
       color: white;
       text-decoration: none;
       border-radius: 6px;
@@ -68,7 +69,7 @@
       transition: background-color 0.3s;
     }
     td a.details-button:hover {
-      background-color: #1c5986;
+      background-color: #333333; /* Nút đen khi hover */
     }
     .footer {
       text-align: center;
@@ -76,6 +77,20 @@
       font-size: 14px;
       color: #7f8c8d;
       margin-top: 30px;
+    }
+    .back-button {
+      padding: 10px 20px;
+      background-color: #000000;
+      color: white;
+      border-radius: 6px;
+      text-decoration: none;
+      font-size: 14px;
+      text-align: center;
+      margin-top: 20px;
+      transition: background-color 0.3s;
+    }
+    .back-button:hover {
+      background-color: #333333;
     }
   </style>
 </head>
@@ -125,6 +140,8 @@
   </tr>
   </tbody>
 </table>
+
+<a href="static.html" class="back-button">Quay lại</a>
 
 <div class="footer">
   &copy; 2024 Cửa Hàng Giày. Tất cả các quyền được bảo lưu.
