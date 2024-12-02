@@ -261,7 +261,7 @@
 				<h1>Sản phẩm</h1>
 				<nav class="d-flex align-items-center">
 					<a href="index.html">Trang chủ<span class="lnr lnr-arrow-right"></span></a>
-					<a href="#">Cửa hàng<span class="lnr lnr-arrow-right"></span></a>
+					<a href="category.html">Cửa hàng<span class="lnr lnr-arrow-right"></span></a>
 					<a href="category.html">Sản phẩm</a>
 				</nav>
 			</div>
@@ -279,7 +279,7 @@
 	<!-- Start Category Section -->
 
 	<div class="filter-button-container">
-		<label for="toggleFilter" class="filter-button">Filter</label>
+		<label for="toggleFilter" class="filter-button">Lọc</label>
 		<input type="checkbox" id="toggleFilter" style="display: none;">
 
 		<div class="filter-form-container">
@@ -293,7 +293,13 @@
 					<option value="0-100">Từ 0đ-2.500.000đ</option>
 					<option value="100-500">Từ 2.500.000đ đến 5.000.000đ</option>
 					<option value="500-1000">Từ 5.000.000đ đến 10.000.000đ</option>
-					<option value="1000+">10.000.000đ</option>
+				</select>
+				<label for="priceRange">Loại</label>
+				<select id="priceRange" name="priceRange">
+					<option value="" selected>Chọn loại</option>
+					<option value="0-100">Adidas</option>
+					<option value="100-500">Nike</option>
+					<option value="500-1000">Van</option>
 				</select>
 
 				<button type="submit" class="apply-filter-button">Áp dụng</button>
@@ -415,8 +421,8 @@
 						</div>
 						<div class="prd-bottom">
 							<a href="#" class="social-info" onclick="addToBag()">
-								<span class="ti-bag">Thêm vào giỏ hàng</span>
-								<p class="hover-text"></p>
+								<span class="ti-bag"></span>
+								<p class="hover-text">Thêm vào giỏ hàng</p>
 							</a>
 
 							<a href="single-product.html" class="social-info button">
