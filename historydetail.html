@@ -8,81 +8,113 @@
     <style>
         body {
             font-family: 'Arial', sans-serif;
-            background-color: #ffffff; /* Nền trắng */
+            background-color: #f3f3f3;
             color: #333;
             margin: 0;
             padding: 0;
             display: flex;
             justify-content: center;
             align-items: center;
-            height: 100vh;
+            min-height: 100vh;
         }
         .container {
-            max-width: 500px;
+            width: 700px;
             background-color: #fff;
-            padding: 30px;
-            border-radius: 15px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-            transition: transform 0.3s ease;
-        }
-        .container:hover {
-            transform: translateY(-5px); /* Tạo hiệu ứng hover nhẹ */
+            padding: 20px 25px;
+            border-radius: 12px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         }
         h2 {
             text-align: center;
-            color: #ff914d; /* Màu cam */
-            margin-bottom: 25px;
-            font-size: 28px;
+            color: #ff914d;
+            margin-bottom: 15px;
+            font-size: 24px;
+            border-bottom: 2px solid #ff914d;
+            padding-bottom: 10px;
+        }
+        .details {
+            display: grid;
+            grid-template-columns: 1fr 1fr; /* Chia thành 2 cột */
+            gap: 15px;
+            margin-bottom: 15px;
         }
         .detail-item {
-            margin-bottom: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            background-color: #f9f9f9;
+            border-radius: 8px;
+            padding: 12px;
+            border: 1px solid #ddd;
+        }
+        .product-info {
+            grid-column: span 2; /* Kéo dài qua cả hai cột */
+            text-align: center;
+            padding: 15px;
+            background-color: #f9f9f9;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+        }
+        .product-info img {
+            max-width: 100%;
+            border-radius: 8px;
+            margin-top: 10px;
+            border: 1px solid #ddd;
+        }
+        .product-info label {
+            font-weight: bold;
+            color: #ff914d;
+            margin-bottom: 5px;
+            display: block;
+            font-size: 16px;
+        }
+        .product-info div {
+            font-size: 16px;
+            color: #555;
+            margin-top: 5px;
         }
         .detail-item label {
             font-weight: bold;
-            display: block;
-            margin-bottom: 8px;
-            color: #ff914d; /* Màu cam */
+            color: #ff914d;
+            margin-bottom: 5px;
+            font-size: 14px;
         }
         .detail-item div {
-            font-size: 16px;
+            font-size: 14px;
             color: #555;
         }
-        .detail-item img {
-            max-width: 100%;
-            border-radius: 10px;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-        }
         .price, .quantity {
-            font-size: 22px;
+            font-size: 16px;
             font-weight: bold;
             color: #e67e2f;
-            background-color: #fff0e1;
-            padding: 10px;
-            border-radius: 8px;
-            display: inline-block;
+            background-color: #fff8e5;
+            padding: 5px 8px;
+            border-radius: 5px;
+            margin-top: 5px;
+            text-align: center;
         }
         .price::before {
-            content: "💰 "; /* Biểu tượng tiền */
+            content: "💰 ";
         }
         .quantity::before {
-            content: "📦 "; /* Biểu tượng hộp hàng */
+            content: "📦 ";
         }
         .btn {
             display: block;
             width: 100%;
-            padding: 12px;
-            margin-top: 25px;
-            background-color: #ff914d; /* Màu cam */
-            color: white;
             text-align: center;
-            text-decoration: none;
+            margin-top: 20px;
+            padding: 10px;
+            background-color: #ff914d;
+            color: white;
             font-weight: bold;
-            border-radius: 8px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            text-decoration: none;
+            border-radius: 6px;
             transition: background-color 0.3s ease;
+            font-size: 14px;
         }
         .btn:hover {
-            background-color: #e67e2f; /* Màu cam đậm khi hover */
+            background-color: #e67e2f;
         }
     </style>
 </head>
@@ -90,35 +122,45 @@
 <div class="container">
     <h2>Chi Tiết Sản Phẩm</h2>
 
-    <div class="detail-item">
-        <label>Tên Sản Phẩm:</label>
-        <div>ADIDAS NEW HAMMER SOLE CHO VẬN ĐỘNG VIÊN</div>
-    </div>
-
-    <div class="detail-item">
-        <label>Hình Ảnh:</label>
-        <div>
+    <div class="details">
+        <div class="product-info">
+            <label>Tên Sản Phẩm:</label>
+            <div>ADIDAS NEW HAMMER SOLE CHO VẬN ĐỘNG VIÊN</div>
             <img src="img/r13.jpg" alt="Adidas Hammer Sole">
         </div>
-    </div>
 
-    <div class="detail-item">
-        <label>Giá:</label>
-        <div class="price">2.500.000đ</div>
-    </div>
+        <div class="detail-item">
+            <label>Giá:</label>
+            <div class="price">2.500.000đ</div>
+        </div>
 
-    <div class="detail-item">
-        <label>Số Lượng:</label>
-        <div class="quantity">1</div>
-    </div>
+        <div class="detail-item">
+            <label>Số Lượng:</label>
+            <div class="quantity">1</div>
+        </div>
 
-    <div class="detail-item">
-        <label>Ngày Thanh Toán:</label>
-        <div>2024-10-01</div>
+        <div class="detail-item">
+            <label>Ngày Thanh Toán:</label>
+            <div>2024-10-01</div>
+        </div>
+
+        <div class="detail-item">
+            <label>Tên Người Mua:</label>
+            <div>Nguyễn Văn An</div>
+        </div>
+
+        <div class="detail-item">
+            <label>Số Điện Thoại:</label>
+            <div>0987654321</div>
+        </div>
+
+        <div class="detail-item">
+            <label>Địa Chỉ Nhận Hàng:</label>
+            <div>123 Đường Nguyễn Trãi, Phường 5, Quận 3, TP.HCM</div>
+        </div>
     </div>
 
     <a href="javascript:window.history.back();" class="btn">Quay Lại</a>
 </div>
 </body>
 </html>
-
