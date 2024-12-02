@@ -5,7 +5,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Chỉnh sửa Sản phẩm</title>
-  <link rel="stylesheet" href="css/edit-product.css"> <!-- CSS file -->
+  <link rel="stylesheet" href="css/edit-product.css"> <!-- Tệp CSS -->
   <link rel="stylesheet" href="css/bootstrap.css">
   <style>
     /* CSS cho hộp thông báo tùy chỉnh */
@@ -42,53 +42,19 @@
       background-color: #218838;
     }
 
-    .custom-alert .back-btn {
-      background-color: #007bff;
-    }
-
-    .custom-alert .back-btn:hover {
-      background-color: #0056b3;
-    }
-
-    /* CSS cho các nút trong phần chỉnh sửa sản phẩm */
-    .product-details .action-buttons {
-      margin-top: 20px;
-    }
-
-    .product-details button {
-      padding: 10px 15px;
-      margin-right: 10px;
-      background-color: #007bff;
-      color: white;
-      border: none;
-      cursor: pointer;
-      border-radius: 5px;
-    }
-
-    .product-details button:hover {
-      background-color: #0056b3;
-    }
-
-    .product-details .home-btn {
-      background-color: #28a745;
-    }
-
-    .product-details .home-btn:hover {
-      background-color: #218838;
-    }
-    /* CSS cho các nút Add Product và Back to Home */
+    /* CSS cho nút */
     .button-container {
       display: flex;
-      gap: 10px; /* Khoảng cách giữa các nút */
+      gap: 10px;
       margin-top: 20px;
     }
 
     .button-container button {
       padding: 10px 15px;
-      font-size: 14px; /* Giảm kích thước font chữ */
+      font-size: 14px;
       border-radius: 5px;
       cursor: pointer;
-      width: 150px; /* Chiều rộng nút cố định */
+      width: 150px;
     }
 
     .button-container .add-product-btn {
@@ -109,32 +75,19 @@
       background-color: #0056b3;
     }
 
-    /* CSS cho nút Choose File */
-    .fake-upload-btn {
-      padding: 10px 15px;
-      font-size: 14px;
-      border-radius: 5px;
-      cursor: pointer;
-      background-color: white; /* Nền màu trắng */
-      color: black; /* Chữ màu đen */
-      border: 1px solid #ccc; /* Thêm viền */
-    }
-
-    .fake-upload-btn:hover {
-      background-color: #f8f8f8; /* Màu nền khi hover */
-    }
+    /* CSS cho nút Chọn tệp */
     .fake-upload-btn {
       padding: 8px 15px;
       font-size: 14px;
       border-radius: 5px;
       cursor: pointer;
-      background-color: white; /* Nền màu trắng */
-      color: black; /* Chữ màu đen */
-      border: 1px solid #000; /* Viền đen */
+      background-color: white;
+      color: black;
+      border: 1px solid #000;
     }
 
     .fake-upload-btn:hover {
-      background-color: #f8f8f8; /* Màu nền khi hover */
+      background-color: #f8f8f8;
     }
   </style>
 </head>
@@ -145,41 +98,43 @@
     <img class="img-fluid" src="img/product/p2.jpg" alt="Hình ảnh sản phẩm">
     <div class="product-details">
       <h2>Giày Faded SkyBlu</h2>
-      <p class="product-price">2.600.000đ</p>
+      <p class="product-price">2.600.000 VNĐ</p>
       <p><strong>Danh mục:</strong> Đồ thời trang</p>
       <p><strong>Tình trạng:</strong> Còn hàng</p>
-      <p class="product-description">Phong cách hiện đại: Giày Adidas UltraBoost 22 là sự kết hợp hoàn hảo giữa thiết kế tối giản và hiện đại, mang đến vẻ ngoài thời thượng, phù hợp cho cả nam và nữ.
+      <p class="product-description">
+        Phong cách hiện đại: Giày Adidas UltraBoost 22 là sự kết hợp hoàn hảo giữa thiết kế tối giản và hiện đại, mang đến vẻ ngoài thời thượng, phù hợp cho cả nam và nữ.
         Công nghệ Boost: Đệm Boost độc quyền giúp hấp thụ lực tối đa, tạo cảm giác êm ái và hoàn trả năng lượng trong từng bước đi.
         Chất liệu cao cấp: Upper được làm từ Primeknit dệt kim mềm mại, ôm sát bàn chân, mang lại sự thoải mái tối đa.
       </p>
 
-      <!-- Nút sửa sản phẩm và quay về trang chủ nằm cạnh nhau -->
+      <!-- Nút sửa sản phẩm và quay về trang chủ -->
       <div class="button-container">
-        <button class="add-product-btn" type="submit">Sửa Sản Phẩm</button> <!-- Thay đổi thành tiếng Việt -->
+        <button class="add-product-btn" type="submit">Sửa Sản Phẩm</button>
         <form action="managerp.html">
           <button class="back-home-btn" type="submit">Quay Về Trang Chủ</button>
         </form>
-        <!-- Thay đổi thành tiếng Việt -->
       </div>
     </div>
   </div>
 
   <!-- Form chỉnh sửa sản phẩm -->
   <div class="product-edit-form">
-    <h2>Sửa Sản phẩm</h2>
+    <h2>Chỉnh sửa Sản phẩm</h2>
     <form>
       <div class="form-group">
         <label for="product-name">Tên sản phẩm</label>
-        <input type="text" id="product-name" name="product_name" value="Giày Jeans Faded SkyBlu" required>
+        <input type="text" id="product-name" name="product_name" value="Giày Faded SkyBlu" required>
       </div>
       <div class="form-group">
-        <label for="product-price">Giá sản phẩm</label>
-        <input type="number" id="product-price" name="product_price" value="2.600.000" required>
+        <label for="product-price">Giá sản phẩm (VNĐ)</label>
+        <input type="number" id="product-price" name="product_price" value="2600000" required>
       </div>
       <div class="form-group">
         <label for="product-description">Mô tả sản phẩm</label>
-        <textarea id="product-description" name="product_description" rows="4" required>Đế ngoài Continental™: Được làm từ cao su chất lượng cao, tăng độ bám trên mọi bề mặt và chống trơn trượt hiệu quả.
+        <textarea id="product-description" name="product_description" rows="4" required>
+Đế ngoài Continental™: Được làm từ cao su chất lượng cao, tăng độ bám trên mọi bề mặt và chống trơn trượt hiệu quả.
 Thân thiện với môi trường: Một phần của đôi giày được sản xuất từ nhựa tái chế Parley, góp phần bảo vệ môi trường.
+        </textarea>
       </div>
       <div class="form-group">
         <label for="product-image">Thay đổi hình ảnh</label>
@@ -208,12 +163,6 @@ Thân thiện với môi trường: Một phần của đôi giày được sả
     var alertBox = document.getElementById('custom-alert');
     alertBox.style.display = 'none';
   }
-
-  // Quay về trang chủ
-  function goBack() {
-    window.location.href = "managerp.html"; // Đổi URL thành trang mà bạn muốn chuyển tới
-  }
 </script>
-
 </body>
 </html>
