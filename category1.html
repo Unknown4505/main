@@ -1,0 +1,665 @@
+<!DOCTYPE html>
+<html lang="zxx" class="no-js">
+
+<head>
+    <!-- Mobile Specific Meta -->
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!-- Favicon-->
+    <link rel="shortcut icon" href="img/fav.png">
+    <!-- Author Meta -->
+    <meta name="author" content="CodePixar">
+    <!-- Meta Description -->
+    <meta name="description" content="">
+    <!-- Meta Keyword -->
+    <meta name="keywords" content="">
+    <!-- meta character set -->
+    <meta charset="UTF-8">
+    <!-- Site Title -->
+    <title>Karma Shop</title>
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="css/linearicons.css">
+    <link rel="stylesheet" href="css/owl.carousel.css">
+    <link rel="stylesheet" href="css/font-awesome.min.css">
+    <link rel="stylesheet" href="css/themify-icons.css">
+    <link rel="stylesheet" href="css/nice-select.css">
+    <link rel="stylesheet" href="css/nouislider.min.css">
+    <link rel="stylesheet" href="css/bootstrap.css">
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/search.css">
+    <link rel="stylesheet" href="css/category.css">
+
+    <style>
+        /* Ẩn thông báo kết quả tìm kiếm theo mặc định */
+        .results-header {
+            display: none; /* Mặc định ẩn */
+            font-size: 24px;
+            font-weight: bold;
+            margin: 20px 0; /* Thêm khoảng cách phía trên và dưới */
+            color: #333;
+        }
+
+        /* Hiển thị khi có từ khóa tìm kiếm (tùy chỉnh thủ công) */
+        .show {
+            display: block; /* Hiển thị khi cần */
+        }
+        /* Đổi màu nền khung sản phẩm */
+        .horizontal-categories {
+            background-color: #ffffff; /* Màu xanh nước biển */
+            padding: 10px;
+            border-radius: 5px;
+        }
+
+        /* Đổi màu chữ và kiểu chữ của các sản phẩm */
+        .horizontal-categories .main-categories .main-nav-list a {
+            color: #0b0b0b; /* Màu chữ trắng */
+            font-weight: bold;
+            text-decoration: none;
+        }
+
+        /* Tô sáng sản phẩm khi di chuột qua */
+        .horizontal-categories .main-categories .main-nav-list a:hover {
+            color: #0b0b0b; /* Màu chữ khi di chuột qua */
+        }
+        .filter-form-container {
+            display: none;
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        #toggleFilter:checked ~ .filter-form-container {
+            display: block;
+        }
+
+        .filter-button {
+            display: inline-block;
+            background-color: #007bff;
+            color: white;
+            padding: 10px 20px;
+            font-size: 16px;
+            border-radius: 5px;
+            cursor: pointer;
+            text-align: center;
+        }
+
+        .filter-button:hover {
+            background-color: #0056b3;
+        }
+
+        .filter-form {
+            display: inline-block;
+            background-color: #f9f9f9;
+            border: 1px solid #ddd;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .filter-form label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .filter-form input,
+        .filter-form select {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-sizing: border-box;
+        }
+
+        .apply-filter-button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            font-size: 16px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .apply-filter-button:hover {
+            background-color: #0056b3;
+        }
+        /* Đảm bảo container sản phẩm hiển thị theo dạng lưới */
+        .lattest-product-area .row {
+            display: flex !important; /* Sử dụng flexbox */
+            flex-wrap: wrap !important; /* Đảm bảo các sản phẩm xuống hàng khi không đủ chỗ */
+            justify-content: space-between !important; /* Căn đều khoảng cách giữa các sản phẩm */
+        }
+
+        /* Chỉnh lại mỗi sản phẩm chiếm 30% chiều rộng để có 3 sản phẩm 1 hàng */
+        .lattest-product-area .single-product {
+            flex: 0 0 30% !important; /* Mỗi sản phẩm chiếm 30% chiều rộng */
+            box-sizing: border-box !important; /* Đảm bảo padding và border không ảnh hưởng kích thước */
+            margin-bottom: 20px !important; /* Khoảng cách giữa các hàng */
+        }
+
+        /* Đảm bảo hình ảnh trong sản phẩm tự động điều chỉnh kích thước */
+        .lattest-product-area .single-product img {
+            width: 80% !important; /* Ảnh vừa với khung sản phẩm */
+            height: auto !important; /* Tự động giữ tỷ lệ ảnh */
+        }
+
+        /* Responsive cho màn hình nhỏ, hiển thị 2 sản phẩm 1 hàng */
+        @media (max-width: 768px) {
+            .lattest-product-area .row {
+                grid-template-columns: repeat(2, 1fr) !important; /* Hiển thị 2 sản phẩm 1 hàng */
+            }
+        }
+
+        /* Responsive cho điện thoại, hiển thị 1 sản phẩm 1 hàng */
+        @media (max-width: 576px) {
+            .lattest-product-area .row {
+                grid-template-columns: 1fr !important; /* Hiển thị 1 sản phẩm 1 hàng */
+            }
+        }
+
+
+
+
+    </style>
+</head>
+
+<body id="category">
+
+<!-- Start Header Area -->
+<header class="header_area sticky-header">
+    <div class="main_menu">
+        <nav class="navbar navbar-expand-lg navbar-light main_box">
+            <div class="container">
+                <!-- Brand and toggle get grouped for better mobile display -->
+                <a class="navbar-brand logo_h" href="index.html"><img src="img/logo.png" alt=""></a>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+                        aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <!-- Collect the nav links, forms, and other content for toggling -->
+                <div class="collapse navbar-collapse offset" id="navbarSupportedContent">
+                    <ul class="nav navbar-nav menu_nav ml-auto">
+                        <li class="nav-item active"><a class="nav-link" href="index2.html">Trang chủ</a></li>
+                        <li class="nav-item submenu dropdown">
+                            <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+                               aria-expanded="false">Sản phẩm</a>
+                            <ul class="dropdown-menu">
+                                <li class="nav-item"><a class="nav-link" href="category.html">Adidas</a></li>
+                                <li class="nav-item"><a class="nav-link" href="category1.html">Van</a></li>
+                                <li class="nav-item"><a class="nav-link" href="category2.html">Nike</a></li>
+                            </ul>
+                        </li>
+
+                        <li class="nav-item"><a class="nav-link" href="checkout.html">Thanh toán</a></li>
+                        <ul class="dropdown-menu">
+
+                        </ul>
+                        </li>
+                        <li class="nav-item submenu dropdown">
+                        </li>
+                    </ul>
+                    <!-- Search Input Box -->
+                    <input type="checkbox" id="search-toggle" class="search-toggle" hidden>
+                    <div class="search_input">
+                        <form id="search-form" action="ResultOfSearch.html" method="GET" class="d-flex justify-content-between">
+                            <input type="text" class="search-input" name="query" placeholder="Tìm kiếm" required>
+                            <button type="submit" class="search-btn">
+                                <span class="lnr lnr-magnifier"></span>
+                            </button>
+                            <label for="search-toggle" class="lnr lnr-cross" title="Close Search"></label>
+                        </form>
+                    </div>
+
+                    <!-- Search Icon and Cart -->
+                    <ul class="nav navbar-nav navbar-right">
+                        <li class="nav-item"><a href="cart.html" class="cart"><span class="ti-bag"></span></a></li>
+                        <li class="nav-item">
+                            <!-- Search Button with Magnifier Icon -->
+                            <label for="search-toggle" class="search-icon">
+                                <span class="lnr lnr-magnifier"></span>
+                            </label>
+                        </li>
+                    </ul>
+
+
+                    <!-- User Dropdown -->
+                    <ul class="nav navbar-nav navbar-right">
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle user-btn" href="" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <span class="username">Người dùng</span>
+                                <span class="lnr lnr-user"></span>
+                            </a>
+                            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                <a class="dropdown-item" href=User.html>Tiểu sử</a>
+                                <a class="dropdown-item" href="confirmation.html">Lịch sử giao dịch</a>
+                                <div class="dropdown-divider"></div>
+                                <a class="dropdown-item" href="login.html">Đăng xuất</a>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </div>
+</header>
+<!-- Bootstrap and jQuery -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>
+<!-- end header -->
+
+<!-- Bắt đầu Khu Vực Banner -->
+<section class="banner-area organic-breadcrumb">
+    <div class="container">
+        <div class="breadcrumb-banner d-flex flex-wrap align-items-center justify-content-end">
+            <div class="col-first">
+                <h1>Sản phẩm</h1>
+                <nav class="d-flex align-items-center">
+                    <a href="index.html">Trang chủ<span class="lnr lnr-arrow-right"></span></a>
+                    <a href="category.html">Cửa hàng<span class="lnr lnr-arrow-right"></span></a>
+                    <a href="category.html">Sản phẩm</a>
+                </nav>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- Kết thúc Khu Vực Banner -->
+
+<!-- Hiển thị dòng kết quả tìm kiếm -->
+<div class="results-header">
+    <p>Search Results for "<strong>Your Search Term</strong>"</p>
+</div>
+
+
+<!-- Start Category Section -->
+
+<div class="filter-button-container">
+    <label for="toggleFilter" class="filter-button">Lọc</label>
+    <input type="checkbox" id="toggleFilter" style="display: none;">
+
+    <div class="filter-form-container">
+        <form action="ResultOfSearch.html" method="GET" class="filter-form">
+            <label for="productName">Sản phẩm:</label>
+            <input type="text" id="productName" name="productName" placeholder="Tên sản phẩm">
+
+            <label for="priceRange">Mức giá (đ):</label>
+            <select id="priceRange" name="priceRange">
+                <option value="" selected>Chọn giá tiền</option>
+                <option value="0-100">Từ 0đ-2.500.000đ</option>
+                <option value="100-500">Từ 2.500.000đ đến 5.000.000đ</option>
+                <option value="500-1000">Từ 5.000.000đ đến 10.000.000đ</option>
+            </select>
+            <label for="priceRange">Loại</label>
+            <select id="priceRange" name="priceRange">
+                <option value="" selected>Chọn loại</option>
+                <option value="0-100">Adidas</option>
+                <option value="100-500">Nike</option>
+                <option value="500-1000">Van</option>
+            </select>
+
+            <button type="submit" class="apply-filter-button">Áp dụng</button>
+        </form>
+    </div>
+</div>
+
+<!-- Start Best Seller -->
+<section class="lattest-product-area pb-40 category-list">
+    <div class="row">
+        <!-- single product -->
+        <div class="col-lg-4 col-md-6">
+            <div class="single-product">
+                <img class="img-fluid" src="img/product/p1.jpg" alt="">
+                <div class="product-details">
+                    <h6>addidas New Hammer sole for Sports person</h6>
+                    <div class="product-category">
+                        <span>Loại : Adidas</span> <!-- Phân loại sản phẩm -->
+                    </div>
+                    <div class="price">
+                        <h6>2.500.000đ</h6>
+                        <h6 class="l-through">5.000.000đ</h6>
+                    </div>
+                    <div class="prd-bottom">
+                        <a href="#" class="social-info" onclick="addToBag()">
+                            <span class="ti-bag"></span>
+                            <p class="hover-text">Thêm vào giỏ hàng</p>
+                        </a>
+
+                        <a href="single-product.html" class="social-info button">
+                            <span class="lnr lnr-move"></span>
+                            <span class="hover-text">Xem chi tiết</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Bạn có thể lặp lại tương tự cho các sản phẩm còn lại -->
+
+        <!-- single product -->
+        <div class="col-lg-4 col-md-6">
+            <div class="single-product">
+                <img class="img-fluid" src="img/product/p2.jpg" alt="">
+                <div class="product-details">
+                    <h6>addidas New Hammer sole for Sports person</h6>
+                    <div class="product-category">
+                        <span>Loại : Adidas</span> <!-- Phân loại sản phẩm -->
+                    </div>
+                    <div class="price">
+                        <h6>2.500.000đ</h6>
+                        <h6 class="l-through">5.000.000đ</h6>
+                    </div>
+                    <div class="prd-bottom">
+                        <a href="#" class="social-info" onclick="addToBag()">
+                            <span class="ti-bag"></span>
+                            <p class="hover-text">Thêm vào giỏ hàng</p>
+                        </a>
+
+                        <a href="single-product.html" class="social-info button">
+                            <span class="lnr lnr-move"></span>
+                            <span class="hover-text">Xem chi tiết</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Bạn có thể lặp lại tương tự cho các sản phẩm còn lại -->
+
+        <!-- single product -->
+        <div class="col-lg-4 col-md-6">
+            <div class="single-product">
+                <img class="img-fluid" src="img/product/p3.jpg" alt="">
+                <div class="product-details">
+                    <h6>addidas New Hammer sole for Sports person</h6>
+                    <div class="product-category">
+                        <span>Loại : Adidas</span> <!-- Phân loại sản phẩm -->
+                    </div>
+                    <div class="price">
+                        <h6>2.500.000đ</h6>
+                        <h6 class="l-through">5.000.000đ</h6>
+                    </div>
+                    <div class="prd-bottom">
+                        <a href="#" class="social-info" onclick="addToBag()">
+                            <span class="ti-bag"></span>
+                            <p class="hover-text">Thêm vào giỏ hàng</p>
+                        </a>
+
+                        <a href="single-product.html" class="social-info button">
+                            <span class="lnr lnr-move"></span>
+                            <span class="hover-text">Xem chi tiết</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Bạn có thể lặp lại tương tự cho các sản phẩm còn lại -->
+
+        <!-- single product -->
+        <div class="col-lg-4 col-md-6">
+            <div class="single-product">
+                <img class="img-fluid" src="img/product/p4.jpg" alt="">
+                <div class="product-details">
+                    <h6>addidas New Hammer sole for Sports person</h6>
+                    <div class="product-category">
+                        <span>Loại : Adidas</span> <!-- Phân loại sản phẩm -->
+                    </div>
+                    <div class="price">
+                        <h6>2.500.000đ</h6>
+                        <h6 class="l-through">5.000.000đ</h6>
+                    </div>
+                    <div class="prd-bottom">
+                        <a href="#" class="social-info" onclick="addToBag()">
+                            <span class="ti-bag"></span>
+                            <p class="hover-text">Thêm vào giỏ hàng</p>
+                        </a>
+
+                        <a href="single-product.html" class="social-info button">
+                            <span class="lnr lnr-move"></span>
+                            <span class="hover-text">Xem chi tiết</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Bạn có thể lặp lại tương tự cho các sản phẩm còn lại -->
+
+        <!-- single product -->
+        <div class="col-lg-4 col-md-6">
+            <div class="single-product">
+                <img class="img-fluid" src="img/product/p5.jpg" alt="">
+                <div class="product-details">
+                    <h6>addidas New Hammer sole for Sports person</h6>
+                    <div class="product-category">
+                        <span>Loại : Adidas</span> <!-- Phân loại sản phẩm -->
+                    </div>
+                    <div class="price">
+                        <h6>2.500.000đ</h6>
+                        <h6 class="l-through">5.000.000đ</h6>
+                    </div>
+                    <div class="prd-bottom">
+                        <a href="#" class="social-info" onclick="addToBag()">
+                            <span class="ti-bag"></span>
+                            <p class="hover-text">Thêm vào giỏ hàng</p>
+                        </a>
+
+                        <a href="single-product.html" class="social-info button">
+                            <span class="lnr lnr-move"></span>
+                            <span class="hover-text">Xem chi tiết</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Bạn có thể lặp lại tương tự cho các sản phẩm còn lại -->
+
+        <!-- single product -->
+        <div class="col-lg-4 col-md-6">
+            <div class="single-product">
+                <img class="img-fluid" src="img/product/p6.jpg" alt="">
+                <div class="product-details">
+                    <h6>addidas New Hammer sole for Sports person</h6>
+                    <div class="product-category">
+                        <span>Loại : Adidas</span> <!-- Phân loại sản phẩm -->
+                    </div>
+                    <div class="price">
+                        <h6>2.500.000đ</h6>
+                        <h6 class="l-through">5.000.000đ</h6>
+                    </div>
+                    <div class="prd-bottom">
+                        <a href="#" class="social-info" onclick="addToBag()">
+                            <span class="ti-bag"></span>
+                            <p class="hover-text">Thêm vào giỏ hàng</p>
+                        </a>
+
+                        <a href="single-product.html" class="social-info button">
+                            <span class="lnr lnr-move"></span>
+                            <span class="hover-text">Xem chi tiết</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Bạn có thể lặp lại tương tự cho các sản phẩm còn lại -->
+
+</section>
+<!-- End Best Seller -->
+
+<!-- Start Filter Bar -->
+<div class="filter-bar d-flex flex-wrap align-items-center">
+    <div class="sorting mr-auto">
+        <select>
+            <option value="1">Xem 12</option>
+            <option value="2">Xem 24</option>
+            <option value="3">Xem 36</option>
+        </select>
+    </div>
+    <div class="pagination">
+        <a href="#" class="prev-arrow"><i class="fa fa-long-arrow-left" aria-hidden="true"></i></a>
+        <a href="#" class="active">1</a>
+        <a href="#">2</a>
+        <a href="#">3</a>
+        <a href="#" class="dot-dot"><i class="fa fa-ellipsis-h" aria-hidden="true"></i></a>
+        <a href="#">6</a>
+        <a href="#" class="next-arrow"><i class="fa fa-long-arrow-right" aria-hidden="true"></i></a>
+    </div>
+</div>
+<!-- End Filter Bar -->
+
+<!-- Start footer Area -->
+<footer class="footer-area section_gap">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-3 col-md-6 col-sm-6">
+                <div class="single-footer-widget">
+                    <h6>Về Chúng Tôi</h6>
+                    <p>
+                        “Kể từ lúc thành lập vào năm 2012, Karma luôn được khách hàng đánh giá là một trong những cửa hang giày chất lượng cao tại Việt Nam. Hiện tại, Karma vẫn tiếp tục duy trì chất lượng dịch vụ và sản phẩm tốt để gìn giữ sự hài lòng của khách hàng.”
+                    </p>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-6 col-sm-6">
+                <div class="single-footer-widget">
+                    <h6>Bảng tin</h6>
+                    <p>Luôn cập nhật thông tin mới nhất của chúng tôi
+                    </p>
+                    <div class="">
+                        <form target="_blank" novalidate="true" action="https://spondonit.us12.list-manage.com/subscribe/post?u=1462626880ade1ac87bd9c93a&amp;id=92a4423d01"
+                              method="get" class="form-inline">
+                            <div class="form-group lbel-inline">
+                                <input type="email" class="form-control" name="EMAIL" placeholder="Nhập email" required>
+                            </div>
+                            <button class="btn btn-default">
+                                <span class="lnr lnr-arrow-right"></span>
+                            </button>
+                            <div style="position: absolute; left: -5000px;">
+                                <input type="text" name="b_1462626880ade1ac87bd9c93a_92a4423d01" tabindex="-1" value="">
+                            </div>
+                        </form>
+                    </div>
+                    <div class="info"></div>
+                </div>
+            </div>
+            <div class="col-lg-2 col-md-6 col-sm-6">
+                <div class="single-footer-widget">
+                    <h6>Instagram</h6>
+                    <div class="instagram-row">
+                        <a href="#"><img src="img/i1.jpg" alt=""></a>
+                        <a href="#"><img src="img/i2.jpg" alt=""></a>
+                        <a href="#"><img src="img/i3.jpg" alt=""></a>
+                        <a href="#"><img src="img/i4.jpg" alt=""></a>
+                        <a href="#"><img src="img/i5.jpg" alt=""></a>
+                        <a href="#"><img src="img/i6.jpg" alt=""></a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6 col-sm-6">
+                <div class="single-footer-widget">
+                    <h6>Liên Hệ Với Chúng Tôi</h6>
+                    <p>ĐH Sài Gòn , <br>TP.HCM, VietNam</p>
+                    <p>
+                        <span class="lnr lnr-phone"></span> + 01 234 567 89<br>
+                        <span class="lnr lnr-envelope"></span> support@HKTC.com
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div class="row footer-bottom d-flex justify-content-between align-items-center">
+            <p class="footer-text m-0 col-lg-6 col-md-6">
+                2024 © Mọi quyền được bảo lưu | Mẫu này được tạo với<i class="fa fa-heart" aria-hidden="true"></i> by
+                <a href="https://colorlib.com" target="_blank">HKTC</a>
+            </p>
+            <div class="col-lg-6 col-md-6 footer-social">
+                <a href="#"><i class="fa fa-facebook"></i></a>
+                <a href="#"><i class="fa fa-twitter"></i></a>
+                <a href="#"><i class="fa fa-dribbble"></i></a>
+                <a href="#"><i class="fa fa-behance"></i></a>
+            </div>
+        </div>
+    </div>
+</footer>
+<!-- End footer Area -->
+
+</body>
+
+<!-- Modal Quick Product View -->
+<div class="modal" id="quickViewModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="container relative">
+            <div class="close-button">
+                <button type="button" class="close" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="product-quick-view">
+                <div class="row align-items-center">
+                    <div class="col-lg-6">
+                        <div class="quick-view-carousel">
+                            <div class="item" style="background: url(img/organic-food/q1.jpg);"></div>
+                            <div class="item" style="background: url(img/organic-food/q1.jpg);"></div>
+                            <div class="item" style="background: url(img/organic-food/q1.jpg);"></div>
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="quick-view-content">
+                            <div class="top">
+                                <h3 class="head">Mill Oil 1000W Heater, White</h3>
+                                <div class="price d-flex align-items-center">
+                                    <span class="lnr lnr-tag"></span>
+                                    <span class="ml-10">$149.99</span>
+                                </div>
+                                <div class="category">Category: <span>Household</span></div>
+                                <div class="available">Availability: <span>In Stock</span></div>
+                            </div>
+                            <div class="middle">
+                                <p class="content">Mill Oil is an innovative oil-filled radiator with the most modern technology. If you are
+                                    looking for something that can make your interior look awesome and at the same time give you a pleasant
+                                    warm feeling during the winter.</p>
+                                <a href="#" class="view-full">View full Details <span class="lnr lnr-arrow-right"></span></a>
+                            </div>
+                            <div class="bottom">
+                                <div class="color-picker d-flex align-items-center">Color:
+                                    <span class="single-pick"></span>
+                                    <span class="single-pick"></span>
+                                    <span class="single-pick"></span>
+                                    <span class="single-pick"></span>
+                                    <span class="single-pick"></span>
+                                </div>
+                                <div class="quantity-container d-flex align-items-center mt-15">
+                                    Quantity:
+                                    <input type="text" class="quantity-amount ml-15" value="1" />
+                                    <div class="arrow-btn d-inline-flex flex-column">
+                                        <button class="increase arrow" type="button" title="Increase Quantity"><span class="lnr lnr-chevron-up"></span></button>
+                                        <button class="decrease arrow" type="button" title="Decrease Quantity"><span class="lnr lnr-chevron-down"></span></button>
+                                    </div>
+                                </div>
+                                <div class="d-flex mt-20">
+                                    <a href="#" class="view-btn color-2"><span>Add to Cart</span></a>
+                                    <a href="#" class="like-btn"><span class="lnr lnr-layers"></span></a>
+                                    <a href="#" class="like-btn"><span class="lnr lnr-heart"></span></a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</header>
+</body>
+<script>
+    function addToBag() {
+        alert("Bạn đã thêm vào giỏ hàng thành công!");
+    }
+</script>
+
+</html>
