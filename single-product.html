@@ -168,25 +168,46 @@
 						Chất liệu cao cấp: Upper được làm từ Primeknit dệt kim mềm mại, ôm sát bàn chân, mang lại sự thoải mái tối đa.
 						Đế ngoài Continental™: Được làm từ cao su chất lượng cao, tăng độ bám trên mọi bề mặt và chống trơn trượt hiệu quả.
 						Thân thiện với môi trường: Một phần của đôi giày được sản xuất từ nhựa tái chế Parley, góp phần bảo vệ môi trường.</p>
+
+					<!-- Phần tăng giảm số lượng sản phẩm -->
 					<div class="product_count">
 						<label for="qty">Số lượng:</label>
-						<input type="text" name="qty" id="sst" maxlength="12" value="1" title="Quantity:" class="input-text qty">
-						<div class="count-buttons">
-							<button class="increase items-count" type="button">+</button>
-							<button class="reduced items-count" type="button">-</button>
-						</div>
+						<!-- Sử dụng input number để người dùng tăng giảm số lượng mà không cần JS -->
+						<input type="number" name="qty" id="sst" value="1" min="1" max="99" title="Quantity:" class="input-text qty">
 					</div>
+
+					<!-- Nút thêm vào giỏ hàng -->
 					<div class="card_area d-flex align-items-center">
-						<a class="primary-btn" href="#">Thêm vào giỏ hàng</a>
-						<a class="icon_btn" href="#"><i class="lnr lnr lnr-diamond"></i></a>
-						<a class="icon_btn" href="#"><i class="lnr lnr lnr-heart"></i></a>
+						<a class="primary-btn" href="#" onclick="addToCart()">Thêm vào giỏ hàng</a>
+						<a class="icon_btn" href="#"><i class="lnr lnr-diamond"></i></a>
+						<a class="icon_btn" href="#"><i class="lnr lnr-heart"></i></a>
 					</div>
 				</div>
 			</div>
 		</div>
 	</div>
 </div>
+
+<!-- Hộp thông báo "Đã thêm vào giỏ hàng thành công" -->
+<div id="success-alert" style="display: none; position: fixed; top: 20%; left: 50%; transform: translate(-50%, -50%); background-color: #28a745; color: white; padding: 20px; border-radius: 5px; box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);">
+	<p>Đã thêm vào giỏ hàng thành công!</p>
+</div>
+
 <!--================End Single Product Area =================-->
+
+<!-- JavaScript -->
+<script>
+	// Hiển thị thông báo khi thêm vào giỏ hàng
+	function addToCart() {
+		var alertBox = document.getElementById('success-alert');
+		alertBox.style.display = 'block';
+
+		// Ẩn thông báo sau 3 giây
+		setTimeout(function() {
+			alertBox.style.display = 'none';
+		}, 3000);
+	}
+</script>
 
 <!--================Product Description Area =================-->
 		<div class="tab-content">
