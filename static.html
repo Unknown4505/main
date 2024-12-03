@@ -1,12 +1,149 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-    <link rel="shortcut icon" href="img/fav.png">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bảng Điều Khiển Bán Hàng Cửa Hàng Giày</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <title>Giao diện Admin</title>
+    <!-- Mobile Specific Meta -->
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!-- Favicon-->
+    <link rel="shortcut icon" href="img/fav.png">
+    <!-- Author Meta -->
+    <meta name="author" content="CodePixar">
+    <!-- Meta Description -->
+    <meta name="description" content="">
+    <!-- Meta Keyword -->
+    <meta name="keywords" content="">
+    <!-- meta character set -->
+    <meta charset="UTF-8">
+    <!-- Site Title -->
+    <title>Karma Shop</title>
     <style>
+        /* Admin Container */
+        .admin-container {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: 250px;
+            background-color: #2c3e50;
+            color: white;
+            padding: 20px 15px;
+        }
+
+        .sidebar .logo-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .sidebar .logo-header img {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            margin-right: 10px;
+        }
+
+        .sidebar .logo-header h2 {
+            color: white;
+            font-size: 22px;
+            margin: 0;
+        }
+
+        .sidebar ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .sidebar ul li {
+            margin: 15px 0;
+        }
+
+        .sidebar ul li a {
+            color: white;
+            text-decoration: none;
+            font-size: 18px;
+            display: block;
+            padding: 10px;
+            border-radius: 5px;
+            transition: background 0.3s;
+        }
+
+        .sidebar ul li a:hover {
+            background-color: #34495e;
+        }
+
+        /* Main Content */
+        .main-content {
+            flex: 1;
+            padding: 20px;
+            background-color: #ecf0f1;
+        }
+
+        .main-content h1 {
+            font-size: 28px;
+            margin-bottom: 20px;
+        }
+
+        /* Dashboard Cards */
+        .dashboard {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .card {
+            flex: 1 1 calc(20% - 20px);
+            background-color: white;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 15px;
+            box-shadow: 0 2px 4px
+        }
+        /* Đặt dropdown là relative để menu con hiển thị đúng vị trí */
+        .dropdown {
+            position: relative;
+        }
+
+        /* Menu con bị ẩn mặc định */
+        .dropdown-menu {
+            display: none;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            background-color: #34495e;
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            border-radius: 5px;
+            z-index: 10;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Các mục trong menu con */
+        .dropdown-menu li {
+            margin: 0;
+        }
+
+        .dropdown-menu li a {
+            display: block;
+            padding: 10px 20px;
+            color: white;
+            text-decoration: none;
+            border-bottom: 1px solid #2c3e50;
+            transition: background 0.3s;
+        }
+
+        .dropdown-menu li a:hover {
+            background-color: #2c3e50;
+        }
+
+        /* Hiển thị menu con khi di chuột vào dropdown */
+        .dropdown:hover .dropdown-menu {
+            display: block;
+        }
         body {
             font-family: 'Poppins', sans-serif;
             background-color: #e3f2fd;
@@ -15,16 +152,6 @@
             color: #333;
         }
 
-        header {
-            background-color: #1976d2;
-            padding: 15px;
-            text-align: center;
-            color: #fff;
-            text-transform: uppercase;
-            font-weight: bold;
-            letter-spacing: 1px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        }
 
         .dashboard-container {
             width: 80%;
@@ -150,53 +277,77 @@
         .view-details-btn:hover {
             background-color: #0277bd;
         }
+        h1 {
+            text-align: center;
+        }
     </style>
 </head>
 <body>
-<header>
-    Bảng Điều Khiển Bán Hàng Cửa Hàng Giày
-</header>
+<div class="admin-container">
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <div class="logo-header">
+            <img src="img/fav.png" alt="Admin Logo">
+            <h2>Karma Shop</h2>
+        </div>
+        <ul>
+            <li><a href="#home">Trang chủ</a></li>
+            <li><a href="managerp.html">Quản lí sản phẩm</a></li>
+            <li><a href="manager-user.html">Quản lí người dùng</a></li>
+            <li><a href="ManageCustomerOrder.html">Quản lí đơn hàng</a></li>
+            <li class="dropdown">
+                <a href="#statistics">Thống kê</a>
+                <ul class="dropdown-menu">
+                    <li><a href="static.html">Sản phẩm</a></li>
+                    <li><a href="static2.html">Người dùng</a></li>
+                </ul>
+            </li>
 
-<div class="dashboard-container">
-    <a href="admin.html" class="back-button">Quay lại</a>
-    <h3>Thống Kê Bán Hàng</h3>
-    <table>
-        <thead>
-        <tr>
-            <th>Sản phẩm</th>
-            <th>Số lượng bán</th>
-            <th>Tổng doanh thu (VND)</th>
-            <th></th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr>
-            <td>Giày Addidas New Hammer Sole For Sports Person</td>
-            <td>12</td>
-            <td>3,600,000</td>
-            <td><a href="thongkesanphambanduoc.html" class="view-details-btn">Xem chi tiết</a></td>
-        </tr>
-        <tr class="highlight">
-            <td>Giày Addidas New Hammer Sole For Sports Person</td>
-            <td>8</td>
-            <td>4,000,000</td>
-            <td><a href="thongkesanphambanduoc.html" class="view-details-btn">Xem chi tiết</a></td>
-        </tr>
-        <tr>
-            <td>Giày Addidas New Hammer Sole For Sports Person</td>
-            <td>5</td>
-            <td>1,500,000</td>
-            <td><a href="thongkesanphambanduoc.html" class="view-details-btn">Xem chi tiết</a></td>
-        </tr>
-        </tbody>
-    </table>
-    <p class="total-revenue">Tổng doanh thu: 9,100,000 VND</p>
-    <p class="most-sold">Sản phẩm bán chạy nhất: Giày Addidas New Hammer Sole For Sports Person</p>
-    <p class="least-sold">Sản phẩm bán ít nhất: Giày Addidas New Hammer Sole For Sports Person</p>
+        </ul>
+    </div>
+    <div class="dashboard-container">
+        <h1>Thống kê sản phẩm của cửa hàng</h1>
+        <h3>Thống Kê Bán Hàng</h3>
+        <table>
+            <thead>
+            <tr>
+                <th>Sản phẩm</th>
+                <th>Số lượng bán</th>
+                <th>Tổng doanh thu (VND)</th>
+                <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td>Giày Addidas New Hammer Sole For Sports Person</td>
+                <td>12</td>
+                <td>3,600,000</td>
+                <td><a href="thongkesanphambanduoc.html" class="view-details-btn">Xem chi tiết</a></td>
+            </tr>
+            <tr class="highlight">
+                <td>Giày Addidas New Hammer Sole For Sports Person</td>
+                <td>8</td>
+                <td>4,000,000</td>
+                <td><a href="thongkesanphambanduoc.html" class="view-details-btn">Xem chi tiết</a></td>
+            </tr>
+            <tr>
+                <td>Giày Addidas New Hammer Sole For Sports Person</td>
+                <td>5</td>
+                <td>1,500,000</td>
+                <td><a href="thongkesanphambanduoc.html" class="view-details-btn">Xem chi tiết</a></td>
+            </tr>
+            </tbody>
+        </table>
+        <p class="total-revenue">Tổng doanh thu: 9,100,000 VND</p>
+        <p class="most-sold">Sản phẩm bán chạy nhất: Giày Addidas New Hammer Sole For Sports Person</p>
+        <p class="least-sold">Sản phẩm bán ít nhất: Giày Addidas New Hammer Sole For Sports Person</p>
+
+    </div>
+
 </div>
 
-<footer>
-    &copy; 2024 Cửa Hàng Giày. Mọi quyền được bảo vệ.
-</footer>
+    </div>
+</div>
+
 </body>
 </html>
