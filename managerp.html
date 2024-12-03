@@ -158,6 +158,98 @@
     .dropdown:hover .dropdown-menu {
       display: block;
     }
+    .pagination {
+      display: flex;
+      justify-content: center;
+      padding: 20px 0;
+    }
+
+    .pagination a {
+      color: #2c3e50;
+      text-decoration: none;
+      margin: 0 5px;
+      padding: 8px 16px;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      transition: background-color 0.3s, color 0.3s;
+    }
+
+    .pagination a:hover {
+      background-color: #34495e;
+      color: white;
+    }
+
+    .pagination a.active {
+      background-color: #2c3e50;
+      color: white;
+      border: 1px solid #2c3e50;
+    }
+    /* Bộ lọc */
+    .filter-container {
+      margin: 20px 0;
+      padding: 10px;
+      background-color: #f9f9f9;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+      justify-content: space-between;
+    }
+
+    .filter-container form {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+    }
+
+    .filter-category,
+    .filter-name {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .filter-category label,
+    .filter-name label {
+      margin-bottom: 5px;
+      font-weight: bold;
+    }
+
+    .filter-actions {
+      display: flex;
+      align-items: center;
+    }
+
+    button {
+      padding: 8px 16px;
+      background-color: #2c3e50;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    button:hover {
+      background-color: #34495e;
+    }
+
+     .filter-btn {
+       display: inline-block;
+       padding: 10px 20px;
+       background-color: #4CAF50;
+       color: white;
+       text-align: center;
+       text-decoration: none;
+       border-radius: 5px;
+       font-size: 16px;
+     }
+
+    .filter-btn:hover {
+      background-color: #45a049;
+    }
+
+
 
   </style>
 </head>
@@ -191,6 +283,32 @@
           <div class="col-lg-6 text-center">
             <div class="section-title">
               <h1>Quản lí sản phẩm</h1>
+            </div>
+            <!-- Bộ lọc -->
+            <div class="filter-container">
+              <form method="GET" action="your_backend_endpoint">
+                <!-- Lọc theo phân loại -->
+                <div class="filter-category">
+                  <label for="category">Phân loại:</label>
+                  <select id="category" name="category">
+                    <option value="all">Tất cả</option>
+                    <option value="electronics">Adidas</option>
+                    <option value="fashion">Nike</option>
+                    <option value="books">Vans</option>
+                  </select>
+                </div>
+
+                <!-- Lọc theo tên -->
+                <div class="filter-name">
+                  <label for="product-name">Tên sản phẩm:</label>
+                  <input type="text" id="product-name" name="product-name" placeholder="Nhập tên sản phẩm...">
+                </div>
+
+                <!-- Nút tìm kiếm -->
+                <div class="filter-actions">
+                  <a href="managerp.html" class="filter-btn">Lọc</a>
+                </div>
+              </form>
             </div>
             <div class="prd-bottom">
               <a href="add-product.html" class="social-info">
@@ -363,11 +481,19 @@
               </div>
             </div>
           </div>
-
         </div>
       </div>
+      <div class="pagination">
+        <a href="managerp.html">&laquo;</a>
+        <a href="managerp.html" class="active">1</a>
+        <a href="managerp.html">2</a>
+        <a href="managerp.html">3</a>
+        <a href="managerp.html">4</a>
+        <a href="managerp.html">5</a>
+        <a href="managerp.html">&raquo;</a>
+      </div>
 
-</div>
+    </div>
   </section>
 </div>
 <script>
