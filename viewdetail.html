@@ -4,7 +4,7 @@
   <link rel="shortcut icon" href="img/fav.png">
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Hóa Đơn Giao Dịch</title>
+  <title>Chi tiết đơn hàng</title>
   <style>
     * {
       box-sizing: border-box;
@@ -19,21 +19,24 @@
       align-items: flex-start;
       height: 100vh;
       padding-top: 30px;
+      overflow:hidden;
     }
+
     .container {
       width: 100%;
       max-width: 800px;
-      padding: 20px;
+      padding: 8px;
       border: 1px solid #ddd;
       border-radius: 8px;
       background-color: white;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);\
     }
     h2 {
       text-align: center;
       color: #333;
-      margin-bottom: 20px;
+      margin-bottom: 1px;
       font-size: 24px;
+      margin-top:10px;
     }
     .info-group {
       display: flex;
@@ -92,6 +95,21 @@
       font-size: 14px;
       color: #888;
     }
+
+    .back-button {
+      display: inline-block;
+      margin-top: 20px;
+      padding: 10px 20px;
+      background-color: #007bff;
+      color: white;
+      text-decoration: none;
+      border-radius: 5px;
+      font-weight: bold;
+      text-align: center;
+    }
+    .back-button:hover {
+      background-color: #0056b3;
+    }
   </style>
 </head>
 <body>
@@ -106,7 +124,7 @@
   </div>
   <div class="info-group">
     <label>Tên khách hàng:</label>
-    <div class="info">Nguyễn Văn A</div>
+    <div class="info">Võ Lê Như Quỳnh</div>
   </div>
   <div class="info-group">
     <label>Số điện thoại:</label>
@@ -114,7 +132,7 @@
   </div>
   <div class="info-group">
     <label>Địa chỉ nhận hàng:</label>
-    <div class="info">123 Đường ABC, Phường XYZ, TP. Hồ Chí Minh</div>
+    <div class="info">123 Đường ABC, Phường DHT, Quận 12, TP. Hồ Chí Minh</div>
   </div>
   <div class="info-group">
     <label>Phương thức thanh toán:</label>
@@ -125,35 +143,33 @@
     <div class="info">26/11/2024</div>
   </div>
 
-  <!-- Thêm địa chỉ giao hàng -->
-  <div class="info-group">
-    <label>Địa chỉ giao hàng:</label>
-    <div class="info">123 Đường ABC, Phường XYZ, TP. Hồ Chí Minh</div>
-  </div>
-
+  <!-- Sản phẩm và số lượng -->
   <!-- Sản phẩm và số lượng -->
   <div class="product-info">
     <label>Sản phẩm và số lượng:</label>
     <div class="info">
       <span>Addidas New Hammer Sole For Sports Person</span>
       <span>Số lượng: 2</span>
+      <span>Đơn giá: 500,000 VND</span>
     </div>
     <div class="info">
       <span>Addidas New Hammer Sole For Sports Person</span>
-      <span>Số lượng: 5</span>
+      <span>Số lượng: 3</span>
+      <span>Đơn giá: 200,000 VND</span>
     </div>
   </div>
 
   <!-- Giá tiền thanh toán -->
   <div class="total-info">
     <span>Tổng tiền:</span>
-    <span>1,500,000 VND</span>
+    <span>1,600,000 VND</span>
   </div>
 
   <div class="footer">
-    <!-- Cảm ơn quý khách đã sử dụng dịch vụ đã bị xóa -->
+    <a href="ManageCustomerOrder.html" class="back-button">Quay về</a>
   </div>
 </div>
+
 
 </body>
 </html>
