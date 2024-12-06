@@ -383,3 +383,96 @@ h1 {
     background-color: #007bff; /* Màu nền khi nhấn */
     transform: scale(1); /* Giảm hiệu ứng phóng to */
 }
+/* Bộ lọc */
+.filter-container {
+    margin: 20px 0;
+    padding: 10px;
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: center; /* Căn giữa theo chiều ngang */
+    align-items: center; /* Căn giữa theo chiều dọc */
+}
+
+    .filter-container form {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 20px;
+        justify-content: center; /* Căn giữa form */
+    }
+
+.filter-category,
+.filter-name {
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Căn giữa nội dung theo chiều ngang */
+}
+
+    .filter-category input,
+    .filter-name input {
+        width: 450px; /* Tăng chiều rộng */
+        height: 40px; /* Tăng chiều cao */
+        padding: 10px; /* Thêm khoảng cách bên trong */
+        font-size: 16px; /* Tăng kích thước chữ */
+        border: 1px solid #ccc;
+        border-radius: 5px;
+    }
+
+    .filter-category select,
+    .filter-name select {
+        width: 300px;
+        height: 40px;
+        padding: 10px;
+        font-size: 16px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+    }
+
+
+    .filter-category label,
+    .filter-name label {
+        margin-bottom: 5px;
+        font-weight: bold;
+    }
+
+.filter-actions {
+    display: flex;
+    align-items: center;
+    justify-content: center; /* Căn giữa nội dung của filter-actions */
+    position: relative;
+    width: 100%;
+}
+button {
+    padding: 8px 16px;
+    background-color: #2c3e50;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    position: absolute;
+    bottom: 10px; /* Cách đáy 10px */
+    right: 10px; /* Cách phải 10px */
+}
+
+button:hover {
+    background-color: #34495e;
+}
+
+.filter-btn {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #4CAF50;
+    color: white;
+    text-align: center;
+    text-decoration: none;
+    border-radius: 5px;
+    font-size: 16px;
+}
+
+.filter-btn:hover {
+    background-color: #45a049;
+}
