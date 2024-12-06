@@ -75,128 +75,33 @@
             background-color: #34495e;
         }
 
-        /* Main Content */
-        .main-content {
-            flex: 1;
-            padding: 20px;
-            background-color: #ecf0f1;
-        }
-
-        .main-content h1 {
-            font-size: 28px;
-            margin-bottom: 20px;
-        }
-
-        /* Dashboard Cards */
-        .dashboard {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 20px;
-        }
-
-        .card {
-            flex: 1 1 calc(20% - 20px);
-            background-color: white;
-            border: 1px solid #ddd;
-            border-radius: 8px;
-            padding: 15px;
-            box-shadow: 0 2px 4px
-        }
-        /* Đặt dropdown là relative để menu con hiển thị đúng vị trí */
-        .dropdown {
-            position: relative;
-        }
-
-        /* Menu con bị ẩn mặc định */
-        .dropdown-menu {
-            display: none;
-            position: absolute;
-            top: 100%;
-            left: 0;
-            background-color: #34495e;
-            list-style: none;
-            margin: 0;
-            padding: 0;
-            border-radius: 5px;
-            z-index: 10;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
-        }
-
-        /* Các mục trong menu con */
-        .dropdown-menu li {
-            margin: 0;
-        }
-
-        .dropdown-menu li a {
-            display: block;
-            padding: 10px 20px;
-            color: white;
-            text-decoration: none;
-            border-bottom: 1px solid #2c3e50;
-            transition: background 0.3s;
-        }
-
-        .dropdown-menu li a:hover {
-            background-color: #2c3e50;
-        }
-
-        /* Hiển thị menu con khi di chuột vào dropdown */
-        .dropdown:hover .dropdown-menu {
-            display: block;
-        }
         body {
             font-family: 'Poppins', sans-serif;
-            background-color: #e3f2fd;
+            background: linear-gradient(135deg, #afefe1, #f4ddab);
             margin: 0;
             padding: 0;
             color: #333;
         }
 
-
-        .dashboard-container {
-            width: 80%;
-            margin: 20px auto;
+        .admin-container {
+            display: flex;
+            min-height: 100vh;
+        }
+        /* Main Content */
+        .main-content {
+            flex: 1;
             padding: 20px;
-            background: linear-gradient(135deg,#FFFAFA, #FFFAFA);
-            border-radius: 12px;
-            box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
-        }
-
-        h3 {
-            margin-top: 0;
-            color: #1976d2;
-            border-bottom: 2px solid #1976d2;
-            padding-bottom: 5px;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            text-align: center;
-            background-color#FFFAFA;
-            border-radius: 8px;
-            padding: 10px;
-        }
-
-        .back-button {
-            display: inline-block;
-            margin-bottom: 20px;
-            padding: 8px 15px;
-            background-color: #0277bd;
-            color: #fff;
-            text-decoration: none;
-            border-radius: 5px;
-            font-size: 14px;
-        }
-
-        .back-button:hover {
-            background-color: #01579b;
+            background-color: #d2dde6;
         }
 
         table {
-            width: 100%;
+            width: 225%;
             border-collapse: collapse;
-            margin-top: 10px;
+            margin-top: 100px;
             background-color: #fff;
             border-radius: 8px;
-            overflow: auto;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         }
 
         table, th, td {
@@ -204,112 +109,68 @@
         }
 
         th, td {
-            padding: 15px;
+            padding: 40px;
             text-align: center;
+            font-size: 14px;
         }
-  table tr{
-      height: 100px;
-  }
+
         th {
-            background-color: #1565c0;
-            color: #fff;
+            background-color: #343a40; /* Màu nền tiêu đề */
+            color: #fff; /* Màu chữ tiêu đề */
             text-transform: uppercase;
+            font-weight: 500;
             height: 50px;
         }
 
-        tr:nth-child(even) td {
-            background-color: rgba(230, 247, 255, 0.9);
+        tr {
+            height: 140 px;
         }
 
-        tr:nth-child(odd) td {
-            background-color: rgba(255, 255, 230, 0.9);
+        tr td {
+            background-color: #fff; /* Loại bỏ màu vàng xanh */
         }
 
+        /* Hover effect giữ nguyên */
         tr:hover td {
-            background-color: #e1f5fe;
+            background-color: #e9ecef; /* Màu nền khi hover */
+            color: #212529;
+            cursor: pointer;
         }
 
-        .highlight {
-            background-color: #b3e5fc;
+        /* Căn giữa 3 hàng cuối */
+        tfoot td {
+            text-align: center;
             font-weight: bold;
-            color: #333;
-            border-left: 4px solid #039be5;
-        }
-
-        .total-revenue {
-            font-weight: bold;
+            font-size: 16px;
             color: #388e3c;
-            font-size: 1.2em;
-            text-align: right;
-            margin-top: 20px;
         }
 
-        footer {
-            background-color: #333;
-            padding: 10px;
-            color: #fff;
-            text-align: center;
-            font-size: 0.9em;
-            position: fixed;
-            bottom: 0;
-            width: 100%;
-            box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1);
-        }
-
-        .view-details-btn {
-            background-color: #0288d1;
-            color: white;
-            padding: 5px 15px;
-            border-radius: 5px;
-            text-decoration: none;
-            font-size: 14px;
-            text-align: center;
-            margin-left: 10px;
-        }
-
-        .view-details-btn:hover {
-            background-color: #0277bd;
-        }
-        h1 {
-            text-align: center;
-        }
     </style>
 </head>
 <body>
-<header style="background-color: rgba(214,61,61,0.9); color: #0b0b0b; padding: 20px 40px; display: flex; align-items: center; justify-content: space-between; font-size: 28px; border-bottom: 5px solid #0b0b0b;">
-  <!-- Logo bên trái -->
-  <div style="flex: 0; display: flex; align-items: center;">
-    <img src="img/fav.png" alt="Karma Logo" style="width: 60px; height: 60px; border-radius: 50%; margin-right: 20px;">
-    <h1 style="margin: 0; font-size: 20px;">Karma Shop</h1>
-  </div>
-
-  <!-- Phần menu bên phải -->
-  <nav style="flex: 1;text-align: center">
-    <ul style="list-style: none; display: flex; justify-content: right; margin: 0; padding: 0;">
-      <li style="margin: 0 20px;"><a href="#home" style="color: #0b0b0b; text-decoration: none; font-size: 22px;">Admin</a></li>
-      <li style="margin: 0 20px;"><a href="#logout" style="color: #0b0b0b; text-decoration: none; font-size: 22px;">Đăng xuất</a></li>
-    </ul>
-  </nav>
-</header>
 
 <div class="admin-container">
-  <!-- Sidebar -->
-  <div class="sidebar">
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <div class="logo-header">
+            <img src="img/fav.png" alt="Admin Logo">
+            <h2>Karma Shop</h2>
+        </div>
+        <ul>
+            <li><a href="admin.html">Trang chủ</a></li>
+            <li><a href="managerp.html">Quản lí sản phẩm</a></li>
+            <li><a href="manager-user.html">Quản lí người dùng</a></li>
+            <li><a href="ManageCustomerOrder.html">Quản lí đơn hàng</a></li>
+            <li class="dropdown">
+                <a href="#statistics">Thống kê</a>
+                <ul class="dropdown-menu">
+                    <li><a href="static.html">Sản phẩm</a></li>
+                    <li><a href="static2.html">Người dùng</a></li>
+                </ul>
+            </li>
 
-    <ul>
-      <li><a href="#home">Trang chủ</a></li>
-      <li><a href="managerp.html">Quản lí sản phẩm</a></li>
-      <li><a href="manager-user.html">Quản lí người dùng</a></li>
-      <li><a href="ManageCustomerOrder.html">Quản lí đơn hàng</a></li>
-      <li class="dropdown">
-        <a href="#statistics">Thống kê</a>
-        <ul class="dropdown-menu">
-          <li><a href="static.html">Sản phẩm</a></li>
-          <li><a href="static2.html">Người dùng</a></li>
         </ul>
-      </li>
-    </ul>
-  </div>
+    </div>
     <div class="dashboard-container">
         <h1>Thống kê sản phẩm</h1>
         <table>
