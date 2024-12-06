@@ -1503,6 +1503,9 @@ h1, h2, h3, h4, h5, h6 {
     right: 28%; } }
 
 .single-product {
+    border: 1px solid #ccc; /* Thêm viền xung quanh sản phẩm */
+  padding: 3px; /* Thêm một chút khoảng cách bên trong viền */
+  border-radius: 10px; /* Tùy chọn làm tròn các góc của viền */
   margin-bottom: 50px; }
 .single-product img {
   margin-bottom: 20px;
