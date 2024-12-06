@@ -176,7 +176,7 @@ table {
     margin-top: 10px;
     background-color: #fff;
     border-radius: 8px;
-    overflow: hidden;
+    overflow: auto;
 }
 
 table, th, td {
