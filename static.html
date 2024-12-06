@@ -157,7 +157,7 @@
             width: 80%;
             margin: 20px auto;
             padding: 20px;
-            background: linear-gradient(135deg, #ffffff, #b3e5fc);
+            background: linear-gradient(135deg,#FFFAFA, #FFFAFA);
             border-radius: 12px;
             box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
         }
@@ -170,7 +170,7 @@
             text-transform: uppercase;
             letter-spacing: 1px;
             text-align: center;
-            background-color: #bbdefb;
+            background-color#FFFAFA;
             border-radius: 8px;
             padding: 10px;
         }
@@ -205,13 +205,16 @@
 
         th, td {
             padding: 15px;
-            text-align: left;
+            text-align: center;
         }
-
+  table tr{
+      height: 100px;
+  }
         th {
             background-color: #1565c0;
             color: #fff;
             text-transform: uppercase;
+            height: 50px;
         }
 
         tr:nth-child(even) td {
@@ -237,18 +240,8 @@
             font-weight: bold;
             color: #388e3c;
             font-size: 1.2em;
-            text-align: center;
+            text-align: right;
             margin-top: 20px;
-        }
-
-        .most-sold, .least-sold {
-            font-style: italic;
-            color: #039be5;
-            text-align: center;
-            font-size: 1.1em;
-            padding: 5px;
-            background-color: #e1f5fe;
-            border-radius: 4px;
         }
 
         footer {
@@ -306,15 +299,14 @@
         </ul>
     </div>
     <div class="dashboard-container">
-        <h1>Thống kê sản phẩm của cửa hàng</h1>
-        <h3>Thống Kê Bán Hàng</h3>
+        <h1>Thống kê sản phẩm</h1>
         <table>
             <thead>
             <tr>
                 <th>Sản phẩm</th>
                 <th>Số lượng bán</th>
                 <th>Tổng doanh thu (VND)</th>
-                <th></th>
+                <th>Hành Động</th>
             </tr>
             </thead>
             <tbody>
@@ -324,7 +316,7 @@
                 <td>3,600,000</td>
                 <td><a href="thongkesanphambanduoc.html" class="view-details-btn">Xem chi tiết</a></td>
             </tr>
-            <tr class="highlight">
+            <tr >
                 <td>Giày Addidas New Hammer Sole For Sports Person</td>
                 <td>8</td>
                 <td>4,000,000</td>
@@ -339,8 +331,8 @@
             </tbody>
         </table>
         <p class="total-revenue">Tổng doanh thu: 9,100,000 VND</p>
-        <p class="most-sold">Sản phẩm bán chạy nhất: Giày Addidas New Hammer Sole For Sports Person</p>
-        <p class="least-sold">Sản phẩm bán ít nhất: Giày Addidas New Hammer Sole For Sports Person</p>
+        <p></p><strong class="most-sold">Sản phẩm bán chạy nhất: Giày Addidas New Hammer Sole For Sports Person</strong></p>
+        <strong class="least-sold">Sản phẩm bán ít nhất: Giày Addidas New Hammer Sole For Sports Person</strong>
 
     </div>
 
