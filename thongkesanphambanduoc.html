@@ -7,90 +7,99 @@
   <title>Danh Sách Hàng Đã Mua</title>
   <style>
     body {
-      font-family: 'Arial', sans-serif;
+      font-family: 'Poppins', sans-serif;
       margin: 0;
       padding: 0;
-      background-color: #ffffff; /* Màu nền trắng */
+      background-color: #f9f9f9; /* Nền xám nhạt */
+      color: #333333;
       display: flex;
       flex-direction: column;
       align-items: center;
-      padding-top: 20px;
-      color: #000000; /* Màu chữ đen */
+      padding: 20px;
     }
     h1 {
-      color: #000000; /* Màu chữ đen */
-      font-size: 36px;
-      margin-bottom: 30px;
+      color: #2c3e50; /* Xanh đậm */
+      font-size: 42px;
+      margin-bottom: 40px;
+      text-transform: uppercase;
+      font-weight: 700;
     }
     table {
       width: 90%;
       max-width: 1200px;
-      border-collapse: collapse;
-      margin-bottom: 30px;
-      background-color: #ffffff; /* Màu nền bảng trắng */
+      border-collapse: separate;
+      border-spacing: 0;
+      margin-bottom: 40px;
+      background-color: #ffffff; /* Nền bảng trắng */
       border-radius: 12px;
-      overflow: hidden;
-      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
     }
     thead {
-      background-color: #000000; /* Màu nền header đen */
+      background-color: #51caa7; /* Xanh ngọc */
       color: white;
       text-transform: uppercase;
-      letter-spacing: 1px;
       font-size: 16px;
+      font-weight: 600;
     }
     th, td {
       padding: 20px;
       text-align: left;
-      border: 1px solid #ddd;
     }
     th {
-      font-weight: bold;
+      border-top-left-radius: 12px;
+      border-top-right-radius: 12px;
+    }
+    tbody tr {
+      transition: background-color 0.3s;
     }
     tbody tr:nth-child(even) {
-      background-color: #f0f0f0; /* Màu nền dòng chẵn */
+      background-color: #f8f8f8; /* Xám nhạt */
     }
     tbody tr:nth-child(odd) {
-      background-color: #ffffff; /* Màu nền dòng lẻ */
+      background-color: #ffffff;
     }
     tbody tr:hover {
-      background-color: #ecf0f1;
-      cursor: pointer;
+      background-color: #eafaf1; /* Xanh nhạt */
     }
     td a.details-button {
       display: inline-block;
-      padding: 10px 20px;
-      background-color: #000000; /* Nút đen */
+      padding: 10px 25px;
+      background-color: #86aaa0; /* Xanh ngọc */
       color: white;
       text-decoration: none;
-      border-radius: 6px;
+      border-radius: 8px;
       font-size: 14px;
+      font-weight: 500;
       text-align: center;
-      transition: background-color 0.3s;
+      transition: all 0.3s;
     }
     td a.details-button:hover {
-      background-color: #333333; /* Nút đen khi hover */
+      background-color: #1c1414; /* Xanh ngọc đậm hơn */
+      transform: translateY(-3px);
+      box-shadow: 0 4px 10px rgba(12, 11, 11, 0.2);
     }
     .footer {
       text-align: center;
-      padding: 10px;
+      padding: 15px;
       font-size: 14px;
       color: #7f8c8d;
-      margin-top: 30px;
+      margin-top: 40px;
     }
     .back-button {
-      padding: 10px 20px;
-      background-color: #000000;
+      padding: 12px 30px;
+      background-color: #51caa7;
       color: white;
-      border-radius: 6px;
+      border-radius: 8px;
       text-decoration: none;
-      font-size: 14px;
+      font-size: 16px;
+      font-weight: 600;
       text-align: center;
-      margin-top: 20px;
-      transition: background-color 0.3s;
+      transition: all 0.3s;
     }
     .back-button:hover {
-      background-color: #333333;
+      background-color: #16a085;
+      transform: translateY(-3px);
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
     }
   </style>
 </head>
