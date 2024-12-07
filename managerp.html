@@ -370,6 +370,31 @@
       background-color: #e1f5fe;
     }
 
+    /* Kiểu dáng cơ bản cho nút */
+    .btn-link {
+      display: inline-block;
+      padding: 10px 20px;
+      background-color: #007bff; /* Màu xanh dương */
+      color: white; /* Màu chữ */
+      text-decoration: none; /* Bỏ gạch chân */
+      border-radius: 5px; /* Bo góc */
+      font-size: 16px; /* Kích thước chữ */
+      font-family: Arial, sans-serif;
+      text-align: center;
+      transition: background-color 0.3s ease, transform 0.2s ease; /* Hiệu ứng */
+    }
+
+    /* Hiệu ứng khi di chuột */
+    .btn-link:hover {
+      background-color: #0056b3; /* Màu xanh đậm hơn */
+      transform: scale(1.05); /* Phóng to nhẹ */
+    }
+
+    /* Thêm hiệu ứng khi nhấn */
+    .btn-link:active {
+      background-color: #004080; /* Màu xanh tối */
+      transform: scale(0.95); /* Nhỏ lại nhẹ */
+    }
 
 
 
@@ -395,10 +420,6 @@
 </header>
 <div class="admin-container">
   <div class="sidebar">
-    <div class="logo-header">
-      <img src="img/fav.png" alt="Admin Logo">
-      <h2>Karma Shop</h2>
-    </div>
     <ul>
       <li><a href="admin.html">Trang chủ</a></li>
       <li><a href="managerp.html">Quản lí sản phẩm</a></li>
@@ -447,6 +468,7 @@
           </div>
         </form>
       </div>
+      <a href="add-product.html" class="btn-link">Thêm</a>
       <h2>Danh sách sản phẩm:</h2>
       <table class="table table-bordered">
         <thead>
