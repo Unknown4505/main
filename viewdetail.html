@@ -1,128 +1,250 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="vi">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login Page</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: #f2f2f2;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh; /* Full viewport height */
-            flex-direction: column; /* Ensure the header stays at the top */
-        }
-        .login-container {
-            background-color: #ffffff;
-            border: 1px solid #ccc;
-            border-radius: 8px;
-            padding: 20px 30px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            width: 300px;
-            text-align: center;
-        }
-        .login-container h2 {
-            margin-bottom: 20px;
-            color: #333;
-        }
-        .login-container label {
-            display: block;
-            margin-bottom: 8px;
-            color: #555;
-        }
-        .login-container input {
-            width: 100%;
-            padding: 10px;
-            margin-bottom: 15px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-            font-size: 14px;
-        }
-        .login-container button {
-            width: 100%;
-            padding: 10px;
-            background-color: #666;
-            color: #fff;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            font-size: 16px;
-        }
-        .login-container button:hover {
-            background-color: #555;
-        }
-        header {
-            background-color: rgb(255,255,255);
-            color: #0b0b0b;
-            padding: 20px 40px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            font-size: 28px;
-            border-bottom: 5px solid #0b0b0b;
-            width: 100%;
-            position: fixed;
-            top: 0;
-            left: 0;
-            z-index: 1000; /* Keep header above content */
-        }
-        header .logo {
-            display: flex;
-            align-items: center;
-        }
-        header .logo img {
-            width: 60px;
-            height: 60px;
-            border-radius: 50%;
-            margin-right: 20px;
-        }
-        nav ul {
-            list-style: none;
-            display: flex;
-            justify-content: right;
-            margin: 0;
-            padding: 0;
-        }
-        nav ul li {
-            margin: 0 20px;
-        }
-        nav ul li a {
-            color: #0b0b0b;
-            text-decoration: none;
-            font-size: 22px;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chi Tiết Đơn Hàng</title>
+  <style>
+    /* ======= HEADER CSS ======= */
+    header {
+      background-color: rgb(255, 255, 255);
+      color: #0b0b0b;
+      padding: 20px 40px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 28px;
+      border-bottom: 5px solid #0b0b0b;
+    }
+
+    header img {
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      margin-right: 20px;
+    }
+
+    nav ul {
+      list-style: none;
+      display: flex;
+      justify-content: right;
+      margin: 0;
+      padding: 0;
+    }
+
+    nav ul li {
+      margin: 0 20px;
+    }
+
+    nav ul li a {
+      color: #0b0b0b;
+      text-decoration: none;
+      font-size: 22px;
+    }
+
+    /* ======= SIDEBAR CSS ======= */
+    .sidebar {
+      width: 15%;
+      background-color: #232323;
+      color: white;
+      padding: 20px 15px;
+      position: fixed;
+      height: 100%;
+    }
+
+    .sidebar ul {
+      list-style: none;
+      padding: 0;
+    }
+
+    .sidebar ul li {
+      margin: 15px 0;
+    }
+
+    .sidebar ul li a {
+      color: white;
+      text-decoration: none;
+      font-size: 18px;
+      display: block;
+      padding: 10px;
+      border-radius: 5px;
+      transition: background 0.3s;
+    }
+
+    .sidebar ul li a:hover {
+      background-color: #34495e;
+    }
+
+    .dropdown-menu {
+      display: none;
+      position: absolute;
+      top: 100%;
+      left: 0;
+      background-color: #34495e;
+      list-style: none;
+      padding: 0;
+      border-radius: 5px;
+      z-index: 10;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+    }
+
+    .dropdown-menu li a {
+      padding: 10px 20px;
+      color: white;
+      text-decoration: none;
+      display: block;
+    }
+
+    .dropdown:hover .dropdown-menu {
+      display: block;
+    }
+
+    /* ======= CONTENT CSS ======= */
+    .container {
+      margin-left: 24.6%;
+      padding: 20px;
+      background-color: #fff;
+      border: 1px solid #ddd;
+      border-radius: 10px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      max-width: 1000px;
+    }
+
+    h2 {
+      font-size: 24px;
+      margin-bottom: 20px;
+      color: #333;
+      text-align: center;
+    }
+
+    .info-group, .product-info, .total-info {
+      margin-bottom: 15px;
+    }
+
+    .info-group label, .product-info label {
+      font-weight: bold;
+      color: #555;
+    }
+
+    .info {
+      margin-left=: 10px;
+      color: #333;
+    }
+
+    .product-item {
+      display: flex;
+      justify-content: space-between;
+      margin: 10px 0;
+      padding: 10px;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      background-color: #f9f9f9;
+    }
+
+    .product-name {
+      flex: 2;
+    }
+
+    .product-quantity, .product-price {
+      flex: 1;
+      text-align: right;
+    }
+
+    .total-info {
+      display: flex;
+      justify-content: space-between;
+      font-size: 18px;
+      font-weight: bold;
+      padding: 10px 0;
+
+    }
+  </style>
 </head>
 <body>
-<header style="background-color: rgb(255,255,255); color: #0b0b0b; padding: 20px 40px; display: flex; align-items: center; justify-content: space-between; font-size: 28px; border-bottom: 5px solid #0b0b0b;width: 95%">
-    <!-- Logo bên trái -->
-    <div style="flex: 0; display: flex; align-items: center;">
-        <img src="img/fav.png" alt="Karma Logo" style="width: 60px; height: 60px; border-radius: 50%; margin-right: 20px;">
-        <h1 style="margin: 0; font-size: 20px;">Karma Shop</h1>
-    </div>
 
-    <!-- Phần menu bên phải -->
-    <nav style="flex: 1;text-align: center">
-        <ul style="list-style: none; display: flex; justify-content: right; margin: 0; padding: 0;">
-            <li style="margin: 0 20px;"><a href="#" style="color: #0b0b0b; text-decoration: none; font-size: 22px;">Admin</a></li>
-        </ul>
-    </nav>
+<!-- ======= HEADER ======= -->
+<header>
+  <div style="flex: 0; display: flex; align-items: center;">
+    <img src="img/fav.png" alt="Karma Logo">
+    <h1 style="margin: 0; font-size: 20px;">Karma Shop</h1>
+  </div>
+
+  <nav style="flex: 1;text-align: center">
+    <ul>
+      <li><a href="#amin.html">Admin</a></li>
+      <li style="margin: 0 20px;"><a href="dangxuatadmin.html" style="color: #0b0b0b; text-decoration: none; font-size: 22px;">Đăng xuất</a></li>
+    </ul>
+  </nav>
 </header>
-<div class="login-container">
-    <h2>Đăng Nhập</h2>
-    <form action="admin.html" method="GET">
-        <label for="username">Tài Khoản</label>
-        <input type="text" id="username" name="username" placeholder="Nhập tài khoản">
-        <label for="password">Mật Khẩu</label>
-        <input type="password" id="password" name="password" placeholder="Nhập mật khẩu">
-        <button type="submit">Đăng Nhập</button>
-    </form>
+
+<!-- ======= SIDEBAR ======= -->
+<div class="sidebar">
+  <ul>
+    <li><a href="admin.html">Trang chủ</a></li>
+    <li><a href="managerp.html">Quản lí sản phẩm</a></li>
+    <li><a href="manager-user.html">Quản lí người dùng</a></li>
+    <li><a href="ManageCustomerOrder.html">Quản lí đơn hàng</a></li>
+    <li class="dropdown">
+      <a href="#statistics">Thống kê</a>
+      <ul class="dropdown-menu">
+        <li><a href="static.html">Sản phẩm</a></li>
+        <li><a href="static2.html">Người dùng</a></li>
+      </ul>
+    </li>
+  </ul>
 </div>
 
+<!-- ======= NỘI DUNG CHI TIẾT ĐƠN HÀNG ======= -->
+<div class="container">
+  <h2>Chi Tiết Đơn Hàng</h2>
+
+  <!-- Thông tin khách hàng -->
+  <div class="info-group">
+    <label>Mã đơn hàng:</label>
+    <div class="info">OD001</div>
+  </div>
+  <div class="info-group">
+    <label>Tên khách hàng:</label>
+    <div class="info">Võ Lê Như Quỳnh</div>
+  </div>
+  <div class="info-group">
+    <label>Số điện thoại:</label>
+    <div class="info">0123456789</div>
+  </div>
+  <div class="info-group">
+    <label>Địa chỉ nhận hàng:</label>
+    <div class="info">123 Đường ABC, Phường DHT, Quận 12, TP. Hồ Chí Minh</div>
+  </div>
+  <div class="info-group">
+    <label>Phương thức thanh toán:</label>
+    <div class="info">Thanh toán khi nhận hàng</div>
+  </div>
+  <div class="info-group">
+    <label>Ngày đặt hàng:</label>
+    <div class="info">26/11/2024</div>
+  </div>
+
+  <!-- Sản phẩm và số lượng -->
+  <div class="product-info">
+    <label>Sản phẩm và số lượng:</label>
+    <div class="product-item">
+      <span class="product-name">Adidas New Hammer Sole</span>
+      <span class="product-quantity">Số lượng: 2</span>
+      <span class="product-price">Đơn giá: 500,000 VND</span>
+    </div>
+    <div class="product-item">
+      <span class="product-name">Adidas New Hammer Sole</span>
+      <span class="product-quantity">Số lượng: 3</span>
+      <span class="product-price">Đơn giá: 200,000 VND</span>
+    </div>
+  </div>
+
+  <!-- Giá tiền thanh toán -->
+  <div class="total-info">
+    <span>Tổng tiền:</span>
+    <span>1,600,000 VND</span>
+  </div>
+</div>
 
 </body>
 </html>
