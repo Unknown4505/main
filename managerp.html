@@ -21,17 +21,67 @@
   <link rel="stylesheet" href="css/search.css">
   <style>
     .admin-container { display: flex; min-height: 100vh; }
-    .sidebar { width: 250px; background-color: #2c2c2c; color: white; padding: 20px 15px; }
+    .sidebar { width: 250px; background-color: #2c3e50; color: white; padding: 20px 15px; }
     .sidebar ul { list-style: none; padding: 0; }
     .sidebar ul li a { color: white; text-decoration: none; font-size: 18px; padding: 10px; display: block; border-radius: 5px; }
     .sidebar ul li a:hover { background-color: #34495e; }
     .dropdown-menu { display: none; position: absolute; top: 100%; left: 0; background-color: #34495e; }
     .dropdown:hover .dropdown-menu { display: block; }
-    .modal { display: none; position: fixed; z-index: 1; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.4); }
-    .modal-content { background-color: #fefefe; padding: 20px; width: 300px; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); text-align: center; }
-    .modal-buttons { margin-top: 20px; }
-    .modal-buttons .btn { padding: 10px 20px; margin: 10px; cursor: pointer; background-color: #000000; border: none; font-size: 16px; }
-    .modal-buttons .btn:hover { background-color: #000000; }
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 1;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.4);
+    }
+
+    .modal-content {
+      background-color: #fefefe;
+      padding: 20px;
+      width: 600px; /* Giảm kích thước width của modal */
+      height: 200px; /* Điều chỉnh chiều cao tự động */
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      text-align: center;
+      border-radius: 5px; /* Thêm border-radius để góc tròn */
+    }
+    .modal-buttons {
+      display: flex;
+      justify-content: center; /* Đảm bảo cụm nút nằm ở giữa */
+      align-items: center; /* Căn chỉnh theo trục dọc nếu cần */
+      margin-top: 20px;
+      gap: 20px; /* Khoảng cách giữa các nút */
+    }
+
+    .modal-buttons .btn {
+      padding: 10px 20px;
+      cursor: pointer;
+      background-color: #4CAF50; /* Màu xanh lá cho nút "Xác nhận" */
+      color: white;
+      border: none;
+      border-radius: 4px;
+      font-size: 16px;
+      transition: background-color 0.3s ease;
+    }
+
+    .modal-buttons .btn:hover {
+      background-color: #45a049; /* Màu xanh đậm hơn khi hover */
+    }
+
+    .modal-buttons .btn:nth-child(2) {
+      background-color: #f44336; /* Màu đỏ cho nút "Hủy" */
+    }
+
+    .modal-buttons .btn:nth-child(2):hover {
+      background-color: #d32f2f; /* Màu đỏ đậm hơn khi hover */
+    }
+
+
     .dropdown { position: relative; }
     /* Admin Container */
     .admin-container {
@@ -41,8 +91,8 @@
 
     /* Sidebar */
     .sidebar {
-      width: 10%;
-      background-color: #232323;
+      width: 250px;
+      background-color: #2c3e50;
       color: white;
       padding: 20px 15px;
     }
@@ -88,7 +138,13 @@
     .sidebar ul li a:hover {
       background-color: #34495e;
     }
-
+    body {
+      font-family: 'Poppins', sans-serif;
+      background-color: #FFFAFA;
+      margin: 0;
+      padding: 0;
+      color: #333;
+    }
     /* Main Content */
     .main-content {
       flex: 1;
@@ -194,20 +250,44 @@
       display: flex;
       flex-wrap: wrap;
       gap: 20px;
-      justify-content: space-between;
+      justify-content: center; /* Căn giữa theo chiều ngang */
+      align-items: center; /* Căn giữa theo chiều dọc */
     }
 
     .filter-container form {
       display: flex;
       flex-wrap: wrap;
       gap: 20px;
+      justify-content: center; /* Căn giữa form */
     }
 
     .filter-category,
     .filter-name {
       display: flex;
       flex-direction: column;
+      align-items: center; /* Căn giữa nội dung theo chiều ngang */
+
     }
+    .filter-category input,
+    .filter-name input {
+      width: 450px; /* Tăng chiều rộng */
+      height: 40px; /* Tăng chiều cao */
+      padding: 10px; /* Thêm khoảng cách bên trong */
+      font-size: 16px; /* Tăng kích thước chữ */
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+
+    .filter-category select,
+    .filter-name select {
+      width: 300px;
+      height: 40px;
+      padding: 10px;
+      font-size: 16px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+
 
     .filter-category label,
     .filter-name label {
@@ -218,7 +298,11 @@
     .filter-actions {
       display: flex;
       align-items: center;
+      justify-content: center; /* Căn giữa nội dung của filter-actions */
+      position: relative;
+      width: 100%;
     }
+
 
     button {
       padding: 8px 16px;
@@ -228,57 +312,111 @@
       border-radius: 4px;
       cursor: pointer;
       transition: background-color 0.3s;
+      position: absolute;
+      bottom: 10px; /* Cách đáy 10px */
+      right: 10px; /* Cách phải 10px */
     }
 
     button:hover {
       background-color: #34495e;
     }
 
-     .filter-btn {
-       display: inline-block;
-       padding: 10px 20px;
-       background-color: #4CAF50;
-       color: white;
-       text-align: center;
-       text-decoration: none;
-       border-radius: 5px;
-       font-size: 16px;
-     }
+    .filter-btn {
+      display: inline-block;
+      padding: 10px 20px;
+      background-color: #4CAF50;
+      color: white;
+      text-align: center;
+      text-decoration: none;
+      border-radius: 5px;
+      font-size: 16px;
+    }
 
     .filter-btn:hover {
       background-color: #45a049;
     }
+    .product-table {
+      margin-top: 20px;
+      margin-left:auto;
+      margin-right: auto;
+    }
 
 
+    .product-img {
+      width: 100px;
+      height: auto;
+      display: block;
+      margin: 0 auto;
+    }
+
+    .action-btn {
+      margin-right: 10px;
+      padding: 5px 10px;
+      color: white;
+      background-color: #007bff;
+      text-decoration: none;
+      border-radius: 5px;
+    }
+
+    .action-btn:hover {
+      background-color: #0b0b0b;
+    }
+    .table-container {
+      margin: 30px;
+      text-align: center;
+      width: 70%; /* Điều chỉnh theo ý muốn */
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 10px;
+      background-color: #fff;
+      border-radius: 8px;
+      overflow: hidden;
+    }
+
+    table, th, td {
+      border: 1px solid #ddd;
+    }
+
+    th, td {
+      padding: 15px;
+      text-align: center;
+      width: 200px;
+
+    }
+    table tr{
+      height: 100px;
+    }
+    th {
+      background-color: #1565c0;
+      color: #fff;
+      text-transform: uppercase;
+      height: 50px;
+    }
+
+    tr:nth-child(even) td {
+      background-color: rgba(230, 247, 255, 0.9);
+    }
+
+    tr:nth-child(odd) td {
+      background-color: rgba(255, 255, 230, 0.9);
+    }
+
+    tr:hover td {
+      background-color: #e1f5fe;
+    }
 
   </style>
 </head>
-
 <body>
-<header style="background-color: rgb(188,186,186); color: #0b0b0b; padding: 20px 40px; display: flex; align-items: center; justify-content: space-between; font-size: 28px; border-bottom: 5px solid #0b0b0b;">
-  <!-- Logo bên trái -->
-  <div style="flex: 0; display: flex; align-items: center;">
-    <img src="img/fav.png" alt="Karma Logo" style="width: 60px; height: 60px; border-radius: 50%; margin-right: 20px;">
-    <h1 style="margin: 0; font-size: 20px;">Karma Shop</h1>
-  </div>
-
-  <!-- Phần menu bên phải -->
-  <nav style="flex: 1;text-align: center">
-    <ul style="list-style: none; display: flex; justify-content: right; margin: 0; padding: 0;">
-      <li style="margin: 0 20px;"><a href="#home" style="color: #0b0b0b; text-decoration: none; font-size: 22px;">Admin</a></li>
-      <li style="margin: 0 20px;"><a href="dangxuatadmin.html" style="color: #0b0b0b; text-decoration: none; font-size: 22px;">Đăng xuất</a></li>
-    </ul>
-  </nav>
-</header>
-
-
-
-
-
 <div class="admin-container">
-  <!-- Sidebar -->
   <div class="sidebar">
-
+    <div class="logo-header">
+      <img src="img/fav.png" alt="Admin Logo">
+      <h2>Karma Shop</h2>
+    </div>
     <ul>
       <li><a href="admin.html">Trang chủ</a></li>
       <li><a href="managerp.html">Quản lí sản phẩm</a></li>
@@ -293,246 +431,148 @@
       </li>
     </ul>
   </div>
-  <section class="owl-carousel active-product-area section_gap">
-    <div class="single-product-slider">
-      <div class="container">
-        <div class="row justify-content-center">
-          <div class="col-lg-6 text-center">
-            <div class="section-title">
-              <h1>Quản lí sản phẩm</h1>
-            </div>
-            <!-- Bộ lọc -->
-            <div class="filter-container">
-              <form method="GET" action="your_backend_endpoint">
-                <!-- Lọc theo phân loại -->
-                <div class="filter-category">
-                  <label for="category">Phân loại:</label>
-                  <select id="category" name="category">
-                    <option value="all">Tất cả</option>
-                    <option value="electronics">Adidas</option>
-                    <option value="fashion">Nike</option>
-                    <option value="books">Vans</option>
-                  </select>
-                </div>
 
-                <!-- Lọc theo tên -->
-                <div class="filter-name">
-                  <label for="product-name">Tên sản phẩm:</label>
-                  <input type="text" id="product-name" name="product-name" placeholder="Nhập tên sản phẩm...">
-                </div>
-
-                <!-- Nút tìm kiếm -->
-                <div class="filter-actions">
-                  <a href="managerp.html" class="filter-btn">Lọc</a>
-                </div>
-              </form>
-            </div>
-            <div class="prd-bottom">
-              <a href="add-product.html" class="social-info">
-                <span class="icon">+</span>
-                <p class="hover-text">Thêm sản phẩm</p>
-              </a>
-            </div>
-          </div>
-        </div>
-        <div class="row">
-          <!-- Single Product -->
-          <div class="col-lg-3 col-md-6">
-            <div class="single-product">
-              <img class="img-fluid" src="img/product/jordan1.png" alt="">
-              <div class="product-details">
-                <h6>Giày Air Jordan Legacy</h6>
-                <div class="product-category">
-                  <span>Loại : Nike</span> <!-- Phân loại sản phẩm -->
-                </div>
-                <div class="price">
-                  <h6>2.500.000đ</h6>
-                  <h6 class="l-through">5.000.000đ</h6>
-                </div>
-                <div class="prd-bottom">
-                  <a href="#" class="social-info" onclick="openModal('confirmModal1')">
-                    <span class="icon">−</span>
-                    <p class="hover-text">Xóa sản phẩm</p>
-                  </a>
-                  <a href="edit-product.html" class="social-info">
-                    <span class="icon">↔</span>
-                    <p class="hover-text">Chỉnh sửa</p>
-                  </a>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="col-lg-3 col-md-6">
-            <div class="single-product">
-              <img class="img-fluid" src="img/product/jordan2.png" alt="">
-              <div class="product-details">
-                <h6>Giày Air Jordan Legacy</h6>
-                <div class="product-category">
-                  <span>Loại : Nike</span> <!-- Phân loại sản phẩm -->
-                </div>
-                <div class="price">
-                  <h6>2.500.000đ</h6>
-                  <h6 class="l-through">5.000.000đ</h6>
-                </div>
-                <div class="prd-bottom">
-                  <a href="#" class="social-info" onclick="openModal('confirmModal1')">
-                    <span class="icon">−</span>
-                    <p class="hover-text">Xóa sản phẩm</p>
-                  </a>
-                  <a href="edit-product.html" class="social-info">
-                    <span class="icon">↔</span>
-                    <p class="hover-text">Chỉnh sửa</p>
-                  </a>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="col-lg-3 col-md-6">
-            <div class="single-product">
-              <img class="img-fluid" src="img/product/jordan3.png" alt="">
-              <div class="product-details">
-                <h6>Giày Air Jordan Legacy</h6>
-                <div class="product-category">
-                  <span>Loại : Nike</span> <!-- Phân loại sản phẩm -->
-                </div>
-                <div class="price">
-                  <h6>2.500.000đ</h6>
-                  <h6 class="l-through">5.000.000đ</h6>
-                </div>
-                <div class="prd-bottom">
-                  <a href="#" class="social-info" onclick="openModal('confirmModal1')">
-                    <span class="icon">−</span>
-                    <p class="hover-text">Xóa sản phẩm</p>
-                  </a>
-                  <a href="edit-product.html" class="social-info">
-                    <span class="icon">↔</span>
-                    <p class="hover-text">Chỉnh sửa</p>
-                  </a>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="col-lg-3 col-md-6">
-            <div class="single-product">
-              <img class="img-fluid" src="img/product/jordan4.png" alt="">
-              <div class="product-details">
-                <h6>Giày Air Jordan Legacy</h6>
-                <div class="product-category">
-                  <span>Loại : Nike</span> <!-- Phân loại sản phẩm -->
-                </div>
-                <div class="price">
-                  <h6>2.500.000đ</h6>
-                  <h6 class="l-through">5.000.000đ</h6>
-                </div>
-                <div class="prd-bottom">
-                  <a href="#" class="social-info" onclick="openModal('confirmModal1')">
-                    <span class="icon">−</span>
-                    <p class="hover-text">Xóa sản phẩm</p>
-                  </a>
-                  <a href="edit-product.html" class="social-info">
-                    <span class="icon">↔</span>
-                    <p class="hover-text">Chỉnh sửa</p>
-                  </a>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="col-lg-3 col-md-6">
-            <div class="single-product">
-              <img class="img-fluid" src="img/product/jordan5.png" alt="">
-              <div class="product-details">
-                <h6>Giày Air Jordan Legacy</h6>
-                <div class="product-category">
-                  <span>Loại : Nike</span> <!-- Phân loại sản phẩm -->
-                </div>
-                <div class="price">
-                  <h6>2.500.000đ</h6>
-                  <h6 class="l-through">5.000.000đ</h6>
-                </div>
-                <div class="prd-bottom">
-                  <a href="#" class="social-info" onclick="openModal('confirmModal1')">
-                    <span class="icon">−</span>
-                    <p class="hover-text">Xóa sản phẩm</p>
-                  </a>
-                  <a href="edit-product.html" class="social-info">
-                    <span class="icon">↔</span>
-                    <p class="hover-text">Chỉnh sửa</p>
-                  </a>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="col-lg-3 col-md-6">
-            <div class="single-product">
-              <img class="img-fluid" src="img/product/jordan6.png" alt="">
-              <div class="product-details">
-                <h6>Giày Air Jordan Legacy</h6>
-                <div class="product-category">
-                  <span>Loại : Nike</span> <!-- Phân loại sản phẩm -->
-                </div>
-                <div class="price">
-                  <h6>2.500.000đ</h6>
-                  <h6 class="l-through">5.000.000đ</h6>
-                </div>
-                <div class="prd-bottom">
-                  <a href="#" class="social-info" onclick="openModal('confirmModal1')">
-                    <span class="icon">−</span>
-                    <p class="hover-text">Xóa sản phẩm</p>
-                  </a>
-                  <a href="edit-product.html" class="social-info">
-                    <span class="icon">↔</span>
-                    <p class="hover-text">Chỉnh sửa</p>
-                  </a>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <!-- The Modal for Deletion -->
-          <div id="confirmModal1" class="modal">
-            <div class="modal-content">
-              <p>Bạn có chắc chắn muốn xóa sản phẩm này?</p>
-              <div class="modal-buttons">
-                <button class="btn" onclick="confirmDelete('confirmModal1')">Có</button>
-                <button class="btn" onclick="closeModal('confirmModal1')">Không</button>
-              </div>
-            </div>
-          </div>
+  <section class="product-table section_gap">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-12 text-center">
+          <h1>Quản lý sản phẩm</h1>
         </div>
       </div>
-      <div class="pagination">
-        <a href="managerp.html">&laquo;</a>
-        <a href="managerp.html" class="active">1</a>
-        <a href="managerp.html">2</a>
-        <a href="managerp.html">3</a>
-        <a href="managerp.html">4</a>
-        <a href="managerp.html">5</a>
-        <a href="managerp.html">&raquo;</a>
-      </div>
+      <!-- Bộ lọc -->
+      <div class="filter-container">
+        <form method="GET" action="your_backend_endpoint">
+          <!-- Lọc theo phân loại -->
+          <div class="filter-category">
+            <label for="category">Phân loại:</label>
+            <select id="category" name="category">
+              <option value="all">Tất cả</option>
+              <option value="electronics">Adidas</option>
+              <option value="fashion">Nike</option>
+              <option value="books">Vans</option>
+            </select>
+          </div>
 
+          <!-- Lọc theo tên -->
+          <div class="filter-name">
+            <label for="product-name">Tên sản phẩm:</label>
+            <input type="text" id="product-name" name="product-name" placeholder="Nhập tên sản phẩm...">
+          </div>
+
+          <!-- Nút tìm kiếm -->
+          <div class="filter-actions">
+            <a href="managerp.html" class="filter-btn">Lọc</a>
+          </div>
+        </form>
+      </div>
+      <h2>Danh sách sản phẩm:</h2>
+      <table class="table table-bordered">
+        <thead>
+        <tr>
+          <th>STT</th>
+          <th>Tên sản phẩm</th>
+          <th>Hình ảnh</th>
+          <th>Giá</th>
+          <th>Số lượng</th>
+          <th>Hành động</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+          <td>1</td>
+          <td>Adidas New Hammer sole for Sports</td>
+          <td><img src="img/product/p1.jpg" alt="Sản phẩm 1" class="product-img"></td>
+          <td>2.500.000đ</td>
+          <td>10</td>
+          <td>
+            <a href="#" class="action-btn" onclick="openModal('confirmModal1')">Xóa</a>
+            <a href="edit-product.html" class="action-btn">Sửa</a>
+          </td>
+        </tr>
+        <tr>
+          <td>2</td>
+          <td>Adidas New Running Shoes</td>
+          <td><img src="img/product/p2.jpg" alt="Sản phẩm 2" class="product-img"></td>
+          <td>2.000.000đ</td>
+          <td>8</td>
+          <td>
+            <a href="#" class="action-btn" onclick="openModal('confirmModal1')">Xóa</a>
+            <a href="edit-product.html" class="action-btn">Sửa</a>
+          </td>
+        </tr>
+        <tr>
+          <td>3</td>
+          <td>Nike Air Max</td>
+          <td><img src="img/product/p3.jpg" alt="Sản phẩm 3" class="product-img"></td>
+          <td>3.000.000đ</td>
+          <td>12</td>
+          <td>
+            <a href="#" class="action-btn" onclick="openModal('confirmModal1')">Xóa</a>
+            <a href="edit-product.html" class="action-btn">Sửa</a>
+          </td>
+        </tr>
+        <tr>
+          <td>4</td>
+          <td>Vans Classic Old Skool</td>
+          <td><img src="img/product/p4.jpg" alt="Sản phẩm 4" class="product-img"></td>
+          <td>1.500.000đ</td>
+          <td>15</td>
+          <td>
+            <a href="#" class="action-btn" onclick="openModal('confirmModal1')">Xóa</a>
+            <a href="edit-product.html" class="action-btn">Sửa</a>
+          </td>
+        </tr>
+        <tr>
+          <td>5</td>
+          <td>Puma Running Shoes</td>
+          <td><img src="img/product/p5.jpg" alt="Sản phẩm 5" class="product-img"></td>
+          <td>2.200.000đ</td>
+          <td>7</td>
+          <td>
+            <a href="#" class="action-btn" onclick="openModal('confirmModal1')">Xóa</a>
+            <a href="edit-product.html" class="action-btn">Sửa</a>
+          </td>
+        </tr>
+        <tr>
+          <td>6</td>
+          <td>Converse All Star</td>
+          <td><img src="img/product/p6.jpg" alt="Sản phẩm 6" class="product-img"></td>
+          <td>1.800.000đ</td>
+          <td>9</td>
+          <td>
+            <a href="#" class="action-btn" onclick="openModal('confirmModal1')">Xóa</a>
+            <a href="edit-product.html" class="action-btn">Sửa</a>
+          </td>
+        </tr>
+        </tbody>
+      </table>
     </div>
   </section>
+  <div id="confirmModal1" class="modal">
+    <div class="modal-content">
+      <p>Bạn có chắc chắn muốn xóa sản phẩm này không?</p>
+      <div class="modal-buttons">
+        <button class="btn" onclick="confirmDelete()">Xác nhận</button>
+        <button class="btn" onclick="closeModal('confirmModal1')">Hủy</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function openModal(modalId) {
+      document.getElementById(modalId).style.display = 'block';
+    }
+
+    function closeModal(modalId) {
+      document.getElementById(modalId).style.display = 'none';
+    }
+
+    function confirmDelete() {
+      closeModal('confirmModal1');
+      alert('Sản phẩm đã bị xóa.');
+    }
+  </script>
+
 </div>
-<script>
-  function openModal(modalId) {
-    document.getElementById(modalId).style.display = 'block';
-  }
-
-  function closeModal(modalId) {
-    document.getElementById(modalId).style.display = 'none';
-  }
-
-  function confirmDelete() {
-    // Close the modal after confirming deletion
-    closeModal('confirmModal1');
-
-    // Show the success message
-    alert('Bạn đã xóa sản phẩm thành công');
-
-    // Redirect to the admin management page
-    window.location.href = 'managerp.html';
-  }
-</script>
-</script>
 </body>
 </html>
