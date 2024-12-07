@@ -1,217 +1,446 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Giao diện Admin</title>
-    <!-- Mobile Specific Meta -->
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <!-- Favicon-->
-    <link rel="shortcut icon" href="img/fav.png">
-    <!-- Author Meta -->
-    <meta name="author" content="CodePixar">
-    <!-- Meta Description -->
-    <meta name="description" content="">
-    <!-- Meta Keyword -->
-    <meta name="keywords" content="">
-    <!-- meta character set -->
-    <meta charset="UTF-8">
-    <!-- Site Title -->
-    <title>Karma Shop</title>
-    <style>
-        /* Admin Container */
-        .admin-container {
-            display: flex;
-            min-height: 100vh;
-        }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Giao diện Admin</title>
+  <!-- Mobile Specific Meta -->
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <!-- Favicon-->
+  <link rel="shortcut icon" href="img/fav.png">
+  <!-- Author Meta -->
+  <meta name="author" content="CodePixar">
+  <!-- Meta Description -->
+  <meta name="description" content="">
+  <!-- Meta Keyword -->
+  <meta name="keywords" content="">
+  <!-- meta character set -->
+  <meta charset="UTF-8">
+  <!-- Site Title -->
+  <title>Karma Shop</title>
+  <style>
+    /* Admin Container */
+    .admin-container {
+      display: flex;
+      min-height: 100vh;
+    }
 
-        /* Sidebar */
-        .sidebar {
-            width: 250px;
-            background-color: #2c3e50;
-            color: white;
-            padding: 20px 15px;
-        }
+    /* Sidebar */
+    .sidebar {
+      width: 180px;
+      background-color: #2c3e50;
+      color: white;
+      padding: 20px 15px;
+    }
 
-        .sidebar .logo-header {
-            display: flex;
-            align-items: center;
-            margin-bottom: 20px;
-        }
+    .sidebar .logo-header {
+      display: flex;
+      align-items: center;
+      margin-bottom: 20px;
+    }
 
-        .sidebar .logo-header img {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            margin-right: 10px;
-        }
+    .sidebar .logo-header img {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      margin-right: 10px;
+    }
 
-        .sidebar .logo-header h2 {
-            color: white;
-            font-size: 22px;
-            margin: 0;
-        }
+    .sidebar .logo-header h2 {
+      color: white;
+      font-size: 22px;
+      margin: 0;
+    }
 
-        .sidebar ul {
-            list-style: none;
-            padding: 0;
-        }
+    .sidebar ul {
+      list-style: none;
+      padding: 0;
+    }
 
-        .sidebar ul li {
-            margin: 15px 0;
-        }
+    .sidebar ul li {
+      margin: 15px 0;
+    }
 
-        .sidebar ul li a {
-            color: white;
-            text-decoration: none;
-            font-size: 18px;
-            display: block;
-            padding: 10px;
-            border-radius: 5px;
-            transition: background 0.3s;
-        }
+    .sidebar ul li a {
+      color: white;
+      text-decoration: none;
+      font-size: 18px;
+      display: block;
+      padding: 10px;
+      border-radius: 5px;
+      transition: background 0.3s;
+    }
 
-        .sidebar ul li a:hover {
-            background-color: #34495e;
-        }
+    .sidebar ul li a:hover {
+      background-color: #34495e;
+    }
 
-        body {
-            font-family: 'Poppins', sans-serif;
-            background: linear-gradient(135deg, #afefe1, #f4ddab);
-            margin: 0;
-            padding: 0;
-            color: #333;
-        }
+    /* Main Content */
+    .dashboard-container {
+      flex: 1;
+      padding: 20px;
+      background-color: #ffffff;
+      border-radius: 8px;
+      margin: 15px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
 
-        .admin-container {
-            display: flex;
-            min-height: 100vh;
-        }
-        /* Main Content */
-        .main-content {
-            flex: 1;
-            padding: 20px;
-            background-color: #d2dde6;
-        }
+    .dashboard-container h1 {
+      text-align: center;
+      font-size: 28px;
+      margin-bottom: 30px;
+      color: #212529;
+      font-weight: 600;
+    }
+    /* Đặt dropdown là relative để menu con hiển thị đúng vị trí */
+    .dropdown {
+      position: relative;
+    }
 
-        table {
-            width: 225%;
-            border-collapse: collapse;
-            margin-top: 100px;
-            background-color: #fff;
-            border-radius: 8px;
-            overflow: hidden;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        }
+    /* Menu con bị ẩn mặc định */
+    .dropdown-menu {
+      display: none;
+      position: absolute;
+      top: 100%;
+      left: 0;
+      background-color: #34495e;
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      border-radius: 5px;
+      z-index: 10;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+    }
 
-        table, th, td {
-            border: 1px solid #ddd;
-        }
+    /* Các mục trong menu con */
+    .dropdown-menu li {
+      margin: 0;
+    }
 
-        th, td {
-            padding: 40px;
-            text-align: center;
-            font-size: 14px;
-        }
+    .dropdown-menu li a {
+      display: block;
+      padding: 10px 20px;
+      color: white;
+      text-decoration: none;
+      border-bottom: 1px solid #2c3e50;
+      transition: background 0.3s;
+    }
 
-        th {
-            background-color: #343a40; /* Màu nền tiêu đề */
-            color: #fff; /* Màu chữ tiêu đề */
-            text-transform: uppercase;
-            font-weight: 500;
-            height: 50px;
-        }
+    .dropdown-menu li a:hover {
+      background-color: #2c3e50;
+    }
 
-        tr {
-            height: 140 px;
-        }
+    /* Hiển thị menu con khi di chuột vào dropdown */
+    .dropdown:hover .dropdown-menu {
+      display: block;
+    }
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(135deg, #afefe1, #f4ddab);
+      margin: 0;
+      padding: 0;
+      color: #333;
+    }
 
-        tr td {
-            background-color: #fff; /* Loại bỏ màu vàng xanh */
-        }
+    .admin-container {
+      display: flex;
+      min-height: 100vh;
+    }
 
-        /* Hover effect giữ nguyên */
-        tr:hover td {
-            background-color: #e9ecef; /* Màu nền khi hover */
-            color: #212529;
-            cursor: pointer;
-        }
 
-        /* Căn giữa 3 hàng cuối */
-        tfoot td {
-            text-align: center;
-            font-weight: bold;
-            font-size: 16px;
-            color: #388e3c;
-        }
+    .dashboard-container {
+      width: 80%;
+      margin: 20px auto;
+      padding: 20px;
+      background: linear-gradient(135deg, #ffffff, #b3e5fc);
+      border-radius: 12px;
+      box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+      padding-bottom: 50px;
+      margin-bottom: 70px;
+    }
 
-    </style>
+    h3 {
+      margin-top: 0;
+      color: #1976d2;
+      border-bottom: 2px solid #1976d2;
+      padding-bottom: 5px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      text-align: center;
+      background-color: #bbdefb;
+      border-radius: 8px;
+      padding: 10px;
+    }
+
+    .back-button {
+      display: inline-block;
+      margin-bottom: 20px;
+      padding: 8px 15px;
+      background-color: #0277bd;
+      color: #fff;
+      text-decoration: none;
+      border-radius: 5px;
+      font-size: 14px;
+    }
+
+    .back-button:hover {
+      background-color: #01579b;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+      background: #fff;
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    table, th, td {
+      border: 1px solid #dee2e6;
+    }
+
+    th, td {
+      padding: 50px;
+      text-align: center;
+    }
+
+    th {
+      background-color: #343a40;
+      color: white;
+      font-size: 16px;
+      text-transform: uppercase;
+      font-weight: 500;
+    }
+
+    td {
+      font-size: 20px;
+      color: #495057;
+    }
+
+    tr:nth-child(even) td {
+      background-color: #f8f9fa;
+    }
+
+    tr:hover td {
+      background-color: #e9ecef;
+      color: #212529;
+      cursor: pointer;
+    }
+
+
+    footer {
+      background-color: #333;
+      padding: 10px;
+      color: #fff;
+      text-align: center;
+      font-size: 0.9em;
+      position: fixed;
+      bottom: 0;
+      width: 100%;
+      box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1);
+    }
+
+    .view-details-btn {
+      background-color: #0288d1;
+      color: white;
+      padding: 5px 15px;
+      border-radius: 5px;
+      text-decoration: none;
+      font-size: 20px;
+      text-align: center;
+      margin-left: 10px;
+    }
+
+    .view-details-btn:hover {
+      background-color: #0277bd;
+    }
+    h1 {
+      text-align: center;
+    }
+    .pagination {
+      display: flex;
+      justify-content: center;
+      padding: 20px 0;
+    }
+
+    .pagination a {
+      color: #2c3e50;
+      text-decoration: none;
+      margin: 0 5px;
+      padding: 8px 16px;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      transition: background-color 0.3s, color 0.3s;
+    }
+
+    .pagination a:hover {
+      background-color: #34495e;
+      color: white;
+    }
+
+    .pagination a.active {
+      background-color: #2c3e50;
+      color: white;
+      border: 1px solid #2c3e50;
+    }
+    /* Bộ lọc */
+    .filter-container {
+      margin: 20px 0;
+      padding: 10px;
+      background-color: #f9f9f9;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+      justify-content: space-between;
+    }
+
+    .filter-container form {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+    }
+
+    .filter-category,
+    .filter-name {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .filter-category label,
+    .filter-name label {
+      margin-bottom: 5px;
+      font-weight: bold;
+    }
+
+    .filter-actions {
+      display: flex;
+      align-items: center;
+    }
+
+    /* Buttons */
+    .view-details a {
+      display: inline-block;
+      padding: 8px 12px;
+      background-color: #007bff;
+      color: white;
+      text-decoration: none;
+      border-radius: 4px;
+      font-size: 14px;
+      transition: all 0.3s;
+    }
+
+    .view-details a:hover {
+      background-color: #0056b3;
+    }
+
+    /* Pagination */
+    .pagination {
+      display: flex;
+      justify-content: center;
+      padding: 20px 0;
+    }
+
+    .pagination a {
+      color: #343a40;
+      text-decoration: none;
+      margin: 0 5px;
+      padding: 8px 16px;
+      border: 1px solid #dee2e6;
+      border-radius: 4px;
+      transition: all 0.3s;
+    }
+
+    .pagination a:hover {
+      background-color: #343a40;
+      color: white;
+    }
+
+    .pagination a.active {
+      background-color: #007bff;
+      color: white;
+      border: 1px solid #007bff;
+    }
+
+  </style>
 </head>
 <body>
-
 <div class="admin-container">
-    <!-- Sidebar -->
-    <div class="sidebar">
-        <div class="logo-header">
-            <img src="img/fav.png" alt="Admin Logo">
-            <h2>Karma Shop</h2>
-        </div>
-        <ul>
-            <li><a href="admin.html">Trang chủ</a></li>
-            <li><a href="managerp.html">Quản lí sản phẩm</a></li>
-            <li><a href="manager-user.html">Quản lí người dùng</a></li>
-            <li><a href="ManageCustomerOrder.html">Quản lí đơn hàng</a></li>
-            <li class="dropdown">
-                <a href="#statistics">Thống kê</a>
-                <ul class="dropdown-menu">
-                    <li><a href="static.html">Sản phẩm</a></li>
-                    <li><a href="static2.html">Người dùng</a></li>
-                </ul>
-            </li>
-
+  <!-- Sidebar -->
+  <div class="sidebar">
+    <div class="logo-header">
+      <img src="img/fav.png" alt="Admin Logo">
+      <h2>Karma Shop</h2>
+    </div>
+    <ul>
+      <li><a href="admin.html">Trang chủ</a></li>
+      <li><a href="managerp.html">Quản lí sản phẩm</a></li>
+      <li><a href="manager-user.html">Quản lí người dùng</a></li>
+      <li><a href="ManageCustomerOrder.html">Quản lí đơn hàng</a></li>
+      <li class="dropdown">
+        <a href="#statistics">Thống kê</a>
+        <ul class="dropdown-menu">
+          <li><a href="static.html">Sản phẩm</a></li>
+          <li><a href="static2.html">Người dùng</a></li>
         </ul>
-    </div>
-    <div class="dashboard-container">
-        <h1>Thống kê sản phẩm</h1>
-        <table>
-            <thead>
-            <tr>
-                <th>Sản phẩm</th>
-                <th>Số lượng bán</th>
-                <th>Tổng doanh thu (VND)</th>
-                <th>Hành Động</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr>
-                <td>Giày Addidas New Hammer Sole For Sports Person</td>
-                <td>12</td>
-                <td>3,600,000</td>
-                <td><a href="thongkesanphambanduoc.html" class="view-details-btn">Xem chi tiết</a></td>
-            </tr>
-            <tr >
-                <td>Giày Addidas New Hammer Sole For Sports Person</td>
-                <td>8</td>
-                <td>4,000,000</td>
-                <td><a href="thongkesanphambanduoc.html" class="view-details-btn">Xem chi tiết</a></td>
-            </tr>
-            <tr>
-                <td>Giày Addidas New Hammer Sole For Sports Person</td>
-                <td>5</td>
-                <td>1,500,000</td>
-                <td><a href="thongkesanphambanduoc.html" class="view-details-btn">Xem chi tiết</a></td>
-            </tr>
-            </tbody>
-        </table>
-        <p class="total-revenue">Tổng doanh thu: 9,100,000 VND</p>
-        <p></p><strong class="most-sold">Sản phẩm bán chạy nhất: Giày Addidas New Hammer Sole For Sports Person</strong></p>
-        <strong class="least-sold">Sản phẩm bán ít nhất: Giày Addidas New Hammer Sole For Sports Person</strong>
+      </li>
 
+    </ul>
+  </div>
+  <div class="dashboard-container">
+    <!-- Header Section -->
+    <header class="main-header">
+      <h1>Thống Kê Sản Phẩm </h1>
+    </header>
+
+
+    <div class="container">
+      <!-- Back Button -->
+
+      <!-- Table Section -->
+      <table>
+        <thead>
+        <tr>
+          <th>STT</th>
+          <th>Sản Phẩm</th>
+          <th>Tổng Doanh Thu (VNĐ)</th>
+          <th>Số Lượng Sản Phẩm</th>
+          <th>Hành Động</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+          <td>1</td>
+          <td>Giày Air Jordan Legacy</td>
+          <td>120.000.000</td>
+          <td>9</td>
+          <td class="view-details"><a href="thongkesanphambanduoc.html">Xem Chi Tiết</a></td>
+        </tr>
+        <tr>
+          <td>2</td>
+          <td>Giày Air Jordan Legacy</td>
+          <td>100.000.000</td>
+          <td>6</td>
+          <td class="view-details"><a href="thongkesanphambanduoc.html">Xem Chi Tiết</a></td>
+
+        </tr>
+        <tr>
+          <td>3</td>
+          <td>Giày Air Jordan Legacy</td>
+          <td>90.000.000</td>
+          <td>20</td>
+          <td class="view-details"><a href="thongkesanphambanduoc.html">Xem Chi Tiết</a></td>
+        </tr>
+        </tr>
+        </tbody>
+      </table>
     </div>
+  </div>
 
 </div>
-
-    </div>
 </div>
 
 </body>
