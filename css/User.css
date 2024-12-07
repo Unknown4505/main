@@ -14,7 +14,7 @@ body {
     margin: 0;
     padding: 20px;
     overflow: auto;           /* Cho phép cuộn khi nội dung quá lớn */
-    pandding: 650px
+    pandding-top: 650px
 }
 
 .profile-container {
