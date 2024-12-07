@@ -17,6 +17,7 @@
 	<!-- Site Title -->
 	<title>Karma Shop</title>
 	<!-- CSS -->
+
 	<link rel="stylesheet" href="css/linearicons.css">
 	<link rel="stylesheet" href="css/font-awesome.min.css">
 	<link rel="stylesheet" href="css/themify-icons.css">
@@ -35,82 +36,80 @@
 
 <!-- Start Header Area -->
 <header class="header_area sticky-header">
-    <div class="main_menu">
-        <nav class="navbar navbar-expand-lg navbar-light main_box">
-            <div class="container">
-                <!-- Brand and toggle get grouped for better mobile display -->
-                <a class="navbar-brand logo_h" href="index.html"><img src="img/logo.png" alt=""></a>
-                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
-                        aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                <!-- Collect the nav links, forms, and other content for toggling -->
-                <div class="collapse navbar-collapse offset" id="navbarSupportedContent">
-                    <ul class="nav navbar-nav menu_nav ml-auto">
-                        <li class="nav-item active"><a class="nav-link" href="index2.html">Trang chủ</a></li>
-                        <li class="nav-item submenu dropdown">
-                            <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
-                               aria-expanded="false">Sản phẩm</a>
-                            <ul class="dropdown-menu">
-                                <li class="nav-item"><a class="nav-link" href="category.html">Adidas</a></li>
-                                <li class="nav-item"><a class="nav-link" href="category1.html">Van</a></li>
-                                <li class="nav-item"><a class="nav-link" href="category2.html">Nike</a></li>
-                            </ul>
-                        </li>
+	<div class="main_menu">
+		<nav class="navbar navbar-expand-lg navbar-light main_box">
+			<div class="container">
+				<!-- Brand and toggle get grouped for better mobile display -->
+				<a class="navbar-brand logo_h" href="index2.html"><img src="img/logo.png" alt=""></a>
+				<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+						aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+				</button>
+				<!-- Collect the nav links, forms, and other content for toggling -->
+				<div class="collapse navbar-collapse offset" id="navbarSupportedContent">
+					<ul class="nav navbar-nav menu_nav ml-auto">
+						<li class="nav-item active"><a class="nav-link" href="index2.html">Trang chủ</a></li>
+						<li class="nav-item submenu dropdown">
+							<a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+							   aria-expanded="false">Sản phẩm</a>
+							<ul class="dropdown-menu">
+								<li class="nav-item"><a class="nav-link" href="category.html">Adidas</a></li>
+								<li class="nav-item"><a class="nav-link" href="category1.html">Vans</a></li>
+								<li class="nav-item"><a class="nav-link" href="category2.html">Nike</a></li>
+							</ul>
+						</li>
 
-                        <li class="nav-item"><a class="nav-link" href="checkout.html">Thanh toán</a></li>
-                        <ul class="dropdown-menu">
+						<li class="nav-item"><a class="nav-link" href="checkout.html">Thanh toán</a></li>
+						<ul class="dropdown-menu">
 
-                        </ul>
-                        </li>
-                        <li class="nav-item submenu dropdown">
-                        </li>
-                    </ul>
-                    <!-- Search Input Box -->
-                    <input type="checkbox" id="search-toggle" class="search-toggle" hidden>
-                    <div class="search_input">
-                        <form id="search-form" action="ResultOfSearch.html" method="GET" class="d-flex justify-content-between">
-                            <input type="text" class="search-input" name="query" placeholder="Tìm kiếm" required>
-                            <button type="submit" class="search-btn">
-                                <span class="lnr lnr-magnifier"></span>
-                            </button>
-                            <label for="search-toggle" class="lnr lnr-cross" title="Close Search"></label>
-                        </form>
-                    </div>
+						</ul>
+						</li>
+						<li class="nav-item submenu dropdown">
+						</li>
+					</ul>
+					<!-- Search Input Box -->
+					<input type="checkbox" id="search-toggle" class="search-toggle" hidden>
+					<div class="search_input">
+						<form id="search-form" action="ResultofSearch.html" method="GET" class="d-flex justify-content-between">
+							<input type="text" class="search-input" name="query" placeholder="Tìm kiếm" required>
+							<button type="submit" class="search-btn">
+								<span class="lnr lnr-magnifier"></span>
+							</button>
+							<label for="search-toggle" class="lnr lnr-cross" title="Close Search"></label>
+						</form>
+					</div>
 
-                    <!-- Search Icon and Cart -->
-                    <ul class="nav navbar-nav navbar-right">
-                        <li class="nav-item"><a href="cart.html" class="cart"><span class="ti-bag"></span></a></li>
-                        <li class="nav-item">
-                            <!-- Search Button with Magnifier Icon -->
-                            <label for="search-toggle" class="search-icon">
-                                <span class="lnr lnr-magnifier"></span>
-                            </label>
-                        </li>
-                    </ul>
-
-
-                    <!-- User Dropdown -->
-                    <ul class="nav navbar-nav navbar-right">
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle user-btn" href="" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <span class="username">Người dùng</span>
-                                <span class="lnr lnr-user"></span>
-                            </a>
-                            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                <a class="dropdown-item" href=User.html>Thông tin người dùng</a>
-                                <a class="dropdown-item" href="comfirmgation.html">Lịch sử giao dịch</a>
-                                <div class="dropdown-divider"></div>
-                                <a class="dropdown-item" href="logout.html">Đăng suất</a>
-                            </div>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </nav>
-    </div>
+					<!-- Search Icon and Cart -->
+					<ul class="nav navbar-nav navbar-right">
+						<li class="nav-item"><a href="cart.html" class="cart"><span class="ti-bag"></span></a></li>
+						<li class="nav-item">
+							<!-- Search Button with Magnifier Icon -->
+							<label for="search-toggle" class="search-icon">
+								<span class="lnr lnr-magnifier"></span>
+							</label>
+						</li>
+					</ul>
+					<!-- User Dropdown -->
+					<ul class="nav navbar-nav navbar-right">
+						<li class="nav-item dropdown">
+							<a class="nav-link dropdown-toggle user-btn" href="" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+								<span class="username">Người dùng</span>
+								<span class="lnr lnr-user"></span>
+							</a>
+							<div class="dropdown-menu" aria-labelledby="navbarDropdown">
+								<a class="dropdown-item" href=User.html>Thông tin người dùng</a>
+								<a class="dropdown-item" href="confirmation.html">Lịch sử giao dịch</a>
+								<div class="dropdown-divider"></div>
+								<a class="dropdown-item" href="index.html">Đăng xuất</a>
+							</div>
+						</li>
+					</ul>
+				</div>
+			</div>
+		</nav>
+	</div>
 </header>
 <!-- Bootstrap and jQuery -->
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
@@ -192,7 +191,8 @@
 </div>
 
 <!--================End Single Product Area =================-->
-
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
 <!-- JavaScript -->
 <script>
 	// Hiển thị thông báo khi thêm vào giỏ hàng
@@ -208,270 +208,7 @@
 </script>
 
 <!--================Product Description Area =================-->
-		<div class="tab-content">
-			<div class="tab-pane fade" id="profile" role="tabpanel">
-				<div class="table-responsive">
-					<table class="table">
-						<tbody>
-						<tr>
-							<td><h5>Width</h5></td>
-							<td><h5>128mm</h5></td>
-						</tr>
-						<tr>
-							<td><h5>Height</h5></td>
-							<td><h5>508mm</h5></td>
-						</tr>
-						<tr>
-							<td><h5>Depth</h5></td>
-							<td><h5>85mm</h5></td>
-						</tr>
-						<tr>
-							<td><h5>Weight</h5></td>
-							<td><h5>52gm</h5></td>
-						</tr>
-						<tr>
-							<td><h5>Quality checking</h5></td>
-							<td><h5>yes</h5></td>
-						</tr>
-						<tr>
-							<td><h5>Freshness Duration</h5></td>
-							<td><h5>03 days</h5></td>
-						</tr>
-						<tr>
-							<td><h5>When packaging</h5></td>
-							<td><h5>Without touch of hand</h5></td>
-						</tr>
-						<tr>
-							<td><h5>Each Box contains</h5></td>
-							<td><h5>60 pcs</h5></td>
-						</tr>
-						</tbody>
-					</table>
-				</div>
-			</div>
-			<div class="tab-pane fade" id="contact" role="tabpanel">
-				<div class="row">
-					<div class="col-lg-6">
-						<div class="comment_list">
-							<div class="review_item">
-								<div class="media">
-									<div class="d-flex">
-										<img src="img/product/review-1.png" alt="">
-									</div>
-									<div class="media-body">
-										<h4>Blake Ruiz</h4>
-										<h5>12th Feb, 2018 at 05:56 pm</h5>
-										<a class="reply_btn" href="#">Reply</a>
-									</div>
-								</div>
-								<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et
-									dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea
-									commodo.</p>
-							</div>
-							<div class="review_item reply">
-								<div class="media">
-									<div class="d-flex">
-										<img src="img/product/review-2.png" alt="">
-									</div>
-									<div class="media-body">
-										<h4>Blake Ruiz</h4>
-										<h5>12th Feb, 2018 at 05:56 pm</h5>
-										<a class="reply_btn" href="#">Reply</a>
-									</div>
-								</div>
-								<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et
-									dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea
-									commodo.</p>
-							</div>
-							<div class="review_item">
-								<div class="media">
-									<div class="d-flex">
-										<img src="img/product/review-3.png" alt="">
-									</div>
-									<div class="media-body">
-										<h4>Blake Ruiz</h4>
-										<h5>12th Feb, 2018 at 05:56 pm</h5>
-										<a class="reply_btn" href="#">Reply</a>
-									</div>
-								</div>
-								<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et
-									dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea
-									commodo.</p>
-							</div>
-						</div>
-					</div>
-					<div class="col-lg-6">
-						<div class="review_box">
-							<h4>Post a comment</h4>
-							<form class="row contact_form" action="contact_process.php" method="post">
-								<div class="col-md-12">
-									<div class="form-group">
-										<input type="text" class="form-control" id="name" name="name" placeholder="Your Full name">
-									</div>
-								</div>
-								<div class="col-md-12">
-									<div class="form-group">
-										<input type="email" class="form-control" id="email" name="email" placeholder="Email Address">
-									</div>
-								</div>
-								<div class="col-md-12">
-									<div class="form-group">
-										<input type="text" class="form-control" id="number" name="number" placeholder="Phone Number">
-									</div>
-								</div>
-								<div class="col-md-12">
-									<div class="form-group">
-										<textarea class="form-control" name="message" id="message" rows="1" placeholder="Message"></textarea>
-									</div>
-								</div>
-								<div class="col-md-12 text-right">
-									<button type="submit" class="btn primary-btn">Submit Now</button>
-								</div>
-							</form>
-						</div>
-					</div>
-				</div>
-			</div>
-			<div class="tab-pane fade" id="review" role="tabpanel">
-				<div class="row">
-					<div class="col-lg-6">
-						<div class="row total_rate">
-							<div class="col-6">
-								<div class="box_total">
-									<h5>Overall</h5>
-									<h4>4.0</h4>
-									<h6>(03 Reviews)</h6>
-								</div>
-							</div>
-							<div class="col-6">
-								<div class="rating_list">
-									<h3>Based on 3 Reviews</h3>
-									<ul class="list">
-										<li><a href="#">5 Star <i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i
-												class="fa fa-star"></i><i class="fa fa-star"></i> 01</a></li>
-										<li><a href="#">4 Star <i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i
-												class="fa fa-star"></i><i class="fa fa-star-o"></i> 02</a></li>
-										<li><a href="#">3 Star <i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star-o"></i><i
-												class="fa fa-star-o"></i><i class="fa fa-star-o"></i> 00</a></li>
-										<li><a href="#">2 Star <i class="fa fa-star"></i><i class="fa fa-star-o"></i><i
-												class="fa fa-star-o"></i><i class="fa fa-star-o"></i><i class="fa fa-star-o"></i> 00</a></li>
-										<li><a href="#">1 Star <i class="fa fa-star-o"></i><i class="fa fa-star-o"></i><i
-												class="fa fa-star-o"></i><i class="fa fa-star-o"></i><i class="fa fa-star-o"></i> 00</a></li>
-									</ul>
-								</div>
-							</div>
-						</div>
-						<div class="review_item">
-							<div class="media">
-								<div class="d-flex">
-									<img src="img/product/review-1.png" alt="">
-								</div>
-								<div class="media-body">
-									<h4>Blake Ruiz</h4>
-									<h5>12th Feb, 2018 at 05:56 pm</h5>
-								</div>
-							</div>
-							<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et
-								dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea
-								commodo.</p>
-							<div class="product_ratings">
-								<ul class="list">
-									<li><i class="fa fa-star"></i></li>
-									<li><i class="fa fa-star"></i></li>
-									<li><i class="fa fa-star"></i></li>
-									<li><i class="fa fa-star"></i></li>
-									<li><i class="fa fa-star-o"></i></li>
-								</ul>
-							</div>
-						</div>
-						<div class="review_item">
-							<div class="media">
-								<div class="d-flex">
-									<img src="img/product/review-2.png" alt="">
-								</div>
-								<div class="media-body">
-									<h4>Blake Ruiz</h4>
-									<h5>12th Feb, 2018 at 05:56 pm</h5>
-								</div>
-							</div>
-							<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et
-								dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea
-								commodo.</p>
-							<div class="product_ratings">
-								<ul class="list">
-									<li><i class="fa fa-star"></i></li>
-									<li><i class="fa fa-star"></i></li>
-									<li><i class="fa fa-star"></i></li>
-									<li><i class="fa fa-star"></i></li>
-									<li><i class="fa fa-star-o"></i></li>
-								</ul>
-							</div>
-						</div>
-						<div class="review_item">
-							<div class="media">
-								<div class="d-flex">
-									<img src="img/product/review-3.png" alt="">
-								</div>
-								<div class="media-body">
-									<h4>Blake Ruiz</h4>
-									<h5>12th Feb, 2018 at 05:56 pm</h5>
-								</div>
-							</div>
-							<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et
-								dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea
-								commodo.</p>
-							<div class="product_ratings">
-								<ul class="list">
-									<li><i class="fa fa-star"></i></li>
-									<li><i class="fa fa-star"></i></li>
-									<li><i class="fa fa-star"></i></li>
-									<li><i class="fa fa-star"></i></li>
-									<li><i class="fa fa-star-o"></i></li>
-								</ul>
-							</div>
-						</div>
-					</div>
-					<div class="col-lg-6">
-						<div class="review_box">
-							<h4>Post a review</h4>
-							<form class="row contact_form" action="contact_process.php" method="post">
-								<div class="col-md-12">
-									<div class="form-group">
-										<input type="text" class="form-control" id="name" name="name" placeholder="Your Full name">
-									</div>
-								</div>
-								<div class="col-md-12">
-									<div class="form-group">
-										<input type="email" class="form-control" id="email" name="email" placeholder="Email Address">
-									</div>
-								</div>
-								<div class="col-md-12">
-									<div class="form-group">
-										<textarea class="form-control" name="message" id="message" rows="1" placeholder="Message"></textarea>
-									</div>
-								</div>
-								<div class="col-md-12">
-									<div class="form-group">
-										<select class="form-control" id="rating" name="rating">
-											<option value="">Rate*</option>
-											<option value="5">5 Star</option>
-											<option value="4">4 Star</option>
-											<option value="3">3 Star</option>
-											<option value="2">2 Star</option>
-											<option value="1">1 Star</option>
-										</select>
-									</div>
-								</div>
-								<div class="col-md-12 text-right">
-									<button type="submit" class="btn primary-btn">Submit Now</button>
-								</div>
-							</form>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
+
 </section>
 <footer class="footer-area section_gap">
 	<div class="container">
