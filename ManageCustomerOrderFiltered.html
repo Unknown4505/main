@@ -22,13 +22,26 @@
 
 </head>
 <body>
+<header style="background-color: rgb(255,255,255); color: #0b0b0b; padding: 20px 40px; display: flex; align-items: center; justify-content: space-between; font-size: 28px; border-bottom: 5px solid #0b0b0b;">
+    <!-- Logo bên trái -->
+    <div style="flex: 0; display: flex; align-items: center;">
+        <img src="img/fav.png" alt="Karma Logo" style="width: 60px; height: 60px; border-radius: 50%; margin-right: 20px;">
+        <h1 style="margin: 0; font-size: 20px;">Karma Shop</h1>
+    </div>
+
+    <!-- Phần menu bên phải -->
+    <nav style="flex: 1;text-align: center">
+        <ul style="list-style: none; display: flex; justify-content: right; margin: 0; padding: 0;">
+            <li style="margin: 0 20px;"><a href="#home" style="color: #0b0b0b; text-decoration: none; font-size: 22px;">Admin</a></li>
+            <li style="margin: 0 20px;"><a href="#logout" style="color: #0b0b0b; text-decoration: none; font-size: 22px;">Đăng xuất</a></li>
+        </ul>
+    </nav>
+</header>
+
 <div class="admin-container">
     <!-- Sidebar -->
     <div class="sidebar">
-        <div class="logo-header">
-            <img src="img/fav.png" alt="Admin Logo">
-            <h2>Karma Shop</h2>
-        </div>
+
         <ul>
             <li><a href="admin.html">Trang chủ</a></li>
             <li><a href="managerp.html">Quản lí sản phẩm</a></li>
@@ -41,7 +54,6 @@
                     <li><a href="static2.html">Người dùng</a></li>
                 </ul>
             </li>
-
         </ul>
     </div>
     <div class="dashboard-container">
@@ -102,7 +114,36 @@
                 <td>Quận 1, HCMC</td>
                 <td><a href="viewdetail.html" class="details-btn">Xem chi tiết</a></td>
             </tr>
-
+            <tr>
+                <td>OD002</td>
+                <td>Hoàng Duẫn</td>
+                <td>0909876543</td>
+                <td>2024-10-05</td>
+                <td>
+                    <select onchange="showAlert()">
+                        <option value="confirmed">Đã xác nhận</option>
+                        <option value="completed" selected>Hoàn thành</option>
+                        <option value="cancelled">Hủy bỏ</option>
+                    </select>
+                </td>
+                <td>Quận 3, HCMC</td>
+                <td><a href="viewdetail.html" class="details-btn">Xem chi tiết</a></td>
+            </tr>
+            <tr>
+                <td>OD003</td>
+                <td>Lê Hữu Khang</td>
+                <td>0912345678</td>
+                <td>2024-10-10</td>
+                <td>
+                    <select onchange="showAlert()">
+                        <option value="confirmed">Đã xác nhận</option>
+                        <option value="completed">Hoàn thành</option>
+                        <option value="cancelled" selected>Hủy bỏ</option>
+                    </select>
+                </td>
+                <td>Quận 2, HCMC</td>
+                <td><a href="viewdetail.html" class="details-btn">Xem chi tiết</a></td>
+            </tr>
             <tr>
                 <td>OD004</td>
                 <td>V.K Nguyen</td>
@@ -133,20 +174,48 @@
                 <td>Quận 5, HCMC</td>
                 <td><a href="viewdetail.html" class="details-btn">Xem chi tiết</a></td>
             </tr>
-
-
+            <tr>
+                <td>OD006</td>
+                <td>Ngô Đức Huy</td>
+                <td>0945678901</td>
+                <td>2024-10-17</td>
+                <td>
+                    <select onchange="showAlert()">
+                        <option value="confirmed">Đã xác nhận</option>
+                        <option value="completed">Hoàn thành</option>
+                        <option value="cancelled" selected>Hủy bỏ</option>
+                    </select>
+                </td>
+                <td>Quận 6, HCMC</td>
+                <td><a href="viewdetail.html" class="details-btn">Xem chi tiết</a></td>
+            </tr>
+            <tr>
+                <td>OD007</td>
+                <td>Phạm Ngọc Thiện</td>
+                <td>0391739133</td>
+                <td>2024-9-17</td>
+                <td>
+                    <select onchange="showAlert()">
+                        <option value="confirmed">Đã xác nhận</option>
+                        <option value="completed">Hoàn thành</option>
+                        <option value="cancelled" selected>Hủy bỏ</option>
+                    </select>
+                </td>
+                <td>Long Thành, Đồng Nai</td>
+                <td><a href="viewdetail.html" class="details-btn">Xem chi tiết</a></td>
+            </tr>
 
             </tbody>
         </table>
 
         <div class="pagination">
-            <a href="ManageCustomerOrderFiltered.html">&laquo;</a> <!-- Quay lại trang 1 -->
-            <a href="ManageCustomerOrderFiltered.html">1</a> <!-- Trang 1 -->
-            <a href="ManageCustomerOrderFiltered.html">2</a> <!-- Trang 2 -->
-            <a href="ManageCustomerOrderFiltered.html">3</a> <!-- Trang 3 -->
-            <a href="ManageCustomerOrderFiltered.html">4</a> <!-- Trang 4 -->
-            <a href="ManageCustomerOrderFiltered.html">5</a> <!-- Trang 5 -->
-            <a href="ManageCustomerOrderFiltered.html">&raquo;</a> <!-- Chuyển tới trang 5 -->
+            <a href="ManageCustomerOrder.html">&laquo;</a> <!-- Quay lại trang 1 -->
+            <a href="ManageCustomerOrder.html">1</a> <!-- Trang 1 -->
+            <a href="ManageCustomerOrder.html">2</a> <!-- Trang 2 -->
+            <a href="ManageCustomerOrder.html">3</a> <!-- Trang 3 -->
+            <a href="ManageCustomerOrder.html">4</a> <!-- Trang 4 -->
+            <a href="ManageCustomerOrder.html">5</a> <!-- Trang 5 -->
+            <a href="ManageCustomerOrder.html">&raquo;</a> <!-- Chuyển tới trang 5 -->
         </div>
 
     </div>
