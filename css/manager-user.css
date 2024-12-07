@@ -6,8 +6,8 @@
 
 /* Sidebar */
 .sidebar {
-    width: 8%;
-    background-color: #1b1b1b;
+    width: 15%;
+    background-color: #252525;
     color: white;
     padding: 20px 15px;
 }
@@ -137,29 +137,29 @@ body {
     width: 80%;
     margin: 20px auto;
     padding: 20px;
-    background: linear-gradient(135deg, #ffffff, #b3e5fc);
+    background: linear-gradient(135deg, #f8f9fa, #e9ecef);
     border-radius: 12px;
-    box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
 }
 
 h3 {
     margin-top: 0;
-    color: #1976d2;
-    border-bottom: 2px solid #1976d2;
+    color: #343a40;
+    border-bottom: 3px solid #495057;
     padding-bottom: 5px;
     text-transform: uppercase;
-    letter-spacing: 1px;
+    letter-spacing: 1.5px;
     text-align: center;
-    background-color: #bbdefb;
+    background-color: #e9ecef;
     border-radius: 8px;
-    padding: 10px;
+    padding: 15px;
 }
 
 .back-button {
     display: inline-block;
     margin-bottom: 20px;
-    padding: 8px 15px;
-    background-color: #0277bd;
+    padding: 10px 20px;
+    background-color: #495057;
     color: #fff;
     text-decoration: none;
     border-radius: 5px;
@@ -167,20 +167,20 @@ h3 {
 }
 
 .back-button:hover {
-    background-color: #01579b;
+    background-color: #343a40;
 }
 
 table {
     width: 100%;
     border-collapse: collapse;
-    margin-top: 10px;
+    margin-top: 15px;
     background-color: #fff;
     border-radius: 8px;
     overflow: hidden;
 }
 
 table, th, td {
-    border: 1px solid #ddd;
+    border: 1px solid #dee2e6;
 }
 
 th, td {
@@ -189,33 +189,33 @@ th, td {
 }
 
 th {
-    background-color: #1565c0;
+    background-color: #343a40;
     color: #fff;
     text-transform: uppercase;
 }
 
 tr:nth-child(even) td {
-    background-color: rgba(230, 247, 255, 0.9);
+    background-color: #f8f9fa;
 }
 
 tr:nth-child(odd) td {
-    background-color: rgba(255, 255, 230, 0.9);
+    background-color: #ffffff;
 }
 
 tr:hover td {
-    background-color: #e1f5fe;
+    background-color: #e9ecef;
 }
 
 .highlight {
-    background-color: #b3e5fc;
+    background-color: #e9ecef;
     font-weight: bold;
-    color: #333;
-    border-left: 4px solid #039be5;
+    color: #495057;
+    border-left: 4px solid #adb5bd;
 }
 
 .total-revenue {
     font-weight: bold;
-    color: #388e3c;
+    color: #495057;
     font-size: 1.2em;
     text-align: center;
     margin-top: 20px;
@@ -223,30 +223,30 @@ tr:hover td {
 
 .most-sold, .least-sold {
     font-style: italic;
-    color: #039be5;
+    color: #343a40;
     text-align: center;
     font-size: 1.1em;
-    padding: 5px;
-    background-color: #e1f5fe;
+    padding: 10px;
+    background-color: #f8f9fa;
     border-radius: 4px;
 }
 
 footer {
-    background-color: #333;
+    background-color: #343a40;
     padding: 10px;
-    color: #fff;
+    color: #f8f9fa;
     text-align: center;
     font-size: 0.9em;
     position: fixed;
     bottom: 0;
     width: 100%;
-    box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.2);
 }
 
 .view-details-btn {
-    background-color: #0288d1;
+    background-color: #495057;
     color: white;
-    padding: 5px 15px;
+    padding: 8px 20px;
     border-radius: 5px;
     text-decoration: none;
     font-size: 14px;
@@ -255,12 +255,14 @@ footer {
 }
 
 .view-details-btn:hover {
-    background-color: #0277bd;
-}
-h1 {
-    text-align: center;
+    background-color: #343a40;
 }
 
+h1 {
+    text-align: center;
+    color: #343a40;
+    font-size: 1.8em;
+}
 
 /* CSS cho bảng thông báo */
 .alert {
