@@ -1,132 +1,195 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zxx" class="no-js">
+
 <head>
-    <link rel="shortcut icon" href="img/fav.png">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="author" content="CodePixar">
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Product Details</title>
+    <title>Karma Shop</title>
+    <link rel="shortcut icon" href="img/fav.png">
+    <link rel="stylesheet" href="css/linearicons.css">
+    <link rel="stylesheet" href="css/font-awesome.min.css">
+    <link rel="stylesheet" href="css/themify-icons.css">
+    <link rel="stylesheet" href="css/bootstrap.css">
+    <link rel="stylesheet" href="css/owl.carousel.css">
+    <link rel="stylesheet" href="css/nice-select.css">
+    <link rel="stylesheet" href="css/nouislider.min.css">
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/search.css">
     <style>
         body {
             font-family: 'Arial', sans-serif;
             background-color: #f3f3f3;
-            color: #333;
             margin: 0;
             padding: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
         }
-        .container {
-            width: 700px;
-            background-color: #fff;
-            padding: 20px 25px;
-            border-radius: 12px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        }
+
         h2 {
             text-align: center;
             color: #ff914d;
-            margin-bottom: 15px;
+            margin: 20px 0;
             font-size: 24px;
-            border-bottom: 2px solid #ff914d;
-            padding-bottom: 10px;
         }
+
         .details {
             display: grid;
-            grid-template-columns: 1fr 1fr; /* Chia thành 2 cột */
+            grid-template-columns: 1fr 1fr;
             gap: 15px;
-            margin-bottom: 15px;
+            padding: 20px;
+            max-width: 900px;
+            margin: auto;
         }
-        .detail-item {
-            display: flex;
-            flex-direction: column;
-            align-items: flex-start;
-            background-color: #f9f9f9;
-            border-radius: 8px;
-            padding: 12px;
-            border: 1px solid #ddd;
-        }
+
+        .detail-item,
         .product-info {
-            grid-column: span 2; /* Kéo dài qua cả hai cột */
-            text-align: center;
+            background-color: #fff;
+            border: 1px solid #ddd;
+            border-radius: 8px;
             padding: 15px;
-            background-color: #f9f9f9;
-            border: 1px solid #ddd;
-            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         }
+
+        .product-info {
+            grid-column: span 2;
+            text-align: center;
+        }
+
         .product-info img {
-            max-width: 100%;
+            max-width: 50%;
             border-radius: 8px;
-            margin-top: 10px;
-            border: 1px solid #ddd;
+            margin-top: 15px;
         }
-        .product-info label {
+
+        label {
             font-weight: bold;
             color: #ff914d;
-            margin-bottom: 5px;
-            display: block;
-            font-size: 16px;
         }
-        .product-info div {
-            font-size: 16px;
-            color: #555;
-            margin-top: 5px;
-        }
-        .detail-item label {
-            font-weight: bold;
-            color: #ff914d;
-            margin-bottom: 5px;
-            font-size: 14px;
-        }
-        .detail-item div {
-            font-size: 14px;
-            color: #555;
-        }
-        .price, .quantity {
+
+        .price,
+        .quantity {
             font-size: 16px;
             font-weight: bold;
             color: #e67e2f;
             background-color: #fff8e5;
             padding: 5px 8px;
             border-radius: 5px;
-            margin-top: 5px;
-            text-align: center;
         }
-        .price::before {
-            content: "💰 ";
+
+        footer {
+            background-color: #333;
+            color: #fff;
+            padding: 20px 0;
         }
-        .quantity::before {
-            content: "📦 ";
+
+        footer h6 {
+            color: #ff914d;
         }
-        .btn {
-            display: block;
-            width: 100%;
-            text-align: center;
-            margin-top: 20px;
-            padding: 10px;
-            background-color: #ff914d;
-            color: white;
-            font-weight: bold;
-            text-decoration: none;
-            border-radius: 6px;
-            transition: background-color 0.3s ease;
+
+        footer p,
+        footer a {
+            color: #bbb;
             font-size: 14px;
+            line-height: 1.8;
         }
-        .btn:hover {
-            background-color: #e67e2f;
+
+        footer a:hover {
+            color: #ff914d;
         }
     </style>
 </head>
-<body>
-<div class="container">
-    <h2>Chi Tiết Sản Phẩm</h2>
 
+<body>
+<!-- Header Area -->
+<header class="header_area sticky-header">
+    <div class="main_menu">
+        <nav class="navbar navbar-expand-lg navbar-light main_box">
+            <div class="container">
+                <!-- Brand and toggle get grouped for better mobile display -->
+                <a class="navbar-brand logo_h" href="index.html"><img src="img/logo.png" alt=""></a>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+                        aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <!-- Collect the nav links, forms, and other content for toggling -->
+                <div class="collapse navbar-collapse offset" id="navbarSupportedContent">
+                    <ul class="nav navbar-nav menu_nav ml-auto">
+                        <li class="nav-item active"><a class="nav-link" href="index2.html">Trang chủ</a></li>
+                        <li class="nav-item submenu dropdown">
+                            <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+                               aria-expanded="false">Sản phẩm</a>
+                            <ul class="dropdown-menu">
+                                <li class="nav-item"><a class="nav-link" href="category.html">Adidas</a></li>
+                                <li class="nav-item"><a class="nav-link" href="category1.html">Vans</a></li>
+                                <li class="nav-item"><a class="nav-link" href="category2.html">Nike</a></li>
+                            </ul>
+                        </li>
+
+                        <li class="nav-item"><a class="nav-link" href="checkout.html">Thanh toán</a></li>
+                        <ul class="dropdown-menu">
+
+                        </ul>
+                        </li>
+                        <li class="nav-item submenu dropdown">
+                        </li>
+                    </ul>
+                    <!-- Search Input Box -->
+                    <input type="checkbox" id="search-toggle" class="search-toggle" hidden>
+                    <div class="search_input">
+                        <form id="search-form" action="ResultofSearch.html" method="GET" class="d-flex justify-content-between">
+                            <input type="text" class="search-input" name="query" placeholder="Tìm kiếm" required>
+                            <button type="submit" class="search-btn">
+                                <span class="lnr lnr-magnifier"></span>
+                            </button>
+                            <label for="search-toggle" class="lnr lnr-cross" title="Close Search"></label>
+                        </form>
+                    </div>
+
+                    <!-- Search Icon and Cart -->
+                    <ul class="nav navbar-nav navbar-right">
+                        <li class="nav-item"><a href="cart.html" class="cart"><span class="ti-bag"></span></a></li>
+                        <li class="nav-item">
+                            <!-- Search Button with Magnifier Icon -->
+                            <label for="search-toggle" class="search-icon">
+                                <span class="lnr lnr-magnifier"></span>
+                            </label>
+                        </li>
+                    </ul>
+
+
+                    <!-- User Dropdown -->
+                    <ul class="nav navbar-nav navbar-right">
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle user-btn" href="" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <span class="username">Người dùng</span>
+                                <span class="lnr lnr-user"></span>
+                            </a>
+                            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                <a class="dropdown-item" href=User.html>Thông tin người dùng</a>
+                                <a class="dropdown-item" href="confirmation.html">Lịch sử giao dịch</a>
+                                <div class="dropdown-divider"></div>
+                                <a class="dropdown-item" href="index.html">Đăng xuất</a>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </div>
+</header>
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+<!-- Product Details Section -->
+<section>
+    <h2>Chi Tiết Sản Phẩm</h2>
     <div class="details">
         <div class="product-info">
             <label>Tên Sản Phẩm:</label>
             <div>Air Jordan Legacy</div>
-            <img src="img/product/jordan2.png" alt="Air Jordan Legacy">
+            <img src="img/product/jordan22.png" alt="Air Jordan Legacy">
         </div>
 
         <div class="detail-item">
@@ -159,8 +222,80 @@
             <div>123 Đường Nguyễn Trãi, Phường 5, Quận 3, TP.HCM</div>
         </div>
     </div>
+</section>
 
-    <a href="confirmation.html" class="btn">Quay Lại</a>
-</div>
+<!-- Footer Area -->
+<footer class="footer-area section_gap">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-3 col-md-6 col-sm-6">
+                <div class="single-footer-widget">
+                    <h6>Về Chúng Tôi</h6>
+                    <p>
+                        “Kể từ lúc thành lập vào năm 2012, Karma luôn được khách hàng đánh giá là một trong những cửa hang giày chất lượng cao tại Việt Nam. Hiện tại, Karma vẫn tiếp tục duy trì chất lượng dịch vụ và sản phẩm tốt để gìn giữ sự hài lòng của khách hàng.”
+                    </p>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-6 col-sm-6">
+                <div class="single-footer-widget">
+                    <h6>Bảng tin</h6>
+                    <p>Luôn cập nhật thông tin mới nhất của chúng tôi
+                    </p>
+                    <div class="">
+                        <form target="_blank" novalidate="true" action="https://spondonit.us12.list-manage.com/subscribe/post?u=1462626880ade1ac87bd9c93a&amp;id=92a4423d01"
+                              method="get" class="form-inline">
+                            <div class="form-group lbel-inline">
+                                <input type="email" class="form-control" name="EMAIL" placeholder="Nhập email" required>
+                            </div>
+                            <button class="btn btn-default">
+                                <span class="lnr lnr-arrow-right"></span>
+                            </button>
+                            <div style="position: absolute; left: -5000px;">
+                                <input type="text" name="b_1462626880ade1ac87bd9c93a_92a4423d01" tabindex="-1" value="">
+                            </div>
+                        </form>
+                    </div>
+                    <div class="info"></div>
+                </div>
+            </div>
+            <div class="col-lg-2 col-md-6 col-sm-6">
+                <div class="single-footer-widget">
+                    <h6>Instagram</h6>
+                    <div class="instagram-row">
+                        <a href="#"><img src="img/i1.jpg" alt=""></a>
+                        <a href="#"><img src="img/i2.jpg" alt=""></a>
+                        <a href="#"><img src="img/i3.jpg" alt=""></a>
+                        <a href="#"><img src="img/i4.jpg" alt=""></a>
+                        <a href="#"><img src="img/i5.jpg" alt=""></a>
+                        <a href="#"><img src="img/i6.jpg" alt=""></a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6 col-sm-6">
+                <div class="single-footer-widget">
+                    <h6>Liên Hệ Với Chúng Tôi</h6>
+                    <p>ĐH Sài Gòn , <br>TP.HCM, VietNam</p>
+                    <p>
+                        <span class="lnr lnr-phone"></span> + 01 234 567 89<br>
+                        <span class="lnr lnr-envelope"></span> support@HKTC.com
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div class="row footer-bottom d-flex justify-content-between align-items-center">
+            <p class="footer-text m-0 col-lg-6 col-md-6">
+                2024 © Mọi quyền được bảo lưu | Mẫu này được tạo với<i class="fa fa-heart" aria-hidden="true"></i> by
+                <a href="https://colorlib.com" target="_blank">HKTC</a>
+            </p>
+            <div class="col-lg-6 col-md-6 footer-social">
+                <a href="#"><i class="fa fa-facebook"></i></a>
+                <a href="#"><i class="fa fa-twitter"></i></a>
+                <a href="#"><i class="fa fa-dribbble"></i></a>
+                <a href="#"><i class="fa fa-behance"></i></a>
+            </div>
+        </div>
+    </div>
+</footer>
 </body>
+
 </html>
