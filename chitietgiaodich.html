@@ -1,24 +1,245 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-  <link rel="shortcut icon" href="img/fav.png">
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Chi Tiết Hóa Đơn</title>
+  <title>Giao diện Admin</title>
+  <!-- Mobile Specific Meta -->
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <!-- Favicon-->
+  <link rel="shortcut icon" href="img/fav.png">
+  <!-- Author Meta -->
+  <meta name="author" content="CodePixar">
+  <!-- Meta Description -->
+  <meta name="description" content="">
+  <!-- Meta Keyword -->
+  <meta name="keywords" content="">
+  <!-- meta character set -->
+  <meta charset="UTF-8">
+  <!-- Site Title -->
+  <title>Karma Shop</title>
   <style>
-    * {
-      box-sizing: border-box;
+    /* Admin Container */
+    .admin-container {
+      display: flex;
+      min-height: 100vh;
     }
-    body {
-      font-family: Arial, sans-serif;
+
+    /* Sidebar */
+    .sidebar {
+      width: 180px;
+      background-color: #2c3e50;
+      color: white;
+      padding: 20px 15px;
+    }
+
+    .sidebar .logo-header {
+      display: flex;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+
+    .sidebar .logo-header img {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      margin-right: 10px;
+    }
+
+    .sidebar .logo-header h2 {
+      color: white;
+      font-size: 22px;
+      margin: 0;
+    }
+
+    .sidebar ul {
+      list-style: none;
+      padding: 0;
+    }
+
+    .sidebar ul li {
+      margin: 15px 0;
+    }
+
+    .sidebar ul li a {
+      color: white;
+      text-decoration: none;
+      font-size: 18px;
+      display: block;
+      padding: 10px;
+      border-radius: 5px;
+      transition: background 0.3s;
+    }
+
+    .sidebar ul li a:hover {
+      background-color: #34495e;
+    }
+
+    /* Main Content */
+    .dashboard-container {
+      flex: 1;
+      padding: 20px;
+      background-color: #ffffff;
+      border-radius: 8px;
+      margin: 15px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .dashboard-container h1 {
+      text-align: center;
+      font-size: 28px;
+      margin-bottom: 30px;
+      color: #212529;
+      font-weight: 600;
+    }
+    /* Đặt dropdown là relative để menu con hiển thị đúng vị trí */
+    .dropdown {
+      position: relative;
+    }
+
+    /* Menu con bị ẩn mặc định */
+    .dropdown-menu {
+      display: none;
+      position: absolute;
+      top: 100%;
+      left: 0;
+      background-color: #34495e;
+      list-style: none;
       margin: 0;
       padding: 0;
-      background-color: #f4f4f9;
+      border-radius: 5px;
+      z-index: 10;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+    }
+
+    /* Các mục trong menu con */
+    .dropdown-menu li {
+      margin: 0;
+    }
+
+    .dropdown-menu li a {
+      display: block;
+      padding: 10px 20px;
+      color: white;
+      text-decoration: none;
+      border-bottom: 1px solid #2c3e50;
+      transition: background 0.3s;
+    }
+
+    .dropdown-menu li a:hover {
+      background-color: #2c3e50;
+    }
+
+    /* Hiển thị menu con khi di chuột vào dropdown */
+    .dropdown:hover .dropdown-menu {
+      display: block;
+    }
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(135deg, #afefe1, #f4ddab);
+      margin: 0;
+      padding: 0;
+      color: #333;
+    }
+
+    .admin-container {
+      display: flex;
+      min-height: 100vh;
+    }
+
+
+
+    h1 {
+      text-align: center;
+    }
+    .pagination {
       display: flex;
       justify-content: center;
-      align-items: flex-start;
-      height: 100vh;
-      padding-top: 30px;
+      padding: 20px 0;
+    }
+
+    .pagination a {
+      color: #2c3e50;
+      text-decoration: none;
+      margin: 0 5px;
+      padding: 8px 16px;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      transition: background-color 0.3s, color 0.3s;
+    }
+
+    .pagination a:hover {
+      background-color: #34495e;
+      color: white;
+    }
+
+    .pagination a.active {
+      background-color: #2c3e50;
+      color: white;
+      border: 1px solid #2c3e50;
+    }
+    /* Bộ lọc */
+    .filter-container {
+      margin: 20px 0;
+      padding: 10px;
+      background-color: #f9f9f9;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+      justify-content: space-between;
+    }
+
+    .filter-container form {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+    }
+
+    .filter-category,
+    .filter-name {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .filter-category label,
+    .filter-name label {
+      margin-bottom: 5px;
+      font-weight: bold;
+    }
+
+    .filter-actions {
+      display: flex;
+      align-items: center;
+    }
+
+    /* Pagination */
+    .pagination {
+      display: flex;
+      justify-content: center;
+      padding: 20px 0;
+    }
+
+    .pagination a {
+      color: #343a40;
+      text-decoration: none;
+      margin: 0 5px;
+      padding: 8px 16px;
+      border: 1px solid #dee2e6;
+      border-radius: 4px;
+      transition: all 0.3s;
+    }
+
+    .pagination a:hover {
+      background-color: #343a40;
+      color: white;
+    }
+
+    .pagination a.active {
+      background-color: #007bff;
+      color: white;
+      border: 1px solid #007bff;
     }
     .container {
       width: 100%;
@@ -28,6 +249,8 @@
       border-radius: 8px;
       background-color: white;
       box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      margin-left: auto;
+      margin-right: auto;
     }
     h2 {
       text-align: center;
@@ -106,76 +329,101 @@
     .button:hover {
       background-color: #0056b3;
     }
-    .footer {
-      text-align: center;
-      margin-top: 30px;
-      font-size: 14px;
-      color: #888;
-    }
+
   </style>
 </head>
 <body>
-
-<div class="container">
-  <h2>Chi Tiết Hóa Đơn</h2>
-
-  <!-- Thông tin khách hàng -->
-  <div class="info-group">
-    <label>Tên khách hàng:</label>
-    <div class="info">Ngô Đức Huy</div>
-  </div>
-  <div class="info-group">
-    <label>Số điện thoại:</label>
-    <div class="info">0123456789</div>
-  </div>
-  <div class="info-group">
-    <label>Địa chỉ nhận hàng:</label>
-    <div class="info">123 Đường ABC, Phường XYZ, TP. Hồ Chí Minh</div>
-  </div>
-  <div class="info-group">
-    <label>Phương thức thanh toán:</label>
-    <div class="info">Thanh toán khi nhận hàng</div>
-  </div>
-  <div class="info-group">
-    <label>Ghi Chú: </label>
-    <textarea disabled rows="3" class="info">Gọi trước khi giao giúp em</textarea>
-  </div>
-  <div class="info-group">
-    <label>Mã giao dịch:</label>
-    <div class="info">GiaoDich12345</div>
-  </div>
-  <div class="info-group">
-    <label>Ngày đặt hàng:</label>
-    <div class="info">26/11/2024</div>
+<header style="background-color: rgb(255,255,255); color: #0b0b0b; padding: 20px 40px; display: flex; align-items: center; justify-content: space-between; font-size: 28px; border-bottom: 5px solid #0b0b0b;">
+  <!-- Logo bên trái -->
+  <div style="flex: 0; display: flex; align-items: center;">
+    <img src="img/fav.png" alt="Karma Logo" style="width: 60px; height: 60px; border-radius: 50%; margin-right: 20px;">
+    <h1 style="margin: 0; font-size: 20px;">Karma Shop</h1>
   </div>
 
-  <!-- Sản phẩm và số lượng -->
-  <div class="product-info">
-    <label>Danh sách sản phẩm:</label>
-    <div class="info">
-      <span>Air Jordan Lagacy</span>
-      <span>x2</span>
+  <!-- Phần menu bên phải -->
+  <nav style="flex: 1;text-align: center">
+    <ul style="list-style: none; display: flex; justify-content: right; margin: 0; padding: 0;">
+      <li style="margin: 0 20px;"><a href="#home" style="color: #0b0b0b; text-decoration: none; font-size: 22px;">Admin</a></li>
+      <li style="margin: 0 20px;"><a href="#logout" style="color: #0b0b0b; text-decoration: none; font-size: 22px;">Đăng xuất</a></li>
+    </ul>
+  </nav>
+</header>
+<div class="admin-container">
+  <!-- Sidebar -->
+  <div class="sidebar">
+    <ul>
+      <li><a href="admin.html">Trang chủ</a></li>
+      <li><a href="managerp.html">Quản lí sản phẩm</a></li>
+      <li><a href="manager-user.html">Quản lí người dùng</a></li>
+      <li><a href="ManageCustomerOrder.html">Quản lí đơn hàng</a></li>
+      <li class="dropdown">
+        <a href="#statistics">Thống kê</a>
+        <ul class="dropdown-menu">
+          <li><a href="static.html">Sản phẩm</a></li>
+          <li><a href="static2.html">Người dùng</a></li>
+        </ul>
+      </li>
+
+    </ul>
+  </div>
+  <div class="container">
+    <h2>Chi Tiết Hóa Đơn</h2>
+
+    <!-- Thông tin khách hàng -->
+    <div class="info-group">
+      <label>Tên khách hàng:</label>
+      <div class="info">Ngô Đức Huy</div>
     </div>
-    <div class="info">
-      <span>Air Jordan Lagacy</span>
-      <span>x5</span>
+    <div class="info-group">
+      <label>Số điện thoại:</label>
+      <div class="info">0123456789</div>
+    </div>
+    <div class="info-group">
+      <label>Địa chỉ nhận hàng:</label>
+      <div class="info">123 Đường ABC, Phường XYZ, TP. Hồ Chí Minh</div>
+    </div>
+    <div class="info-group">
+      <label>Phương thức thanh toán:</label>
+      <div class="info">Thanh toán khi nhận hàng</div>
+    </div>
+    <div class="info-group">
+      <label>Ghi Chú: </label>
+      <textarea disabled rows="3" class="info">Gọi trước khi giao giúp em</textarea>
+    </div>
+    <div class="info-group">
+      <label>Mã giao dịch:</label>
+      <div class="info">GiaoDich12345</div>
+    </div>
+    <div class="info-group">
+      <label>Ngày đặt hàng:</label>
+      <div class="info">26/11/2024</div>
+    </div>
+
+    <!-- Sản phẩm và số lượng -->
+    <div class="product-info">
+      <label>Danh sách sản phẩm:</label>
+      <div class="info">
+        <span>Air Jordan Lagacy</span>
+        <span>x2</span>
+      </div>
+      <div class="info">
+        <span>Air Jordan Lagacy</span>
+        <span>x5</span>
+      </div>
+    </div>
+
+    <!-- Giá tiền thanh toán -->
+    <div class="total-info">
+      <span>Tổng tiền:</span>
+      <span>1,500,000 VND</span>
+    </div>
+
+    <!-- Nút quay lại -->
+    <div class="footer">
+      Cảm ơn quý khách đã sử dụng dịch vụ của chúng tôi!
     </div>
   </div>
-
-  <!-- Giá tiền thanh toán -->
-  <div class="total-info">
-    <span>Tổng tiền:</span>
-    <span>1,500,000 VND</span>
-  </div>
-
-  <!-- Nút quay lại -->
-  <div class="buttons">
-    <a href="static2.html" class="button">Quay lại</a>
-  </div>
-
-  <div class="footer">
-    Cảm ơn quý khách đã sử dụng dịch vụ của chúng tôi!
-  </div>
+</div>
 </div>
 
 </body>
