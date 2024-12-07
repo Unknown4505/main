@@ -13,7 +13,7 @@ body {
     height: 100vh;            /* Chiều cao bằng 100% chiều cao của cửa sổ trình duyệt */
     margin: 0;
     overflow: auto;           /* Cho phép cuộn khi nội dung quá lớn */
-    pandding-top: 650px;
+    padding: 20px 0;
 }
 
 .profile-container {
@@ -39,6 +39,7 @@ body {
     margin-bottom: 30px;
     border-radius: 15px 15px 0 0; /* Bo tròn góc phía trên */
     color: white;
+    padding-top: 650px;
 }
 
 .profile-name {
