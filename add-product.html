@@ -1,192 +1,253 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="vi">
 <head>
-    <link rel="shortcut icon" href="img/fav.png">
     <meta charset="UTF-8">
+    <link rel="stylesheet" href="css/add-product.css">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Thêm Sản Phẩm</title> <!-- Thay đổi tiêu đề trang thành tiếng Việt -->
-    <link rel="stylesheet" href="css/add-product.css"> <!-- Đường dẫn đến file CSS -->
-    <link rel="stylesheet" href="css/linearicons.css">
-    <link rel="stylesheet" href="css/font-awesome.min.css">
-    <link rel="stylesheet" href="css/themify-icons.css">
-    <link rel="stylesheet" href="css/bootstrap.css">
-    <link rel="stylesheet" href="css/owl.carousel.css">
-    <link rel="stylesheet" href="css/nice-select.css">
-    <link rel="stylesheet" href="css/nouislider.min.css">
-    <link rel="stylesheet" href="css/ion.rangeSlider.css" />
-    <link rel="stylesheet" href="css/ion.rangeSlider.skinFlat.css" />
-    <link rel="stylesheet" href="css/magnific-popup.css">
-    <link rel="stylesheet" href="css/main.css">
-    <link rel="stylesheet" href="css/User1234.css">
-    <link rel="stylesheet" href="css/search.css">
+    <title>Thêm sản phẩm</title>
+    <!-- Mobile Specific Meta -->
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!-- Favicon-->
+    <link rel="shortcut icon" href="img/fav.png">
+    <!-- Author Meta -->
+    <meta name="author" content="CodePixar">
+    <!-- Meta Description -->
+    <meta name="description" content="">
+    <!-- Meta Keyword -->
+    <meta name="keywords" content="">
+    <!-- meta character set -->
+    <meta charset="UTF-8">
+    <!-- Site Title -->
+    <title>Karma Shop</title>
     <style>
-        /* CSS cho hộp thông báo tùy chỉnh */
-        .custom-alert {
-            display: none;
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            background-color: white;
-            border: 1px solid #ccc;
-            box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
-            width: 300px;
-            padding: 20px;
-            text-align: center;
-            z-index: 1000;
-            border-radius: 10px;
+        /* Admin Container */
+        .admin-container {
+            display: flex;
+            min-height: 100vh;
         }
 
-        .custom-alert p {
+        /* Sidebar */
+        .sidebar {
+            width: 15%;
+            background-color: #232323;
+            color: white;
+            padding: 20px 15px;
+        }
+
+        .sidebar .logo-header {
+            display: flex;
+            align-items: center;
             margin-bottom: 20px;
         }
 
-        .custom-alert button {
-            padding: 10px 20px;
-            background-color: #28a745;
+        .sidebar .logo-header img {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            margin-right: 10px;
+        }
+
+        .sidebar .logo-header h2 {
             color: white;
-            border: none;
-            cursor: pointer;
+            font-size: 22px;
+            margin: 0;
+        }
+
+        .sidebar ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .sidebar ul li {
+            margin: 15px 0;
+        }
+
+        .sidebar ul li a {
+            color: white;
+            text-decoration: none;
+            font-size: 18px;
+            display: block;
+            padding: 10px;
             border-radius: 5px;
+            transition: background 0.3s;
         }
 
-        .custom-alert button:hover {
-            background-color: #218838;
+        .sidebar ul li a:hover {
+            background-color: #34495e;
         }
 
-        .custom-alert .back-btn {
-            background-color: #007bff;
+        /* Main Content */
+        .main-content {
+            flex: 1;
+            padding: 20px;
+            background-color: #ecf0f1;
         }
 
-        .custom-alert .back-btn:hover {
-            background-color: #0056b3;
+        .main-content h1 {
+            font-size: 28px;
+            margin-bottom: 20px;
         }
 
-        /* CSS cho các nút Add Product và Back to Home */
-        .button-container {
+        /* Dashboard Cards */
+        .dashboard {
             display: flex;
-            gap: 10px; /* Khoảng cách giữa các nút */
-            margin-top: 20px;
+            flex-wrap: wrap;
+            gap: 20px;
         }
 
-        .button-container button {
-            padding: 10px 15px;
-            font-size: 14px; /* Giảm kích thước font chữ */
+        .card {
+            flex: 1 1 calc(20% - 20px);
+            background-color: white;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 15px;
+            box-shadow: 0 2px 4px
+        }
+        /* Đặt dropdown là relative để menu con hiển thị đúng vị trí */
+        .dropdown {
+            position: relative;
+        }
+
+        /* Menu con bị ẩn mặc định */
+        .dropdown-menu {
+            display: none;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            background-color: #34495e;
+            list-style: none;
+            margin: 0;
+            padding: 0;
             border-radius: 5px;
-            cursor: pointer;
-            width: 150px; /* Chiều rộng nút cố định */
+            z-index: 10;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
         }
 
-        .button-container .add-product-btn {
-            background-color: #28a745;
+        /* Các mục trong menu con */
+        .dropdown-menu li {
+            margin: 0;
+        }
+
+        .dropdown-menu li a {
+            display: block;
+            padding: 10px 20px;
             color: white;
+            text-decoration: none;
+            border-bottom: 1px solid #2c3e50;
+            transition: background 0.3s;
         }
 
-        .button-container .add-product-btn:hover {
-            background-color: #218838;
+        .dropdown-menu li a:hover {
+            background-color: #2c3e50;
         }
 
-        .button-container .back-home-btn {
-            background-color: #007bff;
-            color: white;
-        }
-
-        .button-container .back-home-btn:hover {
-            background-color: #0056b3;
-        }
-
-        /* CSS cho nút Choose File */
-        .fake-upload-btn {
-            padding: 10px 15px;
-            font-size: 14px;
-            border-radius: 5px;
-            cursor: pointer;
-            background-color: white; /* Nền màu trắng */
-            color: black; /* Chữ màu đen */
-            border: 1px solid #ccc; /* Thêm viền */
-        }
-
-        .fake-upload-btn:hover {
-            background-color: #f8f8f8; /* Màu nền khi hover */
-        }
-        .fake-upload-btn {
-            padding: 8px 15px;
-            font-size: 14px;
-            border-radius: 5px;
-            cursor: pointer;
-            background-color: white; /* Nền màu trắng */
-            color: black; /* Chữ màu đen */
-            border: 1px solid #000; /* Viền đen */
-        }
-
-        .fake-upload-btn:hover {
-            background-color: #f8f8f8; /* Màu nền khi hover */
+        /* Hiển thị menu con khi di chuột vào dropdown */
+        .dropdown:hover .dropdown-menu {
+            display: block;
         }
 
     </style>
 </head>
 <body>
+<header style="background-color: rgb(255,255,255); color: #0b0b0b; padding: 20px 40px; display: flex; align-items: center; justify-content: space-between; font-size: 28px; border-bottom: 5px solid #0b0b0b;">
+    <!-- Logo bên trái -->
+    <div style="flex: 0; display: flex; align-items: center;">
+        <img src="img/fav.png" alt="Karma Logo" style="width: 60px; height: 60px; border-radius: 50%; margin-right: 20px;">
+        <h1 style="margin: 0; font-size: 20px;">Karma Shop</h1>
+    </div>
+
+    <!-- Phần menu bên phải -->
+    <nav style="flex: 1;text-align: center">
+        <ul style="list-style: none; display: flex; justify-content: right; margin: 0; padding: 0;">
+            <li style="margin: 0 20px;"><a href="#home" style="color: #0b0b0b; text-decoration: none; font-size: 22px;">Admin</a></li>
+            <li style="margin: 0 20px;"><a href="#logout" style="color: #0b0b0b; text-decoration: none; font-size: 22px;">Đăng xuất</a></li>
+        </ul>
+    </nav>
+</header>
+
+
+
+
+
 <div class="admin-container">
-    <h1>Thêm Sản Phẩm</h1> <!-- Thay đổi tiêu đề thành tiếng Việt -->
-    <!-- Form để thêm sản phẩm -->
-    <form id="product-form" onsubmit="showAlert(); return false;"> <!-- prevent form from submitting -->
-        <label for="product-name">Tên Sản Phẩm</label> <!-- Thay đổi thành tiếng Việt -->
-        <input type="text" id="product-name" placeholder="Nhập tên sản phẩm"> <!-- Thay đổi placeholder thành tiếng Việt -->
+    <!-- Sidebar -->
+    <div class="sidebar">
 
-        <label for="product-price">Giá</label> <!-- Thay đổi thành tiếng Việt -->
-        <input type="number" id="product-price" placeholder="Nhập giá sản phẩm"> <!-- Thay đổi placeholder thành tiếng Việt -->
+        <ul>
+            <li><a href="#home">Trang chủ</a></li>
+            <li><a href="managerp.html">Quản lí sản phẩm</a></li>
+            <li><a href="manager-user.html">Quản lí người dùng</a></li>
+            <li><a href="ManageCustomerOrder.html">Quản lí đơn hàng</a></li>
+            <li class="dropdown">
+                <a href="#statistics">Thống kê</a>
+                <ul class="dropdown-menu">
+                    <li><a href="static.html">Sản phẩm</a></li>
+                    <li><a href="static2.html">Người dùng</a></li>
+                </ul>
+            </li>
+        </ul>
+    </div>
 
-        <label for="product-quantity">Số Lượng</label> <!-- Thay đổi thành tiếng Việt -->
-        <input type="number" id="product-quantity" placeholder="Nhập số lượng"> <!-- Thay đổi placeholder thành tiếng Việt -->
-        <label for="product-category">Loại Sản Phẩm</label>
-        <select id="product-category">
-            <option value="adidas">Adidas</option>
-            <option value="vans">Vans</option>
-            <option value="nike">Nike</option>
-        </select>
+    <!-- Main Content -->
+    <div class="main-content">
+        <h1>Thêm Sản Phẩm</h1>
+        <form id="addProductForm" onsubmit="return handleAddProduct(event)">
+            <!-- Tên sản phẩm -->
+            <label for="productName">Tên Sản Phẩm:</label>
+            <input type="text" id="productName" name="productName" required><br><br>
 
-        <label for="product-description">Mô Tả Sản Phẩm</label> <!-- Thay đổi thành tiếng Việt -->
-        <textarea id="product-description" rows="3" placeholder="Nhập mô tả sản phẩm"></textarea> <!-- Thay đổi placeholder thành tiếng Việt -->
+            <!-- Loại sản phẩm -->
+            <!-- Loại sản phẩm -->
+            <label for="productType">Loại Sản Phẩm:</label>
+            <select id="productType" name="productType" required>
+                <option value="Adidas">Adidas</option>
+                <option value="Vans">Vans</option>
+                <option value="Nike">Nike</option>
+            </select><br><br>
 
-        <div class="form-group">
-            <label for="product-image">Thêm Ảnh</label> <!-- Thay đổi thành tiếng Việt -->
-            <button class="fake-upload-btn" type="button">Chọn File</button> <!-- Thay đổi thành tiếng Việt -->
+
+            <!-- Mô tả sản phẩm -->
+            <label for="productDescription">Mô Tả Sản Phẩm:</label><br>
+            <textarea id="productDescription" name="productDescription" rows="5" cols="50" required></textarea><br><br>
+
+            <!-- Nút chọn ảnh -->
+            <label for="productImage">Thêm Ảnh:</label>
+            <input type="file" id="fproductImage" name="productImage" ><br><br>
+
+            <!-- Nút thêm sản phẩm -->
+            <button type="button" onclick="handleAddProduct()">Thêm</button>
+        </form>
+
+        <!-- Modal hiện thông báo thêm thành công -->
+        <div id="successModal">
+            <p>Đã thêm thành công!</p>
+            <button onclick="closeModal()">OK</button>
         </div>
 
-        <!-- Nút thêm sản phẩm và quay về trang chủ nằm cạnh nhau -->
-        <div class="button-container">
-            <button class="add-product-btn" type="submit">Thêm</button> <!-- Thay đổi thành tiếng Việt -->
-            <a href="managerp.html" class="back-home-btn" style="text-align: center; padding: 10px 15px;">Quay Về Trang Chủ</a>
-            <!-- Thay đổi thành tiếng Việt -->
-        </div>
-    </form>
+        <!-- Overlay mờ khi hiển thị modal -->
+        <div id="overlay"></div>
+    </div>
 </div>
 
-<!-- Hộp thông báo tùy chỉnh -->
-<div id="custom-alert" class="custom-alert">
-    <p>Sản phẩm đã được thêm thành công!</p> <!-- Thay đổi thành tiếng Việt -->
-    <button onclick="closeAlert()">Đóng</button> <!-- Thay đổi thành tiếng Việt -->
-</div>
-
-<!-- JavaScript -->
 <script>
-    // Hiển thị thông báo khi bấm vào nút Add Product
-    function showAlert() {
-        var alertBox = document.getElementById('custom-alert');
-        alertBox.style.display = 'block';
-    }
 
-    // Đóng hộp thông báo
-    function closeAlert() {
-        var alertBox = document.getElementById('custom-alert');
-        alertBox.style.display = 'none';
+    function handleAddProduct() {
+        // Hiển thị modal thông báo thành công
+        document.getElementById("successModal").style.display = "block";
+        document.getElementById("overlay").style.display = "block";
     }
+        // Hiển thị thông báo thành công
 
-    // Quay về trang chủ
-    function goBack() {
-        window.location.href = "admin.html"; // Đổi URL thành trang bạn muốn quay về
+    function closeModal() {
+        // Ẩn modal thông báo và overlay
+        document.getElementById("successModal").style.display = "none";
+        document.getElementById("overlay").style.display = "none";
+
+        // Reset form sau khi thêm thành công
+        document.getElementById("addProductForm").reset();
     }
 </script>
+
 
 </body>
 </html>
