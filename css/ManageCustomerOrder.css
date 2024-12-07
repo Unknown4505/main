@@ -6,7 +6,7 @@
 
 /* Sidebar */
 .sidebar {
-    width: 15% !important;
+    width: 7% !important;
     background-color: #232323 !important;
     color: white !important;
     padding: 20px 15px !important;
@@ -123,21 +123,23 @@
 .dropdown:hover .dropdown-menu {
     display: block;
 }
-body:not (.admin-container) {
+body {
     font-family: 'Poppins', sans-serif;
-    background-color: #f7f7f7; /* Nền xám nhạt */
+    background: linear-gradient(135deg, #afefe1, #f4ddab);
     margin: 0;
     padding: 0;
     color: #333;
-    overflow: auto; /* Tắt cuộn */
 }
 
 .dashboard-container {
     width: 80%;
     margin: 20px auto;
     padding: 20px;
-    background: linear-gradient(135deg, #ffffff, #f2f2f2); /* Gradient trắng và xám nhạt */
+    background: linear-gradient(135deg, #ffffff, #b3e5fc);
     border-radius: 12px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+    padding-bottom: 50px;
+    margin-bottom: 70px;
 }
 
 h3 {
@@ -172,18 +174,18 @@ h3 {
 table {
     width: 100%;
     border-collapse: collapse;
-    margin-top: 10px;
+    margin-top: 40px;
     background-color: #ffffff; /* Nền trắng */
     border-radius: 8px;
     overflow: hidden; /* Tạo cảm giác gọn gàng */
 }
 
 table, th, td {
-    border: 1px solid #e0e0e0; /* Đường viền xám nhạt */
+    border: 2px solid #e0e0e0; /* Đường viền xám nhạt */
 }
 
 th, td {
-    padding: 15px;
+    padding: 30px;
     text-align: left;
 }
 
