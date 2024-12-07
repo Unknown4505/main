@@ -1,253 +1,385 @@
-<!DOCTYPE html>
-<html lang="vi">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Giao diện Admin</title>
-  <!-- Mobile Specific Meta -->
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <!-- Favicon-->
-  <link rel="shortcut icon" href="img/fav.png">
-  <!-- Author Meta -->
-  <meta name="author" content="CodePixar">
-  <!-- Meta Description -->
-  <meta name="description" content="">
-  <!-- Meta Keyword -->
-  <meta name="keywords" content="">
-  <!-- meta character set -->
-  <meta charset="UTF-8">
-  <!-- Site Title -->
-  <title>Karma Shop</title>
-  <link rel="stylesheet" href="css/ManageCustomerOrder.css">
+/* Admin Container */
+.admin-container {
+    display: flex;
+    min-height: 100vh;
+}
 
-</head>
-<body>
-<header style="background-color: rgba(214,61,61,0.9); color: #0b0b0b; padding: 20px 40px; display: flex; align-items: center; justify-content: space-between; font-size: 28px; border-bottom: 5px solid #0b0b0b;">
-  <!-- Logo bên trái -->
-  <div style="flex: 0; display: flex; align-items: center;">
-    <img src="img/fav.png" alt="Karma Logo" style="width: 60px; height: 60px; border-radius: 50%; margin-right: 20px;">
-    <h1 style="margin: 0; font-size: 20px;">Karma Shop</h1>
-  </div>
+/* Sidebar */
+.sidebar {
+    width: 8%;
+    background-color: #1e1e1e;
+    color: white;
+    padding: 20px 15px;
+}
 
-  <!-- Phần menu bên phải -->
-  <nav style="flex: 1;text-align: center">
-    <ul style="list-style: none; display: flex; justify-content: right; margin: 0; padding: 0;">
-      <li style="margin: 0 20px;"><a href="#home" style="color: #0b0b0b; text-decoration: none; font-size: 22px;">Admin</a></li>
-      <li style="margin: 0 20px;"><a href="#logout" style="color: #0b0b0b; text-decoration: none; font-size: 22px;">Đăng xuất</a></li>
-    </ul>
-  </nav>
-</header>
-  
-<div class="admin-container">
-  <!-- Sidebar -->
-  <div class="sidebar">
+.sidebar .logo-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+}
 
-    <ul>
-      <li><a href="admin.html">Trang chủ</a></li>
-      <li><a href="managerp.html">Quản lí sản phẩm</a></li>
-      <li><a href="manager-user.html">Quản lí người dùng</a></li>
-      <li><a href="ManageCustomerOrder.html">Quản lí đơn hàng</a></li>
-      <li class="dropdown">
-        <a href="#statistics">Thống kê</a>
-        <ul class="dropdown-menu">
-          <li><a href="static.html">Sản phẩm</a></li>
-          <li><a href="static2.html">Người dùng</a></li>
-        </ul>
-      </li>
-    </ul>
-  </div>
-  <div class="dashboard-container">
-    <h1>Quản lí đơn hàng</h1>
+.sidebar .logo-header img {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    margin-right: 10px;
+}
 
-    <!-- Thông báo cập nhật trạng thái -->
-    <div class="alert" id="status-alert">
-      <span>Trạng thái đã được cập nhật thành công!</span>
-      <span class="close-btn" onclick="closeAlert()">&times;</span>
-    </div>
+.sidebar .logo-header h2 {
+    color: white;
+    font-size: 22px;
+    margin: 0;
+}
 
-    <!-- Filter Section -->
-    <form id="filter-form" class="filter-section" action="ManageCustomerOrderFiltered.html" method="get">
-      <h2>Lọc và Sắp xếp Đơn hàng</h2>
+.sidebar ul {
+    list-style: none;
+    padding: 0;
+}
 
-      <label for="status">Trạng thái:</label>
-      <select id="status" name="status">
-        <option value="all">Tất cả</option>
-        <option value="Đã xác nhận">Đã xác nhận</option>
-        <option value="Hoàn thành">Hoàn thành</option>
-        <option value="Hủy bỏ">Hủy bỏ</option>
-      </select>
+.sidebar ul li {
+    margin: 15px 0;
+}
 
-      <label for="from-date">Từ ngày:</label>
-      <input type="date" id="from-date" name="from-date">
+.sidebar ul li a {
+    color: white;
+    text-decoration: none;
+    font-size: 18px;
+    display: block;
+    padding: 10px;
+    border-radius: 5px;
+    transition: background 0.3s;
+}
 
-      <label for="to-date">Đến ngày:</label>
-      <input type="date" id="to-date" name="to-date">
+.sidebar ul li a:hover {
+    background-color: #34495e;
+}
 
-      <button type="submit" class="apply-btn">Lọc</button>
-    </form>
+/* Main Content */
+.main-content {
+    flex: 1;
+    padding: 20px;
+    background-color: #ecf0f1;
+}
 
-    <table>
-      <thead>
-      <tr>
-        <th>Mã Đơn hàng</th>
-        <th>Tên Khách hàng</th>
-        <th>Số Điện Thoại</th>
-        <th>Ngày Đặt hàng</th>
-        <th>Trạng thái</th>
-        <th>Địa chỉ giao hàng</th>
-        <th>Chi Tiết</th>
-      </tr>
-      </thead>
-      <tbody>
-      <tr>
-        <td>OD001</td>
-        <td>N.T.L Nguyen</td>
-        <td>0901234567</td>
-        <td>2024-10-01</td>
-        <td>
-          <select onchange="showAlert()">
-            <option value="confirmed" selected>Đã xác nhận</option>
-            <option value="completed">Hoàn thành</option>
-            <option value="cancelled">Hủy bỏ</option>
-          </select>
-        </td>
-        <td>Quận 1, HCMC</td>
-        <td><a href="viewdetail.html" class="details-btn">Xem chi tiết</a></td>
-      </tr>
-      <tr>
-        <td>OD002</td>
-        <td>Hoàng Duẫn</td>
-        <td>0909876543</td>
-        <td>2024-10-05</td>
-        <td>
-          <select onchange="showAlert()">
-            <option value="confirmed">Đã xác nhận</option>
-            <option value="completed" selected>Hoàn thành</option>
-            <option value="cancelled">Hủy bỏ</option>
-          </select>
-        </td>
-        <td>Quận 3, HCMC</td>
-        <td><a href="viewdetail.html" class="details-btn">Xem chi tiết</a></td>
-      </tr>
-      <tr>
-        <td>OD003</td>
-        <td>Lê Hữu Khang</td>
-        <td>0912345678</td>
-        <td>2024-10-10</td>
-        <td>
-          <select onchange="showAlert()">
-            <option value="confirmed">Đã xác nhận</option>
-            <option value="completed">Hoàn thành</option>
-            <option value="cancelled" selected>Hủy bỏ</option>
-          </select>
-        </td>
-        <td>Quận 2, HCMC</td>
-        <td><a href="viewdetail.html" class="details-btn">Xem chi tiết</a></td>
-      </tr>
-      <tr>
-        <td>OD004</td>
-        <td>V.K Nguyen</td>
-        <td>0923456789</td>
-        <td>2024-10-12</td>
-        <td>
-          <select onchange="showAlert()">
-            <option value="confirmed" selected>Đã xác nhận</option>
-            <option value="completed">Hoàn thành</option>
-            <option value="cancelled">Hủy bỏ</option>
-          </select>
-        </td>
-        <td>Quận 4, HCMC</td>
-        <td><a href="viewdetail.html" class="details-btn">Xem chi tiết</a></td>
-      </tr>
-      <tr>
-        <td>OD005</td>
-        <td>L.N.Q Võ</td>
-        <td>0934567890</td>
-        <td>2024-10-15</td>
-        <td>
-          <select onchange="showAlert()">
-            <option value="confirmed">Đã xác nhận</option>
-            <option value="completed" selected>Hoàn thành</option>
-            <option value="cancelled">Hủy bỏ</option>
-          </select>
-        </td>
-        <td>Quận 5, HCMC</td>
-        <td><a href="viewdetail.html" class="details-btn">Xem chi tiết</a></td>
-      </tr>
-      <tr>
-        <td>OD006</td>
-        <td>Ngô Đức Huy</td>
-        <td>0945678901</td>
-        <td>2024-10-17</td>
-        <td>
-          <select onchange="showAlert()">
-            <option value="confirmed">Đã xác nhận</option>
-            <option value="completed">Hoàn thành</option>
-            <option value="cancelled" selected>Hủy bỏ</option>
-          </select>
-        </td>
-        <td>Quận 6, HCMC</td>
-        <td><a href="viewdetail.html" class="details-btn">Xem chi tiết</a></td>
-      </tr>
-      <tr>
-        <td>OD007</td>
-        <td>Phạm Ngọc Thiện</td>
-        <td>0391739133</td>
-        <td>2024-9-17</td>
-        <td>
-          <select onchange="showAlert()">
-            <option value="confirmed">Đã xác nhận</option>
-            <option value="completed">Hoàn thành</option>
-            <option value="cancelled" selected>Hủy bỏ</option>
-          </select>
-        </td>
-        <td>Long Thành, Đồng Nai</td>
-        <td><a href="viewdetail.html" class="details-btn">Xem chi tiết</a></td>
-      </tr>
+.main-content h1 {
+    font-size: 28px;
+    margin-bottom: 20px;
+}
 
-      </tbody>
-    </table>
+/* Dashboard Cards */
+.dashboard {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+}
 
-    <div class="pagination">
-      <a href="?page=1">&laquo;</a> <!-- Quay lại trang 1 -->
-      <a href="?page=1">1</a> <!-- Trang 1 -->
-      <a href="?page=2">2</a> <!-- Trang 2 -->
-      <a href="?page=3">3</a> <!-- Trang 3 -->
-      <a href="?page=4">4</a> <!-- Trang 4 -->
-      <a href="?page=5">5</a> <!-- Trang 5 -->
-      <a href="?page=5">&raquo;</a> <!-- Chuyển tới trang 5 -->
-    </div>
+.card {
+    flex: 1 1 calc(20% - 20px);
+    background-color: white;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 15px;
+    box-shadow: 0 2px 4px
+}
+/* Đặt dropdown là relative để menu con hiển thị đúng vị trí */
+.dropdown {
+    position: relative;
+}
 
-  </div>
+/* Menu con bị ẩn mặc định */
+.dropdown-menu {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    background-color: #34495e;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    border-radius: 5px;
+    z-index: 10;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+}
 
-  <!-- JavaScript -->
-  <script>// Hiển thị thông báo khi trạng thái được thay đổi
-  function showAlert() {
-    var alert = document.getElementById('status-alert');
-    alert.classList.add('show');
+/* Các mục trong menu con */
+.dropdown-menu li {
+    margin: 0;
+}
 
-    // Tự động ẩn thông báo sau 3 giây với hiệu ứng fade-out
-    setTimeout(function() {
-      alert.classList.add('fadeOut');
-      setTimeout(function() {
-        alert.classList.remove('show', 'fadeOut');
-      }, 300); // Phù hợp với thời gian animation fadeOut
-    }, 3000); // Thời gian hiển thị là 3 giây
-  }
+.dropdown-menu li a {
+    display: block;
+    padding: 10px 20px;
+    color: white;
+    text-decoration: none;
+    border-bottom: 1px solid #2c3e50;
+    transition: background 0.3s;
+}
 
-  // Đóng thông báo khi nhấn nút đóng
-  function closeAlert() {
-    var alert = document.getElementById('status-alert');
-    alert.classList.add('fadeOut');
-    setTimeout(function() {
-      alert.classList.remove('show', 'fadeOut');
-    }, 300); // Phù hợp với thời gian animation fadeOut
-  }
+.dropdown-menu li a:hover {
+    background-color: #2c3e50;
+}
 
-  </script>
+/* Hiển thị menu con khi di chuột vào dropdown */
+.dropdown:hover .dropdown-menu {
+    display: block;
+}
+body {
+    font-family: 'Poppins', sans-serif;
+    background-color: #f7f7f7; /* Nền xám nhạt */
+    margin: 0;
+    padding: 0;
+    color: #333;
+    overflow: auto; /* Tắt cuộn */
+}
+
+.dashboard-container {
+    width: 80%;
+    margin: 20px auto;
+    padding: 20px;
+    background: linear-gradient(135deg, #ffffff, #f2f2f2); /* Gradient trắng và xám nhạt */
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); /* Hiệu ứng bóng mềm */
+}
+
+h3 {
+    margin-top: 0;
+    color: #4f4f4f; /* Xám đậm */
+    border-bottom: 2px solid #bdbdbd; /* Viền dưới xám nhạt */
+    padding-bottom: 5px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    text-align: center;
+    background-color: #e0e0e0; /* Nền xám nhạt */
+    border-radius: 8px;
+    padding: 10px;
+}
+
+.back-button {
+    display: inline-block;
+    margin-bottom: 20px;
+    padding: 8px 15px;
+    background-color: #757575; /* Màu xám nút */
+    color: #fff;
+    text-decoration: none;
+    border-radius: 5px;
+    font-size: 14px;
+    transition: background-color 0.3s;
+}
+
+.back-button:hover {
+    background-color: #616161; /* Xám đậm hơn khi hover */
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+    background-color: #ffffff; /* Nền trắng */
+    border-radius: 8px;
+    overflow: hidden; /* Tạo cảm giác gọn gàng */
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); /* Hiệu ứng bóng nhẹ */
+}
+
+table, th, td {
+    border: 1px solid #e0e0e0; /* Đường viền xám nhạt */
+}
+
+th, td {
+    padding: 15px;
+    text-align: left;
+}
+
+th {
+    background-color: #3e3c3c; /* Nền xám nhạt */
+    color: #ffffff; /* Chữ trắng */
+    text-transform: uppercase;
+}
+
+tr:nth-child(even) td {
+    background-color: #f9f9f9; /* Màu xám nhạt dòng chẵn */
+}
+
+tr:nth-child(odd) td {
+    background-color: #ffffff; /* Màu trắng dòng lẻ */
+}
+
+tr:hover td {
+    background-color: #eceff1; /* Nền xám sáng khi hover */
+}
+
+.highlight {
+    background-color: #e0e0e0; /* Nền xám nhạt */
+    font-weight: bold;
+    color: #333;
+    border-left: 4px solid #757575; /* Viền trái xám đậm */
+}
+
+.total-revenue {
+    font-weight: bold;
+    color: #2e7d32; /* Xanh lá đậm */
+    font-size: 1.2em;
+    text-align: center;
+    margin-top: 20px;
+}
+
+.most-sold, .least-sold {
+    font-style: italic;
+    color: #424242; /* Xám đậm */
+    text-align: center;
+    font-size: 1.1em;
+    padding: 5px;
+    background-color: #f5f5f5; /* Xám sáng */
+    border-radius: 4px;
+}
+
+footer {
+    background-color: #333;
+    padding: 10px;
+    color: #fff;
+    text-align: center;
+    font-size: 0.9em;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.view-details-btn {
+    background-color: #0288d1;
+    color: white;
+    padding: 5px 15px;
+    border-radius: 5px;
+    text-decoration: none;
+    font-size: 14px;
+    text-align: center;
+    margin-left: 10px;
+}
+
+.view-details-btn:hover {
+    background-color: #0277bd;
+}
+h1 {
+    text-align: center;
+}
 
 
-</div>
+/* CSS cho bảng thông báo */
+.alert {
+    display: none; /* Ẩn theo mặc định */
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 1000;
+    padding: 15px 20px;
+    background-color: #28a745; /* Màu xanh thông báo thành công */
+    color: white;
+    border-radius: 5px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    animation: fadeIn 0.3s ease-in-out;
+}
 
-</body>
-</html>
+.alert.show {
+    display: block; /* Hiển thị khi có class "show" */
+}
+
+.alert .close-btn {
+    position: absolute;
+    top: 5px;
+    right: 10px;
+    font-size: 16px;
+    color: white;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+/* Hiệu ứng fade-in/out */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes fadeOut {
+    from {
+        opacity: 1;
+        transform: translateY(0);
+    }
+    to {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+}
+
+
+
+
+/* CSS cho phân trang */
+.pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 20px 0;
+    padding: 10px;
+    bottom: 0; /* Đặt phân trang ở dưới cùng */
+    position: fixed; /* Cố định phần phân trang */
+    left: 50%; /* Đưa phân trang vào giữa */
+    transform: translateX(-50%); /* Dịch chuyển lại để căn giữa hoàn toàn */
+    margin-left:128px;
+}
+
+.pagination a {
+    text-decoration: none;
+    color: #007bff;
+    background-color: #f8f9fa;
+    border: 1px solid #dee2e6;
+    padding: 8px 12px;
+    margin: 0 5px;
+    border-radius: 5px;
+    transition: all 0.3s ease;
+}
+
+.pagination a:hover {
+    background-color: #007bff;
+    color: #fff;
+}
+
+.pagination a.active {
+    background-color: #007bff;
+    color: #fff;
+    border-color: #007bff;
+    font-weight: bold;
+}
+
+.pagination a:first-child,
+.pagination a:last-child {
+    font-size: 18px;
+    padding: 8px 16px;
+}
+
+
+.apply-btn {
+    background-color: #007bff; /* Màu nền: xanh lá */
+    color: white; /* Màu chữ: trắng */
+    padding: 10px 20px; /* Khoảng cách trong: 10px trên dưới, 20px trái phải */
+    border: none; /* Loại bỏ viền */
+    border-radius: 5px; /* Góc bo tròn */
+    cursor: pointer; /* Thay đổi con trỏ khi hover */
+    font-size: 16px; /* Kích thước chữ */
+    font-weight: bold; /* Chữ đậm */
+    transition: background-color 0.3s ease, transform 0.2s ease; /* Hiệu ứng hover */
+}
+
+.apply-btn:hover {
+    background-color: #007bff; /* Màu nền khi hover */
+    transform: scale(1.05); /* Phóng to nhẹ khi hover */
+}
+
+.apply-btn:active {
+    background-color: #007bff; /* Màu nền khi nhấn */
+    transform: scale(1); /* Giảm hiệu ứng phóng to */
+}
