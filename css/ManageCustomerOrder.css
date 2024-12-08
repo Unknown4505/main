@@ -3,7 +3,13 @@
     display: flex !important;
     min-height: 100vh !important;
 }
+body {
+    font-family: 'Roboto', sans-serif;
+}
 
+h1, h6, p, a, button, .single-features, .product-details {
+    font-family: 'Roboto', sans-serif;
+}
 /* Sidebar */
 .sidebar {
     width: 15% !important;
