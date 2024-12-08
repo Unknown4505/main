@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Giao diện Admin</title>
@@ -12,6 +13,13 @@
   <meta charset="UTF-8">
   <title>Karma Shop</title>
   <style>
+    body {
+      font-family: 'Roboto', sans-serif;
+    }
+
+    h1, h6, p, a, button, .single-features, .product-details {
+      font-family: 'Roboto', sans-serif;
+    }
     /* Admin Container */
     .admin-container {
       display: flex;
@@ -86,6 +94,7 @@
       flex-wrap: wrap;
       gap: 20px;
     }
+
 
     .card {
       flex: 1 1 calc(20% - 20px);
@@ -225,8 +234,8 @@
       font-family: Arial, sans-serif;
       margin: 0;
       padding: 0;
-      background-color: #f5f5f5;
-    }
+      background: linear-gradient(135deg, #f8c2c2, #fafcb3);
+      }
 
     .container {
       max-width: 1200px;
@@ -358,7 +367,7 @@
   <!-- Logo bên trái -->
   <div style="flex: 0; display: flex; align-items: center;">
     <img src="img/fav.png" alt="Karma Logo" style="width: 60px; height: 60px; border-radius: 50%; margin-right: 20px;">
-    <h1 style="margin: 0; font-size: 20px;">Karma Shop</h1>
+    <h1 style="margin: 0; font-size: 20px; font-weight: bold; text-align: center;">Karma Shop</h1>
   </div>
 
   <!-- Phần menu bên phải -->
@@ -420,7 +429,7 @@
             <label for="product-price">Địa chỉ:</label>
             <input type="text" id="product-price" name="product-price" value="1234 An Duong Vuong Q5, TP.HCM">
           </div>
-          <div class="button-group">
+          <div class="button-group" style="display: flex; justify-content: center; align-items: center; height: 100px;">
             <button type="button" class="btn-save">Lưu</button>
           </div>
         </form>
