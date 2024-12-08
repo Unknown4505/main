@@ -425,3 +425,16 @@ button:hover {
 .filter-btn:hover {
     background-color: #45a049;
 }
+.action-btn {
+    margin-right: 10px;
+    padding: 5px 10px;
+    color: white;
+    background-color: #85a8d3;
+    text-decoration: none;
+    border-radius: 5px;
+}
+.table-container {
+    margin: 30px;
+    text-align: center;
+    width: 70%; /* Điều chỉnh theo ý muốn */
+}
