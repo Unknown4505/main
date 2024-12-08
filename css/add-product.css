@@ -40,7 +40,7 @@
 .main-content {
     flex: 1;
     padding: 20px;
-    background-color: #ecf0f1;
+    background: linear-gradient(135deg, #ddefaf, #f4c5ab);
 }
 
 .main-content h1 {
