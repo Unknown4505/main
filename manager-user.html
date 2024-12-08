@@ -322,14 +322,19 @@
                     <label for="product-name">Tên người dùng:</label>
                     <input type="text" id="product-name" name="product-name" placeholder="Nhập tên người dùng...">
                 </div>
-
+                <!-- Thông báo cập nhật trạng thái -->
+                <div class="alert" id="status-alert">
+                    <span>Trạng thái đã được cập nhật thành công!</span>
+                    <span class="close-btn" onclick="closeAlert()">&times;</span>
+                </div>
                 <!-- Nút tìm kiếm -->
                 <div class="filter-actions">
                     <a href="manager-user.html" type="submit" class="filter-btn">Lọc</a>
                 </div>
             </form>
         </div>
-
+        <a href="add-user.html" class="btn-link">Thêm</a>
+        <h2>Danh sách sản phẩm:</h2>
 
         <div class="container">
             <!-- Back Button -->
@@ -343,6 +348,7 @@
                     <th>Trạng Thái</th>
                     <th>Ngày Đăng Ký</th>
                     <th>Cài Đặt</th>
+                    <th>Sửa</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -356,11 +362,13 @@
                     <td>2023-08-15</td>
                     <td>
                         <div class="dropdown">
-                            <select onchange="handleAction(this.value, 'KH001')">
+                            <select onchange="showAlert()">
                                 <option value="unlock">Hoạt Động</option>
                                 <option value="lock">Khóa tài khoản</option>
                             </select>
                         </div>
+                    <td>
+                        <a href="edit-user.html" class="action-btn">Sửa</a>
                     </td>
                 </tr>
                 <tr>
@@ -372,11 +380,13 @@
                     <td>2023-09-10</td>
                     <td>
                         <div class="dropdown">
-                            <select onchange="handleAction(this.value, 'KH002')">
+                            <select onchange="showAlert()">
                                 <option value="unlock">Hoạt Động</option>
                                 <option value="lock">Khóa tài khoản</option>
                             </select>
                         </div>
+                    <td>
+                        <a href="edit-user.html" class="action-btn">Sửa</a>
                     </td>
                 </tr>
                 <tr>
@@ -388,11 +398,13 @@
                     <td>2023-07-20</td>
                     <td>
                         <div class="dropdown">
-                            <select onchange="handleAction(this.value, 'KH003')">
+                            <select onchange="showAlert()">
                                 <option value="unlock">Hoạt Động</option>
                                 <option value="lock">Khóa tài khoản</option>
                             </select>
                         </div>
+                    <td>
+                        <a href="edit-user.html" class="action-btn">Sửa</a>
                     </td>
                 </tr>
                 <tr>
@@ -404,11 +416,13 @@
                     <td>2023-06-10</td>
                     <td>
                         <div class="dropdown">
-                            <select onchange="handleAction(this.value, 'KH004')">
+                            <select onchange="showAlert()">
                                 <option value="unlock">Hoạt Động</option>
                                 <option value="lock">Khóa tài khoản</option>
                             </select>
                         </div>
+                    <td>
+                        <a href="edit-user.html" class="action-btn">Sửa</a>
                     </td>
                 </tr>
                 <tr>
@@ -420,11 +434,13 @@
                     <td>2023-05-25</td>
                     <td>
                         <div class="dropdown">
-                            <select onchange="handleAction(this.value, 'KH005')">
+                            <select onchange="showAlert()">
                                 <option value="unlock">Hoạt Động</option>
                                 <option value="lock">Khóa tài khoản</option>
                             </select>
                         </div>
+                    <td>
+                        <a href="edit-user.html" class="action-btn">Sửa</a>
                     </td>
                 </tr>
                 <tr>
@@ -436,11 +452,13 @@
                     <td>2023-04-30</td>
                     <td>
                         <div class="dropdown">
-                            <select onchange="handleAction(this.value, 'KH006')">
+                            <select onchange="showAlert()">
                                 <option value="unlock">Hoạt Động</option>
                                 <option value="lock">Khóa tài khoản</option>
                             </select>
                         </div>
+                    <td>
+                        <a href="edit-user.html" class="action-btn">Sửa</a>
                     </td>
                 </tr>
                 <tr>
@@ -452,11 +470,13 @@
                     <td>2023-03-22</td>
                     <td>
                         <div class="dropdown">
-                            <select onchange="handleAction(this.value, 'KH007')">
+                            <select onchange="showAlert()">
                                 <option value="unlock">Hoạt Động</option>
                                 <option value="lock">Khóa tài khoản</option>
                             </select>
                         </div>
+                    <td>
+                        <a href="edit-user.html" class="action-btn">Sửa</a>
                     </td>
                 </tr>
                 <tr>
@@ -468,11 +488,13 @@
                     <td>2023-02-18</td>
                     <td>
                         <div class="dropdown">
-                            <select onchange="handleAction(this.value, 'KH008')">
+                            <select onchange="showAlert()">
                                 <option value="unlock">Hoạt Động</option>
                                 <option value="lock">Khóa tài khoản</option>
                             </select>
                         </div>
+                    <td>
+                        <a href="edit-user.html" class="action-btn">Sửa</a>
                     </td>
                 </tr>
                 </tbody>
@@ -489,8 +511,31 @@
             </div>
         </div>
     </div>
+    <!-- JavaScript -->
+    <script>// Hiển thị thông báo khi trạng thái được thay đổi
+    function showAlert() {
+        var alert = document.getElementById('status-alert');
+        alert.classList.add('show');
 
-</div>
+        // Tự động ẩn thông báo sau 3 giây với hiệu ứng fade-out
+        setTimeout(function() {
+            alert.classList.add('fadeOut');
+            setTimeout(function() {
+                alert.classList.remove('show', 'fadeOut');
+            }, 300); // Phù hợp với thời gian animation fadeOut
+        }, 3000); // Thời gian hiển thị là 3 giây
+    }
+
+    // Đóng thông báo khi nhấn nút đóng
+    function closeAlert() {
+        var alert = document.getElementById('status-alert');
+        alert.classList.add('fadeOut');
+        setTimeout(function() {
+            alert.classList.remove('show', 'fadeOut');
+        }, 300); // Phù hợp với thời gian animation fadeOut
+    }
+
+    </script>
 </div>
 </body>
 </html>
