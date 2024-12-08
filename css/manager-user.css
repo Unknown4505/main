@@ -438,3 +438,21 @@ button:hover {
     text-align: center;
     width: 70%; /* Điều chỉnh theo ý muốn */
 }
+/* Kiểu dáng cơ bản cho nút */
+    .btn-link {
+      display: inline-block;
+      padding: 10px 20px;
+      background-color: #84cc45; /* Màu xanh dương */
+      color: white; /* Màu chữ */
+      text-decoration: none; /* Bỏ gạch chân */
+      border-radius: 5px; /* Bo góc */
+      font-size: 16px; /* Kích thước chữ */
+      font-family: Arial, sans-serif;
+      text-align: center;
+      transition: background-color 0.3s ease, transform 0.2s ease; /* Hiệu ứng */
+    }
+    /* Thêm hiệu ứng khi nhấn */
+    .btn-link:active {
+      background-color: #004080; /* Màu xanh tối */
+      transform: scale(0.95); /* Nhỏ lại nhẹ */
+    }
