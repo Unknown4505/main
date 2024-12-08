@@ -4,6 +4,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="shortcut icon" href="img/fav.png">
   <title>Chi Tiết Đơn Hàng</title>
   <style>
     body, html {
@@ -88,6 +89,12 @@
       background-color: #34495e;
     }
 
+    /* Đặt dropdown là relative để menu con hiển thị đúng vị trí */
+    .dropdown {
+      position: relative;
+    }
+
+    /* Menu con bị ẩn mặc định */
     .dropdown-menu {
       display: none;
       position: absolute;
@@ -95,19 +102,32 @@
       left: 0;
       background-color: #34495e;
       list-style: none;
+      margin: 0;
       padding: 0;
       border-radius: 5px;
       z-index: 10;
       box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
     }
 
+    /* Các mục trong menu con */
+    .dropdown-menu li {
+      margin: 0;
+    }
+
     .dropdown-menu li a {
+      display: block;
       padding: 10px 20px;
       color: white;
       text-decoration: none;
-      display: block;
+      border-bottom: 1px solid #2c3e50;
+      transition: background 0.3s;
     }
 
+    .dropdown-menu li a:hover {
+      background-color: #2c3e50;
+    }
+
+    /* Hiển thị menu con khi di chuột vào dropdown */
     .dropdown:hover .dropdown-menu {
       display: block;
     }
@@ -140,7 +160,7 @@
     }
 
     .info {
-      margin-left=: 10px;
+      margin-left: 10px;
       color: #333;
     }
 
@@ -191,21 +211,22 @@
 </header>
 
 <!-- ======= SIDEBAR ======= -->
-<div class="sidebar">
-  <ul>
-    <li><a href="admin.html">Trang chủ</a></li>
-    <li><a href="managerp.html">Quản lí sản phẩm</a></li>
-    <li><a href="manager-user.html">Quản lí người dùng</a></li>
-    <li><a href="ManageCustomerOrder.html">Quản lí đơn hàng</a></li>
-    <li class="dropdown">
-      <a href="#statistics">Thống kê</a>
-      <ul class="dropdown-menu">
-        <li><a href="static.html">Sản phẩm</a></li>
-        <li><a href="static2.html">Người dùng</a></li>
-      </ul>
-    </li>
-  </ul>
-</div>
+<div class="admin-container">
+  <div class="sidebar">
+    <ul>
+      <li><a href="admin.html">Trang chủ</a></li>
+      <li><a href="managerp.html">Quản lí sản phẩm</a></li>
+      <li><a href="manager-user.html">Quản lí người dùng</a></li>
+      <li><a href="ManageCustomerOrder.html">Quản lí đơn hàng</a></li>
+      <li class="dropdown">
+        <a href="#statistics">Thống kê</a>
+        <ul class="dropdown-menu">
+          <li><a href="static.html">Sản phẩm</a></li>
+          <li><a href="static2.html">Người dùng</a></li>
+        </ul>
+      </li>
+    </ul>
+  </div>
 
 <!-- ======= NỘI DUNG CHI TIẾT ĐƠN HÀNG ======= -->
 <div class="container">
@@ -258,6 +279,6 @@
     <span>1,600,000 VND</span>
   </div>
 </div>
-
+</div>
 </body>
 </html>
