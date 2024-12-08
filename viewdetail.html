@@ -4,66 +4,53 @@
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Giao diện Admin</title>
+  <!-- Mobile Specific Meta -->
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <!-- Favicon-->
   <link rel="shortcut icon" href="img/fav.png">
-  <title>Chi Tiết Đơn Hàng</title>
+  <!-- Author Meta -->
+  <meta name="author" content="CodePixar">
+  <!-- Meta Description -->
+  <meta name="description" content="">
+  <!-- Meta Keyword -->
+  <meta name="keywords" content="">
+  <!-- meta character set -->
+  <meta charset="UTF-8">
+  <!-- Site Title -->
+  <title>Karma Shop</title>
   <style>
-    body, html {
-      margin: 0;
-      padding: 0;
-    }
-
-    body {
-      font-family: 'Roboto', sans-serif;
-    }
-
-    h1, h6, p, a, button, .single-features, .product-details {
-      font-family: 'Roboto', sans-serif;
-    }
-    /* ======= HEADER CSS ======= */
-    header {
-      background-color: rgb(255, 255, 255);
-      color: #0b0b0b;
-      padding: 20px 40px;
+    /* Admin Container */
+    .admin-container {
       display: flex;
-      align-items: center;
-      justify-content: space-between;
-      font-size: 28px;
-      border-bottom: 5px solid #0b0b0b;
+      min-height: 100vh;
     }
 
-    header img {
-      width: 60px;
-      height: 60px;
-      border-radius: 50%;
-      margin-right: 20px;
-    }
-
-    nav ul {
-      list-style: none;
-      display: flex;
-      justify-content: right;
-      margin: 0;
-      padding: 0;
-    }
-
-    nav ul li {
-      margin: 0 20px;
-    }
-
-    nav ul li a {
-      color: #0b0b0b;
-      text-decoration: none;
-      font-size: 22px;
-    }
-
-    /* ======= SIDEBAR CSS ======= */
+    /* Sidebar */
     .sidebar {
-      width: 14.5%;
-      background-color: #232323;
+      width: 15%;
+      background-color: #252525;
       color: white;
       padding: 20px 15px;
-      position: fixed;
-      height: 100%;
+    }
+
+    .sidebar .logo-header {
+      display: flex;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+
+    .sidebar .logo-header img {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      margin-right: 10px;
+    }
+
+    .sidebar .logo-header h2 {
+      color: white;
+      font-size: 22px;
+      margin: 0;
     }
 
     .sidebar ul {
@@ -89,6 +76,23 @@
       background-color: #34495e;
     }
 
+    /* Main Content */
+    .dashboard-container {
+      flex: 1;
+      padding: 20px;
+      background-color: #ffffff;
+      border-radius: 8px;
+      margin: 15px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .dashboard-container h1 {
+      text-align: center;
+      font-size: 28px;
+      margin-bottom: 30px;
+      color: #212529;
+      font-weight: 600;
+    }
     /* Đặt dropdown là relative để menu con hiển thị đúng vị trí */
     .dropdown {
       position: relative;
@@ -131,94 +135,222 @@
     .dropdown:hover .dropdown-menu {
       display: block;
     }
-
-    /* ======= CONTENT CSS ======= */
-    .container {
-      margin-left: 24.6%;
-      padding: 20px;
-      background-color: #fff;
-      border: 1px solid #ddd;
-      border-radius: 10px;
-      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-      max-width: 1000px;
-    }
-
-    h2 {
-      font-size: 24px;
-      margin-bottom: 20px;
-      color: #333;
-      text-align: center;
-    }
-
-    .info-group, .product-info, .total-info {
-      margin-bottom: 15px;
-    }
-
-    .info-group label, .product-info label {
-      font-weight: bold;
-      color: #555;
-    }
-
-    .info {
-      margin-left: 10px;
-      color: #333;
-    }
-
-    .product-item {
-      display: flex;
-      justify-content: space-between;
-      margin: 10px 0;
-      padding: 10px;
-      border: 1px solid #ddd;
-      border-radius: 5px;
-      background-color: #f9f9f9;
-    }
-
-    .product-name {
-      flex: 2;
-    }
-
     body {
       font-family: 'Poppins', sans-serif;
-      background: linear-gradient(135deg, #fbcece, #ffcdd6);
+      background: linear-gradient(135deg, #afefe1, #f4ddab);
       margin: 0;
       padding: 0;
       color: #333;
     }
-    .product-quantity, .product-price {
-      flex: 1;
-      text-align: right;
+
+    .admin-container {
+      display: flex;
+      min-height: 100vh;
     }
 
+
+
+    h1 {
+      text-align: center;
+    }
+    .pagination {
+      display: flex;
+      justify-content: center;
+      padding: 20px 0;
+    }
+
+    .pagination a {
+      color: #2c3e50;
+      text-decoration: none;
+      margin: 0 5px;
+      padding: 8px 16px;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      transition: background-color 0.3s, color 0.3s;
+    }
+
+    .pagination a:hover {
+      background-color: #34495e;
+      color: white;
+    }
+
+    .pagination a.active {
+      background-color: #2c3e50;
+      color: white;
+      border: 1px solid #2c3e50;
+    }
+    /* Bộ lọc */
+    .filter-container {
+      margin: 20px 0;
+      padding: 10px;
+      background-color: #f9f9f9;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+      justify-content: space-between;
+    }
+
+    .filter-container form {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+    }
+
+    .filter-category,
+    .filter-name {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .filter-category label,
+    .filter-name label {
+      margin-bottom: 5px;
+      font-weight: bold;
+    }
+
+    .filter-actions {
+      display: flex;
+      align-items: center;
+    }
+
+    /* Pagination */
+    .pagination {
+      display: flex;
+      justify-content: center;
+      padding: 20px 0;
+    }
+
+    .pagination a {
+      color: #343a40;
+      text-decoration: none;
+      margin: 0 5px;
+      padding: 8px 16px;
+      border: 1px solid #dee2e6;
+      border-radius: 4px;
+      transition: all 0.3s;
+    }
+
+    .pagination a:hover {
+      background-color: #343a40;
+      color: white;
+    }
+
+    .pagination a.active {
+      background-color: #007bff;
+      color: white;
+      border: 1px solid #007bff;
+    }
+    .container {
+      width: 100%;
+      max-width: 800px;
+      padding: 20px;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      background-color: white;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      margin-left: auto;
+      margin-right: auto;
+    }
+    h2 {
+      text-align: center;
+      color: #333;
+      margin-bottom: 20px;
+      font-size: 24px;
+    }
+    .info-group {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 15px;
+    }
+    .info-group label {
+      font-weight: bold;
+      color: #555;
+      width: 30%;
+    }
+    .info-group .info {
+      padding: 10px;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      background-color: #f8f8f8;
+      color: #333;
+      width: 65%;
+      font-size: 14px;
+    }
+    .product-info {
+      margin-top: 20px;
+      margin-bottom: 20px;
+    }
+    .product-info label {
+      font-weight: bold;
+      color: #333;
+      font-size: 16px;
+      margin-bottom: 10px;
+      display: block;
+    }
+    .product-info .info {
+      display: flex;
+      justify-content: space-between;
+      padding: 10px 15px;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      background-color: #f8f8f8;
+      margin-bottom: 10px;
+      font-weight: bold;
+      font-size: 14px;
+    }
     .total-info {
       display: flex;
       justify-content: space-between;
-      font-size: 18px;
       font-weight: bold;
-      padding: 10px 0;
-
+      margin-top: 20px;
+      font-size: 16px;
     }
+    .total-info span {
+      color: #333;
+    }
+    .buttons {
+      display: flex;
+      justify-content: center; /* Căn giữa nút */
+      margin-top: 30px;
+    }
+    .button {
+      padding: 12px 25px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 16px;
+      color: white;
+      background-color: #007bff;
+      text-decoration: none;
+      text-align: center;
+      width: 48%;
+    }
+    .button:hover {
+      background-color: #0056b3;
+    }
+
   </style>
 </head>
 <body>
-
-<!-- ======= HEADER ======= -->
-<header>
+<header style="background-color: rgb(255,255,255); color: #0b0b0b; padding: 20px 40px; display: flex; align-items: center; justify-content: space-between; font-size: 28px; border-bottom: 5px solid #0b0b0b;">
+  <!-- Logo bên trái -->
   <div style="flex: 0; display: flex; align-items: center;">
-    <img src="img/fav.png" alt="Karma Logo">
-    <h1 style="margin: 0; font-size: 21px;">Karma Shop</h1>
+    <img src="img/fav.png" alt="Karma Logo" style="width: 60px; height: 60px; border-radius: 50%; margin-right: 20px;">
+    <h1 style="margin: 0; font-size: 20px;">Karma Shop</h1>
   </div>
 
+  <!-- Phần menu bên phải -->
   <nav style="flex: 1;text-align: center">
-    <ul>
-      <li><a href="admin.html">Admin</a></li>
+    <ul style="list-style: none; display: flex; justify-content: right; margin: 0; padding: 0;">
+      <li style="margin: 0 20px;"><a href="admin.html" style="color: #0b0b0b; text-decoration: none; font-size: 22px;">Admin</a></li>
       <li style="margin: 0 20px;"><a href="dangxuatadmin.html" style="color: #0b0b0b; text-decoration: none; font-size: 22px;">Đăng xuất</a></li>
     </ul>
   </nav>
 </header>
-
-<!-- ======= SIDEBAR ======= -->
 <div class="admin-container">
+  <!-- Sidebar -->
   <div class="sidebar">
     <ul>
       <li><a href="admin.html">Trang chủ</a></li>
@@ -232,21 +364,16 @@
           <li><a href="static2.html">Người dùng</a></li>
         </ul>
       </li>
+
     </ul>
   </div>
-
-  <!-- ======= NỘI DUNG CHI TIẾT ĐƠN HÀNG ======= -->
   <div class="container">
-    <h2>Chi Tiết Đơn Hàng</h2>
+    <h2>Chi Tiết Hóa Đơn</h2>
 
     <!-- Thông tin khách hàng -->
     <div class="info-group">
-      <label>Mã đơn hàng:</label>
-      <div class="info">OD001</div>
-    </div>
-    <div class="info-group">
       <label>Tên khách hàng:</label>
-      <div class="info">Võ Lê Như Quỳnh</div>
+      <div class="info">Ngô Đức Huy</div>
     </div>
     <div class="info-group">
       <label>Số điện thoại:</label>
@@ -254,11 +381,19 @@
     </div>
     <div class="info-group">
       <label>Địa chỉ nhận hàng:</label>
-      <div class="info">123 Đường ABC, Phường DHT, Quận 12, TP. Hồ Chí Minh</div>
+      <div class="info">123 Đường ABC, Phường XYZ, TP. Hồ Chí Minh</div>
     </div>
     <div class="info-group">
       <label>Phương thức thanh toán:</label>
       <div class="info">Thanh toán khi nhận hàng</div>
+    </div>
+    <div class="info-group">
+      <label>Ghi Chú: </label>
+      <textarea disabled rows="3" class="info" style="font-family: 'Roboto', sans-serif;">Gọi trước khi giao giúp em</textarea>
+    </div>
+    <div class="info-group">
+      <label>Mã giao dịch:</label>
+      <div class="info">GiaoDich12345</div>
     </div>
     <div class="info-group">
       <label>Ngày đặt hàng:</label>
@@ -267,25 +402,27 @@
 
     <!-- Sản phẩm và số lượng -->
     <div class="product-info">
-      <label>Sản phẩm và số lượng:</label>
-      <div class="product-item">
-        <span class="product-name">Adidas New Hammer Sole</span>
-        <span class="product-quantity">Số lượng: 2</span>
-        <span class="product-price">Đơn giá: 500,000 VND</span>
+      <label>Danh sách sản phẩm:</label>
+      <div class="info">
+        <span>Air Jordan Lagacy</span>
+        <span>x2</span>
       </div>
-      <div class="product-item">
-        <span class="product-name">Adidas New Hammer Sole</span>
-        <span class="product-quantity">Số lượng: 3</span>
-        <span class="product-price">Đơn giá: 200,000 VND</span>
+      <div class="info">
+        <span>Air Jordan Lagacy</span>
+        <span>x5</span>
       </div>
     </div>
 
     <!-- Giá tiền thanh toán -->
     <div class="total-info">
       <span>Tổng tiền:</span>
-      <span>1,600,000 VND</span>
+      <span>1,500,000 VND</span>
     </div>
+
+    <!-- Nút quay lại -->
   </div>
 </div>
+</div>
+
 </body>
 </html>
