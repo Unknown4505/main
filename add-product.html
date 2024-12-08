@@ -1,253 +1,248 @@
-<!DOCTYPE html>
-<html lang="vi">
-<head>
-    <meta charset="UTF-8">
-    <link rel="stylesheet" href="css/add-product.css">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Thêm sản phẩm</title>
-    <!-- Mobile Specific Meta -->
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <!-- Favicon-->
-    <link rel="shortcut icon" href="img/fav.png">
-    <!-- Author Meta -->
-    <meta name="author" content="CodePixar">
-    <!-- Meta Description -->
-    <meta name="description" content="">
-    <!-- Meta Keyword -->
-    <meta name="keywords" content="">
-    <!-- meta character set -->
-    <meta charset="UTF-8">
-    <!-- Site Title -->
-    <title>Karma Shop</title>
-    <style>
-        /* Admin Container */
-        .admin-container {
-            display: flex;
-            min-height: 100vh;
-        }
 
-        /* Sidebar */
-        .sidebar {
-            width: 15%;
-            background-color: #232323;
-            color: white;
-            padding: 20px 15px;
-        }
+    /* Admin Container */
+.admin-container {
+    display: flex;
+    min-height: 100vh;
+}
 
-        .sidebar .logo-header {
-            display: flex;
-            align-items: center;
-            margin-bottom: 20px;
-        }
+/* Sidebar */
+.sidebar {
+    width: 15%;
+    background-color: #232323;
+    color: white;
+    padding: 20px 15px;
+}
 
-        .sidebar .logo-header img {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            margin-right: 10px;
-        }
+.sidebar ul {
+    list-style: none;
+    padding: 0;
+}
 
-        .sidebar .logo-header h2 {
-            color: white;
-            font-size: 22px;
-            margin: 0;
-        }
+.sidebar ul li {
+    margin: 15px 0;
+}
 
-        .sidebar ul {
-            list-style: none;
-            padding: 0;
-        }
+.sidebar ul li a {
+    color: white;
+    text-decoration: none;
+    font-size: 18px;
+    display: block;
+    padding: 10px;
+    border-radius: 5px;
+    transition: background 0.3s;
+}
 
-        .sidebar ul li {
-            margin: 15px 0;
-        }
+.sidebar ul li a:hover {
+    background-color: #34495e;
+}
 
-        .sidebar ul li a {
-            color: white;
-            text-decoration: none;
-            font-size: 18px;
-            display: block;
-            padding: 10px;
-            border-radius: 5px;
-            transition: background 0.3s;
-        }
+/* Main Content */
+.main-content {
+    flex: 1;
+    padding: 20px;
+    background: linear-gradient(135deg, #ddefaf, #f4c5ab);
+}
 
-        .sidebar ul li a:hover {
-            background-color: #34495e;
-        }
+.main-content h1 {
+    font-size: 28px;
+    margin-bottom: 20px;
+}
 
-        /* Main Content */
-        .main-content {
-            flex: 1;
-            padding: 20px;
-            background-color: #ecf0f1;
-        }
+/* Form Thêm Sản Phẩm */
+form {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
 
-        .main-content h1 {
-            font-size: 28px;
-            margin-bottom: 20px;
-        }
+label {
+    font-size: 16px;
+    margin-bottom: 10px;
+    display: block;
+}
 
-        /* Dashboard Cards */
-        .dashboard {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 20px;
-        }
+input[type="text"], textarea, input[type="file"] {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 20px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+}
 
-        .card {
-            flex: 1 1 calc(20% - 20px);
-            background-color: white;
-            border: 1px solid #ddd;
-            border-radius: 8px;
-            padding: 15px;
-            box-shadow: 0 2px 4px
-        }
-        /* Đặt dropdown là relative để menu con hiển thị đúng vị trí */
-        .dropdown {
-            position: relative;
-        }
+button {
+    background-color: #3498db;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
 
-        /* Menu con bị ẩn mặc định */
-        .dropdown-menu {
-            display: none;
-            position: absolute;
-            top: 100%;
-            left: 0;
-            background-color: #34495e;
-            list-style: none;
-            margin: 0;
-            padding: 0;
-            border-radius: 5px;
-            z-index: 10;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
-        }
+button:hover {
+    background-color: #2980b9;
+}
 
-        /* Các mục trong menu con */
-        .dropdown-menu li {
-            margin: 0;
-        }
+/* Modal và Overlay */
+#successModal {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #fff;
+    padding: 20px;
+    border: 2px solid #000;
+    border-radius: 10px;
+    z-index: 1000;
+}
 
-        .dropdown-menu li a {
-            display: block;
-            padding: 10px 20px;
-            color: white;
-            text-decoration: none;
-            border-bottom: 1px solid #2c3e50;
-            transition: background 0.3s;
-        }
+#overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 500;
+}
 
-        .dropdown-menu li a:hover {
-            background-color: #2c3e50;
-        }
+/* Header */
+header {
+    background-color: rgb(255, 255, 255);
+    color: #0b0b0b;
+    padding: 20px 40px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 28px;
+    border-bottom: 5px solid #0b0b0b;
+}
 
-        /* Hiển thị menu con khi di chuột vào dropdown */
-        .dropdown:hover .dropdown-menu {
-            display: block;
-        }
+header img {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    margin-right: 20px;
+}
 
-    </style>
-</head>
-<body>
-<header style="background-color: rgb(255,255,255); color: #0b0b0b; padding: 20px 40px; display: flex; align-items: center; justify-content: space-between; font-size: 28px; border-bottom: 5px solid #0b0b0b;">
-    <!-- Logo bên trái -->
-    <div style="flex: 0; display: flex; align-items: center;">
-        <img src="img/fav.png" alt="Karma Logo" style="width: 60px; height: 60px; border-radius: 50%; margin-right: 20px;">
-        <h1 style="margin: 0; font-size: 20px;">Karma Shop</h1>
-    </div>
+header h1 {
+    font-size: 20px;
+    margin: 0;
+}
 
-    <!-- Phần menu bên phải -->
-    <nav style="flex: 1;text-align: center">
-        <ul style="list-style: none; display: flex; justify-content: right; margin: 0; padding: 0;">
-            <li style="margin: 0 20px;"><a href="admin.html" style="color: #0b0b0b; text-decoration: none; font-size: 22px;">Admin</a></li>
-            <li style="margin: 0 20px;"><a href="dangxuatadmin.html" style="color: #0b0b0b; text-decoration: none; font-size: 22px;">Đăng xuất</a></li>
-        </ul>
-    </nav>
-</header>
+header nav ul {
+    list-style: none;
+    display: flex;
+    justify-content: right;
+    margin: 0;
+    padding: 0;
+}
 
+header nav ul li {
+    margin: 0 20px;
+}
 
+header nav ul li a {
+    color: #0b0b0b;
+    text-decoration: none;
+    font-size: 22px;
+}
 
+/* Đặt dropdown là relative để menu con hiển thị đúng vị trí */
+.dropdown {
+    position: relative;
+}
 
+/* Menu con bị ẩn mặc định */
+.dropdown-menu {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    background-color: #34495e;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    border-radius: 5px;
+    z-index: 10;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+}
 
-<div class="admin-container">
-    <!-- Sidebar -->
-    <div class="sidebar">
+/* Các mục trong menu con */
+.dropdown-menu li {
+    margin: 0;
+}
 
-        <ul>
-            <li><a href="admin.html">Trang chủ</a></li>
-            <li><a href="managerp.html">Quản lí sản phẩm</a></li>
-            <li><a href="manager-user.html">Quản lí người dùng</a></li>
-            <li><a href="ManageCustomerOrder.html">Quản lí đơn hàng</a></li>
-            <li class="dropdown">
-                <a href="#statistics">Thống kê</a>
-                <ul class="dropdown-menu">
-                    <li><a href="static.html">Sản phẩm</a></li>
-                    <li><a href="static2.html">Người dùng</a></li>
-                </ul>
-            </li>
-        </ul>
-    </div>
+.dropdown-menu li a {
+    display: block;
+    padding: 10px 20px;
+    color: white;
+    text-decoration: none;
+    border-bottom: 1px solid #2c3e50;
+    transition: background 0.3s;
+}
 
-    <!-- Main Content -->
-    <div class="main-content">
-        <h1>Thêm Sản Phẩm</h1>
-        <form id="addProductForm" onsubmit="return handleAddProduct(event)">
-            <!-- Tên sản phẩm -->
-            <label for="productName">Tên Sản Phẩm:</label>
-            <input type="text" id="productName" name="productName" required><br><br>
+.dropdown-menu li a:hover {
+    background-color: #2c3e50;
+}
 
-            <!-- Loại sản phẩm -->
-            <!-- Loại sản phẩm -->
-            <label for="productType">Loại Sản Phẩm:</label>
-            <select id="productType" name="productType" required>
-                <option value="Adidas">Adidas</option>
-                <option value="Vans">Vans</option>
-                <option value="Nike">Nike</option>
-            </select><br><br>
-
-
-            <!-- Mô tả sản phẩm -->
-            <label for="productDescription">Mô Tả Sản Phẩm:</label><br>
-            <textarea id="productDescription" name="productDescription" rows="5" cols="50" required></textarea><br><br>
-
-            <!-- Nút chọn ảnh -->
-            <label for="productImage">Thêm Ảnh:</label>
-            <input type="file" id="fproductImage" name="productImage" ><br><br>
-
-            <!-- Nút thêm sản phẩm -->
-            <button type="button" onclick="handleAddProduct()">Thêm</button>
-        </form>
-
-        <!-- Modal hiện thông báo thêm thành công -->
-        <div id="successModal">
-            <p>Đã thêm thành công!</p>
-            <button onclick="closeModal()">OK</button>
-        </div>
-
-        <!-- Overlay mờ khi hiển thị modal -->
-        <div id="overlay"></div>
-    </div>
-</div>
-
-<script>
-
-    function handleAddProduct() {
-        // Hiển thị modal thông báo thành công
-        document.getElementById("successModal").style.display = "block";
-        document.getElementById("overlay").style.display = "block";
+/* Hiển thị menu con khi di chuột vào dropdown */
+.dropdown:hover .dropdown-menu {
+    display: block;
+}
+    form {
+        background-color: #fff;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     }
-        // Hiển thị thông báo thành công
 
-    function closeModal() {
-        // Ẩn modal thông báo và overlay
-        document.getElementById("successModal").style.display = "none";
-        document.getElementById("overlay").style.display = "none";
-
-        // Reset form sau khi thêm thành công
-        document.getElementById("addProductForm").reset();
+    label {
+        font-size: 16px;
+        margin-bottom: 0px;
+        display: block;
     }
-</script>
+
+    input[type="text"], textarea {
+        width: 100%;
+        padding: 10px;
+        margin-bottom: 20px;
+        border-radius: 5px;
+        border: 1px solid #ccc;
+    }
+
+    button {
+        background-color: #3498db;
+        color: white;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+
+    button:hover {
+        background-color: #2980b9;
+    }
+    /* Style chung cho các input và textarea */
+    input[type="text"], textarea, select {
+        width: 100%;
+        padding: 10px;
+        margin: 8px 0;
+        display: inline-block;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        box-sizing: border-box;
+        font-size: 16px;
+        background-color: #fff;
+    }
+
+    /* Tùy chọn cho dropdown (select) */
+    select {
+        appearance: none; /* Ẩn biểu tượng mũi tên mặc định của trình duyệt */
+        background: url('data:image/svg+xml;charset=UTF-8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="gray"><polygon points="0,0 10,10 20,0"/></svg>') no-repeat right 10px center; /* Thêm mũi tên tùy chỉnh */
+        background-size: 10px;
+    }
 
 
-</body>
-</html>
