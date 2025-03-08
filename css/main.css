@@ -1579,7 +1579,7 @@ h1, h2, h3, h4, h5, h6 {
   visibility: hidden;
 }
 .single-product .product-details .prd-bottom .social-info:hover {
-  width: 165px; /* Điều chỉnh để phù hợp với chiều rộng hover-text */
+  width: 250px; /* Điều chỉnh để phù hợp với chiều rộng hover-text */
 }
 .single-product .product-details .prd-bottom .social-info:hover span:after {
   opacity: 1;
