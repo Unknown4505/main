@@ -67,7 +67,8 @@
     </div>
 
     <!-- Filter Section -->
-    <form id="filter-form" class="filter-section" action="ManageCustomerOrderFiltered.html" method="get">
+    <!-- Form Lọc Đơn Hàng -->
+    <form id="filter-form" class="filter-section">
       <h2>Lọc và Sắp xếp Đơn hàng</h2>
 
       <label for="status">Trạng thái:</label>
@@ -83,6 +84,18 @@
 
       <label for="to-date">Đến ngày:</label>
       <input type="date" id="to-date" name="to-date">
+
+      <label for="address">Địa chỉ:</label>
+      <select id="address" name="address">
+        <option value="all">Tất cả</option>
+        <option value="Quận 1, HCMC">Quận 1, HCMC</option>
+        <option value="Quận 2, HCMC">Quận 2, HCMC</option>
+        <option value="Quận 3, HCMC">Quận 3, HCMC</option>
+        <option value="Quận 4, HCMC">Quận 4, HCMC</option>
+        <option value="Quận 5, HCMC">Quận 5, HCMC</option>
+        <option value="Quận 6, HCMC">Quận 6, HCMC</option>
+        <option value="Long Thành, Đồng Nai">Long Thành, Đồng Nai</option>
+      </select>
 
       <button type="submit" class="apply-btn">Lọc</button>
     </form>
