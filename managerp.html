@@ -1,8 +1,7 @@
+
 <!DOCTYPE html>
 <html lang="zxx" class="no-js">
 <head>
-  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
-
   <!-- Mobile Specific Meta -->
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <link rel="shortcut icon" href="img/fav.png">
@@ -19,15 +18,8 @@
   <link rel="stylesheet" href="css/ion.rangeSlider.css" />
   <link rel="stylesheet" href="css/ion.rangeSlider.skinFlat.css" />
   <link rel="stylesheet" href="css/magnific-popup.css">
-  <link rel="stylesheet" href="css/search.css">
+  <link rel="stylesheet" href="css/search.css"><link rel="stylesheet" href="getp.php">
   <style>
-    body {
-      font-family: 'Roboto', sans-serif;
-    }
-
-    h1, h6, p, a, button, .single-features, .product-details {
-      font-family: 'Roboto', sans-serif;
-    }
     .admin-container { display: flex; min-height: 100vh; }
     .sidebar { width: 250px; background-color: #2c3e50; color: white; padding: 20px 15px; }
     .sidebar ul { list-style: none; padding: 0; }
@@ -37,27 +29,9 @@
     .dropdown:hover .dropdown-menu { display: block; }
     .modal { display: none; position: fixed; z-index: 1; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.4); }
     .modal-content { background-color: #fefefe; padding: 20px; width: 300px; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); text-align: center; }
-    .modal-buttons {
-
-      margin-top: 20px;
-      display: flex;
-      justify-content: space-between; /* Tạo khoảng cách giữa các nút */
-    }
-
-    .modal-buttons .btn {
-      /* Tạo khoảng cách giữa các nút */
-      padding: 10px 20px;
-      margin-right: 170px;
-      cursor: pointer;
-      background-color: #000000;
-      border: none;
-      font-size: 16px;
-    }
-
-    .modal-buttons .btn:last-child {
-      margin-right: 0; /* Loại bỏ khoảng cách cho nút cuối cùng */
-      background-color: #000000;
-    }
+    .modal-buttons { margin-top: 20px; }
+    .modal-buttons .btn { padding: 10px 20px; margin: 10px; cursor: pointer; background-color: #000000; border: none; font-size: 16px; }
+    .modal-buttons .btn:hover { background-color: #000000; }
     .dropdown { position: relative; }
     /* Admin Container */
     .admin-container {
@@ -80,7 +54,7 @@
 
     /* Sidebar */
     .sidebar {
-      width: 16.2%;
+      width: 15%;
       background-color: #252525;
       color: white;
       padding: 20px 15px;
@@ -434,13 +408,13 @@
   <!-- Logo bên trái -->
   <div style="flex: 0; display: flex; align-items: center;">
     <img src="img/fav.png" alt="Karma Logo" style="width: 60px; height: 60px; border-radius: 50%; margin-right: 20px;">
-    <h1 style="margin: 0; font-size: 20px; font-weight: bold; text-align: center;">Karma Shop</h1>
+    <h1 style="margin: 0; font-size: 20px;">Karma Shop</h1>
   </div>
 
   <!-- Phần menu bên phải -->
   <nav style="flex: 1;text-align: center">
     <ul style="list-style: none; display: flex; justify-content: right; margin: 0; padding: 0;">
-      <li style="margin: 0 20px;"><a href="admin.html" style="color: #0b0b0b; text-decoration: none; font-size: 22px;">Admin</a></li>
+      <li style="margin: 0 20px;"><a href="#home" style="color: #0b0b0b; text-decoration: none; font-size: 22px;">Admin</a></li>
       <li style="margin: 0 20px;"><a href="dangxuatadmin.html" style="color: #0b0b0b; text-decoration: none; font-size: 22px;">Đăng xuất</a></li>
     </ul>
   </nav>
@@ -470,121 +444,48 @@
         </div>
       </div>
       <!-- Bộ lọc -->
-      <div class="filter-container">
-        <form method="GET" action="your_backend_endpoint">
-          <!-- Lọc theo phân loại -->
-          <div class="filter-category">
-            <label for="category">Phân loại:</label>
-            <select id="category" name="category">
-              <option value="all">Tất cả</option>
-              <option value="electronics">Adidas</option>
-              <option value="fashion">Nike</option>
-              <option value="books">Vans</option>
-            </select>
-          </div>
+        <div class="filter-container">
+            <form id="filter-form" method="GET" action="">
+                <div class="filter-category">
+                    <label for="tenloai">Phân loại:</label>
+                    <select id="tenloai" name="tenloai">
+                        <option value="all">Tất cả</option>
+                        <option value="adidas">Adidas</option>
+                        <option value="nike">Nike</option>
+                        <option value="vans">Vans</option>
+                    </select>
+                </div>
 
-          <!-- Lọc theo tên -->
-          <div class="filter-name">
-            <label for="product-name">Tên sản phẩm:</label>
-            <input type="text" id="product-name" name="product-name" placeholder="Nhập tên sản phẩm...">
-          </div>
+                <div class="filter-name">
+                    <label for="product-name">Tên sản phẩm:</label>
+                    <input type="text" id="product-name" name="product-name" placeholder="Nhập tên sản phẩm...">
+                </div>
 
-          <!-- Nút tìm kiếm -->
-          <div class="filter-actions">
-            <a href="managerp.html" class="filter-btn">Lọc</a>
-          </div>
-        </form>
-      </div>
+                <div class="filter-price">
+                    <label for="min-price">Giá từ:</label>
+                    <input type="number" id="min-price" name="min-price" placeholder="Min">
+                    <label for="max-price">đến:</label>
+                    <input type="number" id="max-price" name="max-price" placeholder="Max">
+                </div>
+
+                <div class="filter-actions">
+                    <button type="submit" class="filter-btn">Lọc</button>
+                </div>
+            </form>
+        </div>
+
       <a href="add-product.html" class="btn-link">Thêm</a>
       <h2>Danh sách sản phẩm:</h2>
-      <table class="table table-bordered">
-        <thead>
-        <tr>
-          <th>STT</th>
-          <th>Tên sản phẩm</th>
-          <th>Hình ảnh</th>
-          <th>Giá</th>
-          <th>Số lượng</th>
-          <th>Hành động</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr>
-          <td>1</td>
-          <td>Adidas New Hammer sole for Sports</td>
-          <td><img src="img/product/jordan1.png" alt="Sản phẩm 1" class="product-img"></td>
-          <td>2.500.000đ</td>
-          <td>10</td>
-          <td>
-            <a href="#" class="action-btn" onclick="openModal('confirmModal1')">Xóa</a>
-            <a href="edit-product.html" class="action-btn">Sửa</a>
-          </td>
-        </tr>
-        <tr>
-          <td>2</td>
-          <td>Adidas New Running Shoes</td>
-          <td><img src="img/product/jordan2.png" alt="Sản phẩm 2" class="product-img"></td>
-          <td>2.000.000đ</td>
-          <td>8</td>
-          <td>
-            <a href="#" class="action-btn" onclick="openModal('confirmModal1')">Xóa</a>
-            <a href="edit-product.html" class="action-btn">Sửa</a>
-          </td>
-        </tr>
-        <tr>
-          <td>3</td>
-          <td>Nike Air Max</td>
-          <td><img src="img/product/jordan3.png" alt="Sản phẩm 3" class="product-img"></td>
-          <td>3.000.000đ</td>
-          <td>12</td>
-          <td>
-            <a href="#" class="action-btn" onclick="openModal('confirmModal1')">Xóa</a>
-            <a href="edit-product.html" class="action-btn">Sửa</a>
-          </td>
-        </tr>
-        <tr>
-          <td>4</td>
-          <td>Vans Classic Old Skool</td>
-          <td><img src="img/product/jordan4.png" alt="Sản phẩm 4" class="product-img"></td>
-          <td>1.500.000đ</td>
-          <td>15</td>
-          <td>
-            <a href="#" class="action-btn" onclick="openModal('confirmModal1')">Xóa</a>
-            <a href="edit-product.html" class="action-btn">Sửa</a>
-          </td>
-        </tr>
-        <tr>
-          <td>5</td>
-          <td>Puma Running Shoes</td>
-          <td><img src="img/product/jordan6.png" alt="Sản phẩm 5" class="product-img"></td>
-          <td>2.200.000đ</td>
-          <td>7</td>
-          <td>
-            <a href="#" class="action-btn" onclick="openModal('confirmModal1')">Xóa</a>
-            <a href="edit-product.html" class="action-btn">Sửa</a>
-          </td>
-        </tr>
-        <tr>
-          <td>6</td>
-          <td>Converse All Star</td>
-          <td><img src="img/product/jordan5.png" alt="Sản phẩm 6" class="product-img"></td>
-          <td>1.800.000đ</td>
-          <td>9</td>
-          <td>
-            <a href="#" class="action-btn" onclick="openModal('confirmModal1')">Xóa</a>
-            <a href="edit-product.html" class="action-btn">Sửa</a>
-          </td>
-        </tr>
-        </tbody>
-      </table>
+        <div id="product-list">
+        <?php include 'getp.php'; ?>
       <div class="pagination">
-        <a href="managerp.html">&laquo;</a> <!-- Quay lại trang 1 -->
-        <a href="managerp.html">1</a> <!-- Trang 1 -->
-        <a href="managerp.html">2</a> <!-- Trang 2 -->
-        <a href="managerp.html">3</a> <!-- Trang 3 -->
-        <a href="managerp.html">4</a> <!-- Trang 4 -->
-        <a href="managerp.html">5</a> <!-- Trang 5 -->
-        <a href="managerp.html">&raquo;</a> <!-- Chuyển tới trang 5 -->
+        <a href="?page=1">&laquo;</a> <!-- Quay lại trang 1 -->
+        <a href="?page=1">1</a> <!-- Trang 1 -->
+        <a href="?page=2">2</a> <!-- Trang 2 -->
+        <a href="?page=3">3</a> <!-- Trang 3 -->
+        <a href="?page=4">4</a> <!-- Trang 4 -->
+        <a href="?page=5">5</a> <!-- Trang 5 -->
+        <a href="?page=5">&raquo;</a> <!-- Chuyển tới trang 5 -->
       </div>
     </div>
   </section>
@@ -613,7 +514,24 @@
       alert('Sản phẩm đã bị xóa.');
     }
   </script>
-
 </div>
 </body>
+<script>
+    document.getElementById("filter-form").addEventListener("submit", function(event) {
+        event.preventDefault(); // Ngăn chặn tải lại trang
+
+        let formData = new FormData(this); // Lấy dữ liệu từ form
+        let xhr = new XMLHttpRequest();
+        xhr.open("GET", "locsp.php?" + new URLSearchParams(formData).toString(), true);
+
+        xhr.onload = function() {
+            if (xhr.status === 200) {
+                document.getElementById("product-list").innerHTML = xhr.responseText; // Cập nhật danh sách sản phẩm
+            }
+        };
+
+        xhr.send();
+    });
+</script>
+
 </html>
