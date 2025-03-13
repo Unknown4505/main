@@ -1,3 +1,37 @@
+<?php
+// Kết nối database
+$servername = "localhost";
+$username = "root"; // Thay bằng username của bạn
+$password = ""; // Nếu có mật khẩu, hãy điền vào đây
+$database = "mydatabase"; // Thay bằng tên database của bạn
+
+$conn = new mysqli($servername, $username, $password, $database);
+
+// Xử lý tìm kiếm
+$searchResults = [];
+if (isset($_GET['query'])) {
+    $query = trim($_GET['query']); // Lấy từ khóa tìm kiếm
+    $query = $conn->real_escape_string($query); // Chống SQL Injection
+
+    // Truy vấn tìm kiếm sản phẩm
+    $sql = "SELECT * FROM sp WHERE tensp LIKE '%$query%'";
+    $result = $conn->query($sql);
+
+    if ($result->num_rows > 0) {
+        while ($row = $result->fetch_assoc()) {
+            $searchResults[] = $row;
+        }
+    }
+}
+
+// Truy vấn lấy danh sách sản phẩm (chỉnh sửa để lấy loại sản phẩm nếu cần)
+$sql = "SELECT sp.*, loaisp.tenloai 
+        FROM  sp 
+        JOIN loaisp ON sp.idloai = loaisp.idloai 
+        ORDER BY sp.idsp DESC LIMIT 6"; // Lấy 6 sản phẩm mới nhất
+$result = $conn->query($sql);
+?>
+
 <!DOCTYPE html>
 <html lang="zxx" class="no-js">
 
@@ -19,227 +53,26 @@
 	<!--
 		CSS
 		============================================= -->
-	<link rel="stylesheet" href="css/linearicons.css">
-	<link rel="stylesheet" href="css/font-awesome.min.css">
-	<link rel="stylesheet" href="css/themify-icons.css">
-	<link rel="stylesheet" href="css/bootstrap.css">
-	<link rel="stylesheet" href="css/owl.carousel.css">
-	<link rel="stylesheet" href="css/nice-select.css">
-	<link rel="stylesheet" href="css/nouislider.min.css">
-	<link rel="stylesheet" href="css/ion.rangeSlider.css" />
-	<link rel="stylesheet" href="css/ion.rangeSlider.skinFlat.css" />
-	<link rel="stylesheet" href="css/magnific-popup.css">
-	<link rel="stylesheet" href="css/main.css">
-	<link rel="stylesheet" href="css/Z_banner.scss">
-	<link rel="stylesheet" href="css/search.css">
-	<link rel="stylesheet" href="css/category.css">
-	<style>
-		/* Ẩn thông báo kết quả tìm kiếm theo mặc định */
-		.results-header {
-			display: none; /* Mặc định ẩn */
-			font-size: 24px;
-			font-weight: bold;
-			margin: 20px 0; /* Thêm khoảng cách phía trên và dưới */
-			color: #333;
-		}
+    <link rel="stylesheet" href="css/linearicons.css">
+    <link rel="stylesheet" href="css/font-awesome.min.css">
+    <link rel="stylesheet" href="css/themify-icons.css">
+    <link rel="stylesheet" href="css/bootstrap.css">
+    <link rel="stylesheet" href="css/owl.carousel.css">
+    <link rel="stylesheet" href="css/nice-select.css">
+    <link rel="stylesheet" href="css/nouislider.min.css">
+    <link rel="stylesheet" href="css/ion.rangeSlider.css" />
+    <link rel="stylesheet" href="css/ion.rangeSlider.skinFlat.css" />
+    <link rel="stylesheet" href="css/magnific-popup.css">
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/Z_banner.scss">
+    <link rel="stylesheet" href="css/search.css">
+    <link rel="stylesheet" href="css/category.css">
+	<link rel="stylesheet" href="css/index.css">
+<!--start header-->
 
-		/* Hiển thị khi có từ khóa tìm kiếm (tùy chỉnh thủ công) */
-		.show {
-			display: block; /* Hiển thị khi cần */
-		}
-		/* Đổi màu nền khung sản phẩm */
-		.horizontal-categories {
-			background-color: #ffffff; /* Màu xanh nước biển */
-			padding: 10px;
-			border-radius: 5px;
-		}
+	<?php include 'header.php'; ?>
 
-		/* Đổi màu chữ và kiểu chữ của các sản phẩm */
-		.horizontal-categories .main-categories .main-nav-list a {
-			color: #0b0b0b; /* Màu chữ trắng */
-			font-weight: bold;
-			text-decoration: none;
-		}
-
-		/* Tô sáng sản phẩm khi di chuột qua */
-		.horizontal-categories .main-categories .main-nav-list a:hover {
-			color: #0b0b0b; /* Màu chữ khi di chuột qua */
-		}
-		.filter-form-container {
-			display: none;
-			margin-top: 20px;
-			text-align: center;
-		}
-
-		#toggleFilter:checked ~ .filter-form-container {
-			display: block;
-		}
-
-		.filter-button {
-			display: inline-block;
-			background-color: #007bff;
-			color: white;
-			padding: 10px 20px;
-			font-size: 16px;
-			border-radius: 5px;
-			cursor: pointer;
-			text-align: center;
-		}
-
-		.filter-button:hover {
-			background-color: #0056b3;
-		}
-
-		.filter-form {
-			display: inline-block;
-			background-color: #f9f9f9;
-			border: 1px solid #ddd;
-			padding: 20px;
-			border-radius: 10px;
-			box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-		}
-
-		.filter-form label {
-			display: block;
-			font-weight: bold;
-			margin-bottom: 5px;
-		}
-
-		.filter-form input,
-		.filter-form select {
-			width: 100%;
-			padding: 10px;
-			margin-bottom: 15px;
-			border: 1px solid #ccc;
-			border-radius: 5px;
-			box-sizing: border-box;
-		}
-
-		.apply-filter-button {
-			background-color: #007bff;
-			color: white;
-			border: none;
-			padding: 10px 20px;
-			font-size: 16px;
-			border-radius: 5px;
-			cursor: pointer;
-		}
-
-		.apply-filter-button:hover {
-			background-color: #0056b3;
-		}
-		/* Đảm bảo container sản phẩm hiển thị theo dạng lưới */
-		.lattest-product-area .row {
-			display: flex !important; /* Sử dụng flexbox */
-			flex-wrap: wrap !important; /* Đảm bảo các sản phẩm xuống hàng khi không đủ chỗ */
-			justify-content: space-between !important; /* Căn đều khoảng cách giữa các sản phẩm */
-		}
-
-		/* Chỉnh lại mỗi sản phẩm chiếm 30% chiều rộng để có 3 sản phẩm 1 hàng */
-		.lattest-product-area .single-product {
-			flex: 0 0 30% !important; /* Mỗi sản phẩm chiếm 30% chiều rộng */
-			box-sizing: border-box !important; /* Đảm bảo padding và border không ảnh hưởng kích thước */
-			margin-bottom: 20px !important; /* Khoảng cách giữa các hàng */
-		}
-
-		/* Đảm bảo hình ảnh trong sản phẩm tự động điều chỉnh kích thước */
-		.lattest-product-area .single-product img {
-			width: 80% !important; /* Ảnh vừa với khung sản phẩm */
-			height: auto !important; /* Tự động giữ tỷ lệ ảnh */
-		}
-
-		/* Responsive cho màn hình nhỏ, hiển thị 2 sản phẩm 1 hàng */
-		@media (max-width: 768px) {
-			.lattest-product-area .row {
-				grid-template-columns: repeat(2, 1fr) !important; /* Hiển thị 2 sản phẩm 1 hàng */
-			}
-		}
-
-		/* Responsive cho điện thoại, hiển thị 1 sản phẩm 1 hàng */
-		@media (max-width: 576px) {
-			.lattest-product-area .row {
-				grid-template-columns: 1fr !important; /* Hiển thị 1 sản phẩm 1 hàng */
-			}
-		}
-		h1 {
-			text-align: center;
-		}
-
-	</style>
-</head>
-
-<body>
-<!-- Start Header Area -->
-<header class="header_area sticky-header">
-	<div class="main_menu">
-		<nav class="navbar navbar-expand-lg navbar-light main_box">
-			<div class="container">
-				<!-- Brand and toggle get grouped for better mobile display -->
-				<a class="navbar-brand logo_h" href="index.html"><img src="img/logo.png" alt=""></a>
-				<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
-						aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-					<span class="icon-bar"></span>
-					<span class="icon-bar"></span>
-					<span class="icon-bar"></span>
-				</button>
-				<!-- Collect the nav links, forms, and other content for toggling -->
-				<div class="collapse navbar-collapse offset" id="navbarSupportedContent">
-					<ul class="nav navbar-nav menu_nav ml-auto">
-						<li class="nav-item active"><a class="nav-link" href="index2.html">Trang chủ</a></li>
-						<li class="nav-item submenu dropdown">
-							<a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
-							   aria-expanded="false">Sản phẩm</a>
-							<ul class="dropdown-menu">
-								<li class="nav-item"><a class="nav-link" href="category.html">Adidas</a></li>
-								<li class="nav-item"><a class="nav-link" href="category1.html">Vans</a></li>
-								<li class="nav-item"><a class="nav-link" href="category2.html">Nike</a></li>
-							</ul>
-						</li>
-
-						<li class="nav-item"><a class="nav-link" href="checkout.html">Thanh toán</a></li>
-						<ul class="dropdown-menu">
-
-						</ul>
-						<li class="nav-item"><a class="nav-link" href="login.html">Đăng nhập</a></li>
-						</li>
-						<li class="nav-item submenu dropdown">
-						</li>
-					</ul>
-					<!-- Search Input Box -->
-					<input type="checkbox" id="search-toggle" class="search-toggle" hidden>
-					<div class="search_input">
-						<form id="search-form" action="ResultOfSearch.html" method="GET" class="d-flex justify-content-between">
-							<input type="text" class="search-input" name="query" placeholder="Tìm kiếm" required>
-							<button type="submit" class="search-btn">
-								<span class="lnr lnr-magnifier"></span>
-							</button>
-							<label for="search-toggle" class="lnr lnr-cross" title="Close Search"></label>
-						</form>
-					</div>
-
-					<!-- Search Icon and Cart -->
-					<ul class="nav navbar-nav navbar-right">
-						<li class="nav-item"><a href="cart.html" class="cart"><span class="ti-bag"></span></a></li>
-						<li class="nav-item">
-							<!-- Search Button with Magnifier Icon -->
-							<label for="search-toggle" class="search-icon">
-								<span class="lnr lnr-magnifier"></span>
-							</label>
-						</li>
-					</ul>
-				</div>
-			</div>
-		</nav>
-	</div>
-</header>
-<!-- Bootstrap and jQuery -->
-<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-</body>
-</html>
 <!-- end header -->
-
 
 <!-- bắt đầu khu vực banner1 -->
 <section class="banner-area">
@@ -268,9 +101,6 @@
 	</div>
 </section>
 <!-- Kết thúc khu vực banner -->
-
-
-
 
 <!-- bắt đầu khu vực tính năng -->
 <section class="features-area section_gap">
@@ -320,93 +150,55 @@
 	</div>
 </section>
 <!-- kết thúc khu vực tính năng -->
+    <section class="lattest-product-area pb-40 category-list">
+        <div class="row">
+            <?php
+            if ($result->num_rows > 0) {
+                while ($row = $result->fetch_assoc()) {
+                    ?>
+                    <!-- single product -->
+                    <div class="col-lg-4 col-md-6">
+                        <div class="single-product">
+                            <img class="img-fluid" src="<?php echo $row['images']; ?>" alt="<?php echo $row['tensp']; ?>">
+
+                            <div class="product-details">
+                                <h6><?php echo $row['tensp']; ?></h6>
+                                <div class="product-category">
+                                    <span>Loại : <?php echo $row['idloai']; ?></span> <!-- Phân loại sản phẩm -->
+                                </div>
+                                <div class="price">
+                                    <h6><?php echo number_format($row['giathanh'], 0, ',', '.'); ?>đ</h6>
+                                </div>
+                                <div class="prd-bottom">
+                                    <a href="cart.php?add=<?php echo $row['idsp']; ?>" class="social-info">
+                                        <span class="ti-bag"></span>
+                                        <p class="hover-text">Thêm vào giỏ hàng</p>
+                                    </a>
+
+                                    <a href="single-product.php?id=<?php echo $row['idsp']; ?>" class="social-info button">
+                                        <span class="lnr lnr-move"></span>
+                                        <span class="hover-text">Xem chi tiết</span>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <?php
+                }
+            } else {
+                ?>
+                <div class="col-12">
+                    <p class="text-center">Không có sản phẩm nào.</p>
+                </div>
+                <?php
+            }
+            $conn->close();
+            ?>
+        </div>
+    </section>
 
 
-<h1>Một số sản phẩm nổi bật:</h1>
-
-<!-- Bắt đầu Khu vực Sản Phẩm Bán Chạy Nhất -->
-<section class="lattest-product-area pb-40 category-list">
-	<div class="row">
-		<!-- Sản phẩm đơn -->
-		<div class="col-lg-4 col-md-6">
-			<div class="single-product">
-				<img class="img-fluid" src="img/product/jordanbien.jpg" alt="">
-				<div class="product-details">
-					<h6>Giày Air Jordan Legacy</h6>
-					<div class="product-category">
-						<span>Loại : Nike</span> <!-- Phân loại sản phẩm -->
-					</div>
-					<div class="price">
-						<h6>2.500.000đ</h6>
-					</div>
-					<div class="prd-bottom">
-						<a href="#" class="social-info" onclick="addToBag()">
-							<span class="ti-bag"></span>
-							<p class="hover-text">Thêm vào giỏ hàng</p>
-						</a>
-
-						<a href="single-product.html" class="social-info button">
-							<span class="lnr lnr-move"></span>
-							<span class="hover-text">Xem chi tiết</span>
-						</a>
-					</div>
-				</div>
-			</div>
-		</div>
-		<!-- Sản phẩm đơn -->
-		<div class="col-lg-4 col-md-6">
-			<div class="single-product">
-				<img class="img-fluid" src="img/product/airjordan.png" alt="">
-				<div class="product-details">
-					<h6>Giày Air Jordan Legacy</h6>
-					<div class="product-category">
-						<span>Loại : Nike</span> <!-- Phân loại sản phẩm -->
-					</div>
-					<div class="price">
-						<h6>2.500.000đ</h6>
-					</div>
-					<div class="prd-bottom">
-						<a href="#" class="social-info" onclick="addToBag()">
-							<span class="ti-bag"></span>
-							<p class="hover-text">Thêm vào giỏ hàng</p>
-						</a>
-
-						<a href="single-product.html" class="social-info button">
-							<span class="lnr lnr-move"></span>
-							<span class="hover-text">Xem chi tiết</span>
-						</a>
-					</div>
-				</div>
-			</div>
-		</div>
-		<!-- Sản phẩm đơn -->
-		<div class="col-lg-4 col-md-6">
-			<div class="single-product">
-				<img class="img-fluid" src="img/product/jordancam.png" alt="">
-				<div class="product-details">
-					<h6>Giày Air Jordan Legacy</h6>
-					<div class="product-category">
-						<span>Loại : Nike</span> <!-- Phân loại sản phẩm -->
-					</div>
-					<div class="price">
-						<h6>2.500.000đ</h6>
-					</div>
-					<div class="prd-bottom">
-						<a href="#" class="social-info" onclick="addToBag()">
-							<span class="ti-bag"></span>
-							<p class="hover-text">Thêm vào giỏ hàng</p>
-						</a>
-						<a href="single-product.html" class="social-info button">
-							<span class="lnr lnr-move"></span>
-							<span class="hover-text">Xem chi tiết</span>
-						</a>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
-</section>
-<!-- Kết thúc Khu vực Sản Phẩm Bán Chạy Nhất -->
+    <!-- Kết thúc Khu vực Sản Phẩm Bán Chạy Nhất -->
 <footer class="footer-area section_gap">
 	<div class="container">
 		<div class="row">
@@ -485,3 +277,5 @@
 </script>
 <!-- End footer Area -->
 </body>
+</head>
+</html>
