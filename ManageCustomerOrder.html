@@ -1,3 +1,44 @@
+<?php
+// Kết nối database
+$servername = "localhost";
+$username = "root"; // Thay bằng username của bạn
+$password = ""; // Nếu có mật khẩu, hãy điền vào đây
+$database = "test"; // Thay bằng tên database của bạn
+
+$conn = new mysqli($servername, $username, $password, $database);
+// Xử lý lọc đơn hàng
+$statusFilter = $_GET['status'] ?? 'all';
+$fromDate = $_GET['from-date'] ?? '';
+$toDate = $_GET['to-date'] ?? '';
+$addressFilter = $_GET['address'] ?? 'all';
+
+$query = "SELECT donhang.*, kh.tenkh FROM donhang 
+          LEFT JOIN kh ON donhang.idKH = kh.idKH
+          WHERE 1=1";
+if ($statusFilter !== 'all') {
+    $query .= " AND donhang.trangthai = '" . mysqli_real_escape_string($conn, $statusFilter) . "'";
+}
+if (!empty($fromDate)) {
+    $query .= " AND donhang.ngaymua >= '" . mysqli_real_escape_string($conn, $fromDate) . "'";
+}
+if (!empty($toDate)) {
+    $query .= " AND donhang.ngaymua <= '" . mysqli_real_escape_string($conn, $toDate) . "'";
+}
+if ($addressFilter !== 'all') {
+    $query .= " AND donhang.diachi = '" . mysqli_real_escape_string($conn, $addressFilter) . "'";
+}
+$result = mysqli_query($conn, $query);
+
+// Xử lý cập nhật trạng thái đơn hàng
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_status'])) {
+    $orderId = $_POST['order_id'];
+    $newStatus = $_POST['new_status'];
+    $updateQuery = "UPDATE donhang SET trangthai = '" . mysqli_real_escape_string($conn, $newStatus) . "' WHERE iddonhang = " . (int)$orderId;
+    mysqli_query($conn, $updateQuery);
+    header("Location: manage_orders.php");
+    exit();
+}
+?>
 <!DOCTYPE html>
 <html lang="vi">
 <head>
@@ -41,227 +82,111 @@
 
 <div class="admin-container">
   <!-- Sidebar -->
-  <div class="sidebar">
-
-    <ul>
-      <li><a href="admin.html">Trang chủ</a></li>
-      <li><a href="managerp.html">Quản lí sản phẩm</a></li>
-      <li><a href="manager-user.html">Quản lí người dùng</a></li>
-      <li><a href="ManageCustomerOrder.html">Quản lí đơn hàng</a></li>
-      <li class="dropdown">
-        <a href="#statistics">Thống kê</a>
-        <ul class="dropdown-menu">
-          <li><a href="static.html">Sản phẩm</a></li>
-          <li><a href="static2.html">Người dùng</a></li>
-        </ul>
-      </li>
-    </ul>
-  </div>
-  <div class="dashboard-container">
-    <h1>Quản lí đơn hàng</h1>
-
-    <!-- Thông báo cập nhật trạng thái -->
-    <div class="alert" id="status-alert">
-      <span>Trạng thái đã được cập nhật thành công!</span>
-      <span class="close-btn" onclick="closeAlert()">&times;</span>
+    <?php include 'sidebar.php'; ?>
+    <!--End sidebar-->
+    <div class="dashboard-container">
+        <h1>Quản lí đơn hàng</h1>
+        <div class="alert" id="status-alert">
+            <span>Trạng thái đã được cập nhật thành công!</span>
+            <span class="close-btn" onclick="closeAlert()">&times;</span>
+        </div>
+        <form method="GET" class="filter-section">
+            <label for="status">Trạng thái:</label>
+            <select id="status" name="status">
+                <option value="all">Tất cả</option>
+                <option value="Đã xác nhận">Đã xác nhận</option>
+                <option value="Hoàn thành">Hoàn thành</option>
+                <option value="Hủy bỏ">Hủy bỏ</option>
+            </select>
+            <label for="from-date">Từ ngày:</label>
+            <input type="date" id="from-date" name="from-date">
+            <label for="to-date">Đến ngày:</label>
+            <input type="date" id="to-date" name="to-date">
+            <label for="address">Địa chỉ:</label>
+            <select id="address" name="address">
+                <option value="all">Tất cả</option>
+                <option value="Quận 1, HCMC">Quận 1, HCMC</option>
+                <option value="Quận 2, HCMC">Quận 2, HCMC</option>
+                <option value="Quận 3, HCMC">Quận 3, HCMC</option>
+                <option value="Quận 4, HCMC">Quận 4, HCMC</option>
+                <option value="Quận 5, HCMC">Quận 5, HCMC</option>
+                <option value="Quận 6, HCMC">Quận 6, HCMC</option>
+                <option value="Long Thành, Đồng Nai">Long Thành, Đồng Nai</option>
+            </select>
+            <button type="submit">Lọc</button>
+        </form>
+        <table>
+            <thead>
+            <tr>
+                <th>Mã Đơn hàng</th>
+                <th>Tên Khách hàng</th>
+                <th>Số Điện Thoại</th>
+                <th>Ngày Đặt hàng</th>
+                <th>Tổng tiền</th>
+                <th>Phương thức thanh toán</th>
+                <th>Trạng thái</th>
+                <th>Địa chỉ giao hàng</th>
+                <th>Chi Tiết</th>
+            </tr>
+            </thead>
+            <tbody>
+            <?php
+            if (mysqli_num_rows($result) > 0) {
+                while ($row = mysqli_fetch_assoc($result)) { ?>
+                    <tr>
+                        <td><?php echo $row['iddonhang']; ?></td>
+                        <td><?php echo $row['tenkh']; ?></td>
+                        <td><?php echo $row['sdt']; ?></td>
+                        <td><?php echo $row['ngaymua']; ?></td>
+                        <td><?php echo number_format($row['tongtien'], 0, ',', '.'); ?> VND</td>
+                        <td><?php echo $row['phuongthucthanhtoan']; ?></td>
+                        <td>
+                            <form method="POST">
+                                <input type="hidden" name="order_id" value="<?php echo $row['iddonhang']; ?>">
+                                <select name="new_status" onchange="this.form.submit()">
+                                    <option value="Đã xác nhận" <?php if($row['trangthai'] == 'Đã xác nhận') echo 'selected'; ?>>Đã xác nhận</option>
+                                    <option value="Hoàn thành" <?php if($row['trangthai'] == 'Hoàn thành') echo 'selected'; ?>>Hoàn thành</option>
+                                    <option value="Hủy bỏ" <?php if($row['trangthai'] == 'Hủy bỏ') echo 'selected'; ?>>Hủy bỏ</option>
+                                </select>
+                            </form>
+                        </td>
+                        <td><?php echo $row['diachi']; ?></td>
+                        <td><a href="viewdetail.php?id=<?php echo $row['iddonhang']; ?>">Chi tiết</a></td>
+                    </tr>
+                <?php }
+            } else {
+                ?>
+                <tr>
+                    <td colspan="9" style="text-align: center; font-weight: bold; color: red;">Không tìm thấy kết quả</td>
+                </tr>
+            <?php } ?>
+            </tbody>
+        </table>
     </div>
-
-    <!-- Filter Section -->
-    <!-- Form Lọc Đơn Hàng -->
-    <form id="filter-form" class="filter-section">
-      <h2>Lọc và Sắp xếp Đơn hàng</h2>
-
-      <label for="status">Trạng thái:</label>
-      <select id="status" name="status">
-        <option value="all">Tất cả</option>
-        <option value="Đã xác nhận">Đã xác nhận</option>
-        <option value="Hoàn thành">Hoàn thành</option>
-        <option value="Hủy bỏ">Hủy bỏ</option>
-      </select>
-
-      <label for="from-date">Từ ngày:</label>
-      <input type="date" id="from-date" name="from-date">
-
-      <label for="to-date">Đến ngày:</label>
-      <input type="date" id="to-date" name="to-date">
-
-      <label for="address">Địa chỉ:</label>
-      <select id="address" name="address">
-        <option value="all">Tất cả</option>
-        <option value="Quận 1, HCMC">Quận 1, HCMC</option>
-        <option value="Quận 2, HCMC">Quận 2, HCMC</option>
-        <option value="Quận 3, HCMC">Quận 3, HCMC</option>
-        <option value="Quận 4, HCMC">Quận 4, HCMC</option>
-        <option value="Quận 5, HCMC">Quận 5, HCMC</option>
-        <option value="Quận 6, HCMC">Quận 6, HCMC</option>
-        <option value="Long Thành, Đồng Nai">Long Thành, Đồng Nai</option>
-      </select>
-
-      <button type="submit" class="apply-btn">Lọc</button>
-    </form>
-
-    <table>
-      <thead>
-      <tr>
-        <th>Mã Đơn hàng</th>
-        <th>Tên Khách hàng</th>
-        <th>Số Điện Thoại</th>
-        <th>Ngày Đặt hàng</th>
-        <th>Trạng thái</th>
-        <th>Địa chỉ giao hàng</th>
-        <th>Chi Tiết</th>
-      </tr>
-      </thead>
-      <tbody>
-      <tr>
-        <td>OD001</td>
-        <td>N.T.L Nguyen</td>
-        <td>0901234567</td>
-        <td>2024-10-01</td>
-        <td>
-          <select onchange="showAlert()">
-            <option value="confirmed" selected>Đã xác nhận</option>
-            <option value="completed">Hoàn thành</option>
-            <option value="cancelled">Hủy bỏ</option>
-          </select>
-        </td>
-        <td>Quận 1, HCMC</td>
-        <td><a href="viewdetail.html" class="view-details-btn">Chi tiết</a></td>
-      </tr>
-      <tr>
-        <td>OD002</td>
-        <td>Hoàng Duẫn</td>
-        <td>0909876543</td>
-        <td>2024-10-05</td>
-        <td>
-          <select onchange="showAlert()">
-            <option value="confirmed">Đã xác nhận</option>
-            <option value="completed" selected>Hoàn thành</option>
-            <option value="cancelled">Hủy bỏ</option>
-          </select>
-        </td>
-        <td>Quận 3, HCMC</td>
-        <td><a href="viewdetail.html" class="view-details-btn">Chi tiết</a></td>
-      </tr>
-      <tr>
-        <td>OD003</td>
-        <td>Lê Hữu Khang</td>
-        <td>0912345678</td>
-        <td>2024-10-10</td>
-        <td>
-          <select onchange="showAlert()">
-            <option value="confirmed">Đã xác nhận</option>
-            <option value="completed">Hoàn thành</option>
-            <option value="cancelled" selected>Hủy bỏ</option>
-          </select>
-        </td>
-        <td>Quận 2, HCMC</td>
-        <td><a href="viewdetail.html" class="view-details-btn">Chi tiết</a></td>
-      </tr>
-      <tr>
-        <td>OD004</td>
-        <td>V.K Nguyen</td>
-        <td>0923456789</td>
-        <td>2024-10-12</td>
-        <td>
-          <select onchange="showAlert()">
-            <option value="confirmed" selected>Đã xác nhận</option>
-            <option value="completed">Hoàn thành</option>
-            <option value="cancelled">Hủy bỏ</option>
-          </select>
-        </td>
-        <td>Quận 4, HCMC</td>
-        <td><a href="viewdetail.html" class="view-details-btn">Chi tiết</a></td>
-      </tr>
-      <tr>
-        <td>OD005</td>
-        <td>L.N.Q Võ</td>
-        <td>0934567890</td>
-        <td>2024-10-15</td>
-        <td>
-          <select onchange="showAlert()">
-            <option value="confirmed">Đã xác nhận</option>
-            <option value="completed" selected>Hoàn thành</option>
-            <option value="cancelled">Hủy bỏ</option>
-          </select>
-        </td>
-        <td>Quận 5, HCMC</td>
-        <td><a href="viewdetail.html" class="view-details-btn">Chi tiết</a></td>
-      </tr>
-      <tr>
-        <td>OD006</td>
-        <td>Ngô Đức Huy</td>
-        <td>0945678901</td>
-        <td>2024-10-17</td>
-        <td>
-          <select onchange="showAlert()">
-            <option value="confirmed">Đã xác nhận</option>
-            <option value="completed">Hoàn thành</option>
-            <option value="cancelled" selected>Hủy bỏ</option>
-          </select>
-        </td>
-        <td>Quận 6, HCMC</td>
-        <td><a href="viewdetail.html" class="view-details-btn">Chi tiết</a></td>
-      </tr>
-      <tr>
-        <td>OD007</td>
-        <td>Phạm Ngọc Thiện</td>
-        <td>0391739133</td>
-        <td>2024-9-17</td>
-        <td>
-          <select onchange="showAlert()">
-            <option value="confirmed">Đã xác nhận</option>
-            <option value="completed">Hoàn thành</option>
-            <option value="cancelled" selected>Hủy bỏ</option>
-          </select>
-        </td>
-        <td>Long Thành, Đồng Nai</td>
-        <td><a href="viewdetail.html" class="view-details-btn">Chi tiết</a></td>
-      </tr>
-
-      </tbody>
-    </table>
-
-    <div class="pagination">
-      <a href="ManageCustomerOrder.html">&laquo;</a> <!-- Quay lại trang 1 -->
-      <a href="ManageCustomerOrder.html">1</a> <!-- Trang 1 -->
-      <a href="ManageCustomerOrder.html">2</a> <!-- Trang 2 -->
-      <a href="ManageCustomerOrder.html">3</a> <!-- Trang 3 -->
-      <a href="ManageCustomerOrder.html">4</a> <!-- Trang 4 -->
-      <a href="ManageCustomerOrder.html">5</a> <!-- Trang 5 -->
-      <a href="ManageCustomerOrder.html">&raquo;</a> <!-- Chuyển tới trang 5 -->
-    </div>
-
-  </div>
-
-  <!-- JavaScript -->
-  <script>// Hiển thị thông báo khi trạng thái được thay đổi
-  function showAlert() {
-    var alert = document.getElementById('status-alert');
-    alert.classList.add('show');
-
-    // Tự động ẩn thông báo sau 3 giây với hiệu ứng fade-out
-    setTimeout(function() {
-      alert.classList.add('fadeOut');
-      setTimeout(function() {
-        alert.classList.remove('show', 'fadeOut');
-      }, 300); // Phù hợp với thời gian animation fadeOut
-    }, 3000); // Thời gian hiển thị là 3 giây
-  }
-
-  // Đóng thông báo khi nhấn nút đóng
-  function closeAlert() {
-    var alert = document.getElementById('status-alert');
-    alert.classList.add('fadeOut');
-    setTimeout(function() {
-      alert.classList.remove('show', 'fadeOut');
-    }, 300); // Phù hợp với thời gian animation fadeOut
-  }
-
-  </script>
-
-
 </div>
-
+<script>
+    function showAlert() {
+        var alert = document.getElementById('status-alert');
+        alert.classList.add('show');
+        setTimeout(function() {
+            alert.classList.add('fadeOut');
+            setTimeout(function() {
+                alert.classList.remove('show', 'fadeOut');
+            }, 300);
+        }, 3000);
+    }
+    function closeAlert() {
+        var alert = document.getElementById('status-alert');
+        alert.classList.add('fadeOut');
+        setTimeout(function() {
+            alert.classList.remove('show', 'fadeOut');
+        }, 300);
+    }
+    window.onload = function() {
+        if (performance.navigation.type === 1) {
+            window.location.href = "ManageCustomerOrder.php";
+        }
+    };
+</script>
 </body>
 </html>
