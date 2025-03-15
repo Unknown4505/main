@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Máy chủ: 127.0.0.1
--- Thời gian đã tạo: Th3 13, 2025 lúc 12:33 AM
+-- Thời gian đã tạo: Th3 15, 2025 lúc 06:47 AM
 -- Phiên bản máy phục vụ: 10.4.32-MariaDB
 -- Phiên bản PHP: 8.2.12
 
@@ -45,7 +45,13 @@ CREATE TABLE `donhang` (
   `iddonhang` int(11) NOT NULL,
   `idKH` int(11) DEFAULT NULL,
   `ngaymua` date DEFAULT NULL,
-  `tongtien` decimal(10,2) DEFAULT NULL CHECK (`tongtien` >= 0)
+  `tongtien` decimal(10,2) DEFAULT NULL CHECK (`tongtien` >= 0),
+  `trangthai` varchar(50) DEFAULT 'Đã xác nhận',
+  `diachi` text DEFAULT NULL,
+  `sdt` varchar(15) DEFAULT NULL,
+  `ghichu` text DEFAULT NULL,
+  `phuongthucthanhtoan` varchar(50) DEFAULT NULL,
+  `ngaycapnhat` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -103,7 +109,8 @@ CREATE TABLE `sp` (
 --
 
 INSERT INTO `sp` (`idsp`, `idloai`, `images`, `tensp`, `giathanh`, `soluong`) VALUES
-(5, 2, 0x75706c6f6164732f6a6f7264616e332e706e67, 'Adidas11111', 2500000, 22);
+(1, 1, 0x75706c6f6164732f6a6f7264616e352e706e67, 'dâd', 2147483647, 2),
+(2, 3, 0x75706c6f6164732f6a6f7264616e63616d2e706e67, 'ukhyuh', 21414141, 31);
 
 --
 -- Chỉ mục cho các bảng đã đổ
@@ -176,7 +183,7 @@ ALTER TABLE `loaisp`
 -- AUTO_INCREMENT cho bảng `sp`
 --
 ALTER TABLE `sp`
-  MODIFY `idsp` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `idsp` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- Các ràng buộc cho các bảng đã đổ
