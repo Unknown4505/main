@@ -46,9 +46,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         if (move_uploaded_file($_FILES["images"]["tmp_name"], $target_file)) {
             // Chèn dữ liệu vào bảng product
-            $sql = "INSERT INTO sp (idsp, idloai, tensp, soluong, giathanh, images) VALUES (?, ?, ?, ?, ?, ?)";
+            $sql = "INSERT INTO sp (idsp, idloai, tensp, soluong, giathanh, images, ansp) VALUES (?, ?, ?, ?, ?, ?, ?)";
+            $ansp = false; // Hoặc $ansp = 1 nếu cột ansp là TINYINT(1)
             $stmt = $conn->prepare($sql);
-            $stmt->bind_param("iisdds", $next_id, $idloai, $tensp, $soluong, $giathanh, $target_file);
+            $stmt->bind_param("iisddsi", $next_id, $idloai, $tensp, $soluong, $giathanh, $target_file, $ansp);
+
 
             if ($stmt->execute()) {
                 header("Location: add-product.html?success=1");
