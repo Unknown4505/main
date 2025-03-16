@@ -1,4 +1,5 @@
 <?php
+ob_start(); // Bắt đầu bộ đệm đầu ra
 $servername = "localhost";
 $username = "root";
 $password = "";
@@ -15,15 +16,28 @@ if ($conn->connect_error) {
 // Xóa sản phẩm nếu có yêu cầu
 if (isset($_GET['delete_id'])) {
     $delete_id = intval($_GET['delete_id']);
-    $conn->query("DELETE FROM sp WHERE idsp = $delete_id"); // Đổi id thành idsp
-    header("Location: managerp.php"); // Tải lại trang sau khi xóa
+    $conn->query("DELETE FROM sp WHERE idsp = $delete_id");
+    echo "<script>window.location.href='managerp.php';</script>"; // Chuyển hướng bằng JavaScript
     exit();
 }
 
-// Truy vấn dữ liệu từ bảng sản phẩm
-$sql = "SELECT idsp, idloai, tensp, soluong, giathanh, images FROM sp";
+// Ẩn / Hiện sản phẩm
+if (isset($_GET['toggle_id'])) {
+    $toggle_id = intval($_GET['toggle_id']);
+    $result = $conn->query("SELECT ansp FROM sp WHERE idsp = $toggle_id");
+    if ($row = $result->fetch_assoc()) {
+        $new_status = ($row["ansp"] == 1) ? 0 : 1;
+        $conn->query("UPDATE sp SET ansp = $new_status WHERE idsp = $toggle_id");
+    }
+    echo "<script>window.location.href='managerp.php';</script>"; // Reload lại trang
+    exit();
+}
+
+// Truy vấn danh sách sản phẩm
+$sql = "SELECT idsp, idloai, tensp, soluong, giathanh, images, ansp FROM sp";
 $result = $conn->query($sql);
 
+// Hiển thị danh sách sản phẩm
 if ($result->num_rows > 0) {
     echo "<table class='table table-bordered'>
             <thead>
@@ -41,15 +55,23 @@ if ($result->num_rows > 0) {
     while ($row = $result->fetch_assoc()) {
         echo "<tr>
                 <td>".$stt."</td>
-                <td>".$row["tensp"]."</td> <!-- Đổi 'ten' thành 'tensp' -->
-                <td><img src='".$row["images"]."' alt='Sản phẩm' class='product-img' width='100'></td> <!-- Đổi 'hinhanh' thành 'images' -->
-                <td>".number_format($row["giathanh"])."đ</td> <!-- Đổi 'gia' thành 'giathanh' -->
+                <td>".$row["tensp"]."</td>
+                <td><img src='".$row["images"]."' alt='Sản phẩm' class='product-img' width='100'></td>
+                <td>".number_format($row["giathanh"])."đ</td>
                 <td>".$row["soluong"]."</td>
-                <td>
-                    <a href='managerp.php?delete_id=".$row['idsp']."' class='action-btn' onclick=\"return confirm('Bạn có chắc chắn muốn xóa sản phẩm này?')\">Xóa</a>
-                    <a href='edit-product.php?idsp=".$row['idsp']."' class='action-btn'>Sửa</a>
-                </td>
-              </tr>";
+                <td style='text-align: center;'>";
+
+        // Kiểm tra trạng thái ẩn và hiển thị nút tương ứng
+        if ($row["ansp"] == 1) {
+            echo "<a href='managerp.php?toggle_id=".$row['idsp']."' class='action-btn btn-secondary' onclick=\"return confirm('Bạn có chắc chắn muốn hiển thị lại sản phẩm này?')\">Bỏ ẩn</a>";
+        } else {
+            echo "<a href='managerp.php?toggle_id=".$row['idsp']."' class='action-btn btn-warning' onclick=\"return confirm('Bạn có chắc chắn muốn ẩn sản phẩm này?')\">Ẩn</a>";
+        }
+
+        // Nút sửa và xóa
+        echo " <a href='edit-product.php?idsp=".$row['idsp']."' class='action-btn btn-primary'>Sửa</a>
+               <a href='managerp.php?delete_id=".$row['idsp']."' class='action-btn btn-danger' onclick=\"return confirm('Bạn có chắc chắn muốn xóa sản phẩm này?')\">Xóa</a>
+              </td></tr>";
         $stt++;
     }
     echo "</tbody></table>";
@@ -59,4 +81,5 @@ if ($result->num_rows > 0) {
 
 // Đóng kết nối
 $conn->close();
+ob_end_flush(); // Kết thúc bộ đệm đầu ra
 ?>
