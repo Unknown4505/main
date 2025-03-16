@@ -3,7 +3,7 @@
 $servername = "localhost";
 $username = "root"; // Thay bằng username của bạn
 $password = ""; // Nếu có mật khẩu, hãy điền vào đây
-$database = "mydatabase"; // Thay bằng tên database của bạn
+$database = "test"; // Thay bằng tên database của bạn
 
 $conn = new mysqli($servername, $username, $password, $database);
 
@@ -153,14 +153,16 @@ $result = $conn->query($sql);
     <section class="lattest-product-area pb-40 category-list">
         <div class="row">
             <?php
+            $sql = "SELECT idsp, idloai, tensp, soluong, giathanh, images FROM sp WHERE ansp = 0";
+            $result = $conn->query($sql);
+
             if ($result->num_rows > 0) {
                 while ($row = $result->fetch_assoc()) {
                     ?>
                     <!-- single product -->
                     <div class="col-lg-4 col-md-6">
                         <div class="single-product">
-                            <img class="img-fluid" src="<?php echo $row['images']; ?>" alt="<?php echo $row['tensp']; ?>">
-
+                            <img src="<?php echo $row['images']; ?>">
                             <div class="product-details">
                                 <h6><?php echo $row['tensp']; ?></h6>
                                 <div class="product-category">
