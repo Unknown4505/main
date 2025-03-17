@@ -20,10 +20,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $tensp = trim($_POST["ten"]);
     $soluong = intval($_POST["soluong"]);
     $giathanh = floatval($_POST["gia"]);
-    $idloai = intval($_POST["idloai"]); // Lấy ID loại từ form
+    $idloai = intval($_POST["idloai"]);
+    $mota = trim($_POST["mota"]); // Lấy mô tả từ form
 
     // Kiểm tra dữ liệu đầu vào
-    if (empty($tensp) || $soluong <= 0 || $giathanh <= 0 || $idloai <= 0) {
+    if (empty($tensp) || $soluong <= 0 || $giathanh <= 0 || $idloai <= 0 || empty($mota)) {
         die("Dữ liệu không hợp lệ!");
     }
 
@@ -45,12 +46,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         }
 
         if (move_uploaded_file($_FILES["images"]["tmp_name"], $target_file)) {
-            // Chèn dữ liệu vào bảng product
-            $sql = "INSERT INTO sp (idsp, idloai, tensp, soluong, giathanh, images, ansp) VALUES (?, ?, ?, ?, ?, ?, ?)";
+            // Chèn dữ liệu vào bảng sp
+            $sql = "INSERT INTO sp (idsp, idloai, tensp, soluong, giathanh, images, mota, ansp) 
+                    VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+
             $ansp = false; // Hoặc $ansp = 1 nếu cột ansp là TINYINT(1)
             $stmt = $conn->prepare($sql);
-            $stmt->bind_param("iisddsi", $next_id, $idloai, $tensp, $soluong, $giathanh, $target_file, $ansp);
-
+            $stmt->bind_param("iisddssi", $next_id, $idloai, $tensp, $soluong, $giathanh, $target_file, $mota, $ansp);
 
             if ($stmt->execute()) {
                 header("Location: add-product.html?success=1");
