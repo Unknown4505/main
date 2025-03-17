@@ -3,7 +3,7 @@
 $servername = "localhost";
 $username = "root"; // Thay bằng username của bạn
 $password = ""; // Nếu có mật khẩu, hãy điền vào đây
-$database = "test"; // Thay bằng tên database của bạn
+$database = "mydatabase"; // Thay bằng tên database của bạn
 
 $conn = new mysqli($servername, $username, $password, $database);
 // Xử lý lọc đơn hàng
@@ -42,46 +42,46 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_status'])) {
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Giao diện Admin</title>
-  <!-- Mobile Specific Meta -->
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <!-- Favicon-->
-  <link rel="shortcut icon" href="img/fav.png">
-  <!-- Author Meta -->
-  <meta name="author" content="CodePixar">
-  <!-- Meta Description -->
-  <meta name="description" content="">
-  <!-- Meta Keyword -->
-  <meta name="keywords" content="">
-  <!-- meta character set -->
-  <meta charset="UTF-8">
-  <!-- Site Title -->
-  <title>Karma Shop</title>
-  <link rel="stylesheet" href="css/ManageCustomerOrder.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Giao diện Admin</title>
+    <!-- Mobile Specific Meta -->
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!-- Favicon-->
+    <link rel="shortcut icon" href="img/fav.png">
+    <!-- Author Meta -->
+    <meta name="author" content="CodePixar">
+    <!-- Meta Description -->
+    <meta name="description" content="">
+    <!-- Meta Keyword -->
+    <meta name="keywords" content="">
+    <!-- meta character set -->
+    <meta charset="UTF-8">
+    <!-- Site Title -->
+    <title>Karma Shop</title>
+    <link rel="stylesheet" href="css/ManageCustomerOrder.css">
 
 </head>
 <body>
 <header style="background-color: rgb(255,255,255); color: #0b0b0b; padding: 20px 40px; display: flex; align-items: center; justify-content: space-between; font-size: 28px; border-bottom: 5px solid #0b0b0b;">
-  <!-- Logo bên trái -->
-  <div style="flex: 0; display: flex; align-items: center;">
-    <img src="img/fav.png" alt="Karma Logo" style="width: 60px; height: 60px; border-radius: 50%; margin-right: 20px;">
-    <h1 style="margin: 0; font-size: 20px;">Karma Shop</h1>
-  </div>
+    <!-- Logo bên trái -->
+    <div style="flex: 0; display: flex; align-items: center;">
+        <img src="img/fav.png" alt="Karma Logo" style="width: 60px; height: 60px; border-radius: 50%; margin-right: 20px;">
+        <h1 style="margin: 0; font-size: 20px;">Karma Shop</h1>
+    </div>
 
-  <!-- Phần menu bên phải -->
-  <nav style="flex: 1;text-align: center">
-    <ul style="list-style: none; display: flex; justify-content: right; margin: 0; padding: 0;">
-      <li style="margin: 0 20px;"><a href="admin.html" style="color: #0b0b0b; text-decoration: none; font-size: 22px;">Admin</a></li>
-      <li style="margin: 0 20px;"><a href="dangxuatadmin.html" style="color: #0b0b0b; text-decoration: none; font-size: 22px;">Đăng xuất</a></li>
-    </ul>
-  </nav>
+    <!-- Phần menu bên phải -->
+    <nav style="flex: 1;text-align: center">
+        <ul style="list-style: none; display: flex; justify-content: right; margin: 0; padding: 0;">
+            <li style="margin: 0 20px;"><a href="admin.html" style="color: #0b0b0b; text-decoration: none; font-size: 22px;">Admin</a></li>
+            <li style="margin: 0 20px;"><a href="dangxuatadmin.html" style="color: #0b0b0b; text-decoration: none; font-size: 22px;">Đăng xuất</a></li>
+        </ul>
+    </nav>
 </header>
 
 <div class="admin-container">
-  <!-- Sidebar -->
+    <!-- Sidebar -->
     <?php include 'sidebar.php'; ?>
     <!--End sidebar-->
     <div class="dashboard-container">
@@ -131,6 +131,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_status'])) {
             </thead>
             <tbody>
             <?php
+            $isFiltering = isset($_GET['status']) || isset($_GET['from-date']) || isset($_GET['to-date']) || isset($_GET['address']);
+
             if (mysqli_num_rows($result) > 0) {
                 while ($row = mysqli_fetch_assoc($result)) { ?>
                     <tr>
@@ -153,13 +155,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_status'])) {
                         <td><?php echo $row['diachi']; ?></td>
                         <td><a href="viewdetail.php?id=<?php echo $row['iddonhang']; ?>">Chi tiết</a></td>
                     </tr>
-                <?php }
-            } else {
+                    <?php
+                }
+            } elseif ($isFiltering) { // Chỉ hiển thị nếu có lọc mà không có kết quả
                 ?>
                 <tr>
                     <td colspan="9" style="text-align: center; font-weight: bold; color: red;">Không tìm thấy kết quả</td>
                 </tr>
-            <?php } ?>
+                <?php
+            }
+            ?>
             </tbody>
         </table>
     </div>
