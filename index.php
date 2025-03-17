@@ -166,7 +166,7 @@ $result = $conn->query($sql);
                             <div class="product-details">
                                 <h6><?php echo $row['tensp']; ?></h6>
                                 <div class="product-category">
-                                    <span>Loại : <?php echo $row['idloai']; ?></span> <!-- Phân loại sản phẩm -->
+                                   <span>Loại : <?php echo $row['tenloai']; ?></span> <!-- Hiển thị tên loại -->
                                 </div>
                                 <div class="price">
                                     <h6><?php echo number_format($row['giathanh'], 0, ',', '.'); ?>đ</h6>
