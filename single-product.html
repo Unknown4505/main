@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="zxx" class="no-js">
 
@@ -35,82 +36,7 @@
 <body>
 
 <!-- Start Header Area -->
-<header class="header_area sticky-header">
-	<div class="main_menu">
-		<nav class="navbar navbar-expand-lg navbar-light main_box">
-			<div class="container">
-				<!-- Brand and toggle get grouped for better mobile display -->
-				<a class="navbar-brand logo_h" href="index2.html"><img src="img/logo.png" alt=""></a>
-				<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
-						aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-					<span class="icon-bar"></span>
-					<span class="icon-bar"></span>
-					<span class="icon-bar"></span>
-				</button>
-				<!-- Collect the nav links, forms, and other content for toggling -->
-				<div class="collapse navbar-collapse offset" id="navbarSupportedContent">
-					<ul class="nav navbar-nav menu_nav ml-auto">
-						<li class="nav-item active"><a class="nav-link" href="index2.html">Trang chủ</a></li>
-						<li class="nav-item submenu dropdown">
-							<a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
-							   aria-expanded="false">Sản phẩm</a>
-							<ul class="dropdown-menu">
-								<li class="nav-item"><a class="nav-link" href="category.html">Adidas</a></li>
-								<li class="nav-item"><a class="nav-link" href="category1.html">Vans</a></li>
-								<li class="nav-item"><a class="nav-link" href="category2.html">Nike</a></li>
-							</ul>
-						</li>
-
-						<li class="nav-item"><a class="nav-link" href="checkout.html">Thanh toán</a></li>
-						<ul class="dropdown-menu">
-
-						</ul>
-						</li>
-						<li class="nav-item submenu dropdown">
-						</li>
-					</ul>
-					<!-- Search Input Box -->
-					<input type="checkbox" id="search-toggle" class="search-toggle" hidden>
-					<div class="search_input">
-						<form id="search-form" action="ResultofSearch.html" method="GET" class="d-flex justify-content-between">
-							<input type="text" class="search-input" name="query" placeholder="Tìm kiếm" required>
-							<button type="submit" class="search-btn">
-								<span class="lnr lnr-magnifier"></span>
-							</button>
-							<label for="search-toggle" class="lnr lnr-cross" title="Close Search"></label>
-						</form>
-					</div>
-
-					<!-- Search Icon and Cart -->
-					<ul class="nav navbar-nav navbar-right">
-						<li class="nav-item"><a href="cart.html" class="cart"><span class="ti-bag"></span></a></li>
-						<li class="nav-item">
-							<!-- Search Button with Magnifier Icon -->
-							<label for="search-toggle" class="search-icon">
-								<span class="lnr lnr-magnifier"></span>
-							</label>
-						</li>
-					</ul>
-					<!-- User Dropdown -->
-					<ul class="nav navbar-nav navbar-right">
-						<li class="nav-item dropdown">
-							<a class="nav-link dropdown-toggle user-btn" href="" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-								<span class="username">Người dùng</span>
-								<span class="lnr lnr-user"></span>
-							</a>
-							<div class="dropdown-menu" aria-labelledby="navbarDropdown">
-								<a class="dropdown-item" href=User.html>Thông tin người dùng</a>
-								<a class="dropdown-item" href="confirmation.html">Lịch sử giao dịch</a>
-								<div class="dropdown-divider"></div>
-								<a class="dropdown-item" href="index.html">Đăng xuất</a>
-							</div>
-						</li>
-					</ul>
-				</div>
-			</div>
-		</nav>
-	</div>
-</header>
+<?php include 'header2.php'; ?>
 <!-- Bootstrap and jQuery -->
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
@@ -135,7 +61,7 @@
 				<nav class="d-flex align-items-center">
 					<a href="index.html">Trang chủ<span class="lnr lnr-arrow-right"></span></a>
 					<a href="#">Shop<span class="lnr lnr-arrow-right"></span></a>
-					<a href="single-product.html">Chi tiết sản phẩm</a>
+					<a href="single-product.php">Chi tiết sản phẩm</a>
 				</nav>
 			</div>
 		</div>
@@ -144,47 +70,75 @@
 <!-- End Banner Area -->
 
 <!--================Single Product Area =================-->
-<div class="product_image_area">
-	<div class="container">
-		<div class="row s_product_inner">
-			<div class="col-lg-6">
-				<div class="s_Product_carousel">
-					<div class="single-prd-item">
-						<img class="img-fluid" src="img/product/jordan1.png" alt="">
-					</div>
-				</div>
-			</div>
-			<div class="col-lg-5 offset-lg-1">
-				<div class="s_product_text">
-					<h3>Air Jordan Legacy</h3>
-					<h2>3.500.000đ</h2>
-					<ul class="list">
-						<li><a class="active" href="category.html"><span>Loại</span> :Nike</a></li>
-						<li><a href="#"><span>Tình trạng</span> : Còn hàng</a></li>
-					</ul>
-					<p>Phong cách hiện đại: Giày Adidas UltraBoost 22 là sự kết hợp hoàn hảo giữa thiết kế tối giản và hiện đại, mang đến vẻ ngoài thời thượng, phù hợp cho cả nam và nữ.
-						Công nghệ Boost: Đệm Boost độc quyền giúp hấp thụ lực tối đa, tạo cảm giác êm ái và hoàn trả năng lượng trong từng bước đi.
-						Chất liệu cao cấp: Upper được làm từ Primeknit dệt kim mềm mại, ôm sát bàn chân, mang lại sự thoải mái tối đa.
-						Đế ngoài Continental™: Được làm từ cao su chất lượng cao, tăng độ bám trên mọi bề mặt và chống trơn trượt hiệu quả.
-						Thân thiện với môi trường: Một phần của đôi giày được sản xuất từ nhựa tái chế Parley, góp phần bảo vệ môi trường.</p>
 
-					<!-- Phần tăng giảm số lượng sản phẩm -->
-					<div class="product_count">
-						<label for="qty">Số lượng:</label>
-						<!-- Sử dụng input number để người dùng tăng giảm số lượng mà không cần JS -->
-						<input type="number" name="qty" id="sst" value="1" min="1" max="99" title="Quantity:" class="input-text qty">
-					</div>
+<?php
+// Kết nối đến cơ sở dữ liệu
+$servername = "localhost";
+$username = "root"; // Thay bằng username của bạn
+$password = ""; // Nếu có mật khẩu, hãy điền vào đây
+$database = "test"; // Thay bằng tên database của bạn
 
-					<!-- Nút thêm vào giỏ hàng -->
-					<div class="card_area d-flex align-items-center">
-						<a class="primary-btn" href="#" onclick="addToCart()">Thêm vào giỏ hàng</a>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
-</div>
+$conn = new mysqli($servername, $username, $password, $database);
+if (isset($_GET['id'])) {
+    $idsp = $_GET['id'];
+    $sql = "SELECT sp.*, loaisp.tenloai FROM sp 
+            JOIN loaisp ON sp.idloai = loaisp.idloai 
+            WHERE sp.idsp = ?";
 
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("i", $idsp);
+    $stmt->execute();
+    $result = $stmt->get_result();
+
+    if ($row = $result->fetch_assoc()) {
+        ?>
+
+        <div class="product_image_area">
+            <div class="container">
+                <div class="row s_product_inner">
+                    <div class="col-lg-6">
+                        <div class="s_Product_carousel">
+                            <div class="single-prd-item">
+                                <img src="<?php echo $row['images']; ?>"
+                                     alt="<?php echo $row['tensp']; ?>"
+                                     style="width: 100%; max-width: 600px; height: auto; display: block; margin: 0 auto;">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-5 offset-lg-1">
+                        <div class="s_product_text">
+                            <h3><?php echo $row['tensp']; ?></h3>
+                            <h2><?php echo number_format($row['giathanh'], 0, ',', '.'); ?>đ</h2>
+                            <ul class="list">
+                                <li><span>Loại:</span> <?php echo $row['tenloai']; ?></li>
+                                <li><span>Tình trạng:</span> <?php echo ($row['soluong'] > 0) ? 'Còn hàng' : 'Hết hàng'; ?></li>
+                            </ul>
+                            <p><?php echo $row['mota']; ?></p>
+
+                            <div class="product_count">
+                                <label for="qty">Số lượng:</label>
+                                <input type="number" name="qty" id="sst" value="1" min="1" max="<?php echo $row['soluong']; ?>" class="input-text qty">
+                            </div>
+
+                            <div class="card_area d-flex align-items-center">
+                                <a class="primary-btn" href="cart.php?add=<?php echo $row['idsp']; ?>">Thêm vào giỏ hàng</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <?php
+    } else {
+        echo "<p class='text-center'>Không tìm thấy sản phẩm.</p>";
+    }
+    $stmt->close();
+} else {
+    echo "<p class='text-center'>Không có sản phẩm nào được chọn.</p>";
+}
+$conn->close();
+?>
 <!-- Hộp thông báo "Đã thêm vào giỏ hàng thành công" -->
 <div id="success-alert" style="display: none; position: fixed; top: 20%; left: 50%; transform: translate(-50%, -50%); background-color: #28a745; color: white; padding: 20px; border-radius: 5px; box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);">
 	<p>Đã thêm vào giỏ hàng thành công!</p>
