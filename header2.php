@@ -3,7 +3,7 @@
 $servername = "localhost";
 $username = "root"; // Thay bằng username của bạn
 $password = ""; // Nếu có mật khẩu, hãy điền vào đây
-$database = "mydatabase"; // Thay bằng tên database của bạn
+$database = "test"; // Thay bằng tên database của bạn
 
 $conn = new mysqli($servername, $username, $password, $database);
 ?>
@@ -36,7 +36,7 @@ $conn = new mysqli($servername, $username, $password, $database);
                                aria-expanded="false">Sản phẩm</a>
                             <ul class="dropdown-menu">
                                 <?php while ($row = mysqli_fetch_assoc($result)) : ?>
-                                    <li class="nav-item"><a class="nav-link" href="category.php?id=<?= $row['id'] ?>"><?= $row['name'] ?></a></li>
+                                    <li class="nav-item"><a class="nav-link" href="category.php?id=<?= $row['idloai'] ?>"><?= $row['tenloai'] ?></a></li>
                                 <?php endwhile; ?>
                             </ul>
                         </li>
