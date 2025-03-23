@@ -56,6 +56,30 @@ $conn = new mysqli($servername, $username, $password, $database);
                         </form>
                     </div>
 
+
+                    <!-- User Dropdown -->
+                    <ul class="nav navbar-nav navbar-right">
+                        <?php if (isset($_SESSION['username'])) : ?>
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle user-btn" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <span class="username"><?php echo $_SESSION['username']; ?></span>
+                                    <span class="lnr lnr-user"></span>
+                                </a>
+                                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                    <a class="dropdown-item" href="User.php">Thông tin người dùng</a>
+                                    <a class="dropdown-item" href="confirmation.php">Lịch sử giao dịch</a>
+                                    <div class="dropdown-divider"></div>
+                                    <a class="dropdown-item" href="logout.php">Đăng xuất</a>
+                                </div>
+                            </li>
+                        <?php else : ?>
+                            <!-- Hiển thị nút Đăng nhập nếu người dùng chưa đăng nhập -->
+                            <li class="nav-item">
+                                <a class="nav-link" href="login.php">Đăng nhập</a>
+                            </li>
+                        <?php endif; ?>
+                    </ul>
+
                     <!-- Search Icon and Cart -->
                     <ul class="nav navbar-nav navbar-right">
                         <li class="nav-item"><a href="cart.php" class="cart"><span class="ti-bag"></span></a></li>
@@ -66,27 +90,7 @@ $conn = new mysqli($servername, $username, $password, $database);
                         </li>
                     </ul>
 
-                    <!-- User Dropdown -->
-                    <ul class="nav navbar-nav navbar-right">
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle user-btn" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <span class="username">
-                                    <?php echo isset($_SESSION['username']) ? $_SESSION['username'] : "Người dùng"; ?>
-                                </span>
-                                <span class="lnr lnr-user"></span>
-                            </a>
-                            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                <?php if (isset($_SESSION['username'])) : ?>
-                                    <a class="dropdown-item" href="User.php">Thông tin người dùng</a>
-                                    <a class="dropdown-item" href="confirmation.php">Lịch sử giao dịch</a>
-                                    <div class="dropdown-divider"></div>
-                                    <a class="dropdown-item" href="logout.php">Đăng xuất</a>
-                                <?php else : ?>
-                                    <a class="dropdown-item" href="login.php">Đăng nhập</a>
-                                <?php endif; ?>
-                            </div>
-                        </li>
-                    </ul>
+
                 </div>
             </div>
         </nav>
