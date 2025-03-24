@@ -1,36 +1,60 @@
 <?php
 // Kết nối database
 $servername = "localhost";
-$username = "root"; // Thay bằng username của bạn
-$password = ""; // Nếu có mật khẩu, hãy điền vào đây
-$database = "test"; // Thay bằng tên database của bạn
+$username = "root";
+$password = "";
+$database = "mydatabase";
 
 $conn = new mysqli($servername, $username, $password, $database);
+
+// Kiểm tra lỗi kết nối
+if ($conn->connect_error) {
+    die("Kết nối thất bại: " . $conn->connect_error);
+}
 
 // Xử lý tìm kiếm
 $searchResults = [];
 if (isset($_GET['query'])) {
-    $query = trim($_GET['query']); // Lấy từ khóa tìm kiếm
-    $query = $conn->real_escape_string($query); // Chống SQL Injection
+    $query = trim($_GET['query']);
 
-    // Truy vấn tìm kiếm sản phẩm
-    $sql = "SELECT * FROM sp WHERE tensp LIKE '%$query%'";
-    $result = $conn->query($sql);
+    // Chống SQL Injection bằng Prepared Statement
+    $sql = "SELECT * FROM sp WHERE tensp LIKE ?";
+    $stmt = $conn->prepare($sql);
+    $likeQuery = "%$query%";
+    $stmt->bind_param("s", $likeQuery);
+    $stmt->execute();
+    $result = $stmt->get_result();
 
-    if ($result->num_rows > 0) {
-        while ($row = $result->fetch_assoc()) {
-            $searchResults[] = $row;
-        }
+    while ($row = $result->fetch_assoc()) {
+        $searchResults[] = $row;
+    }
+    $stmt->close();
+}
+
+// Truy vấn lấy danh sách 6 sản phẩm mới nhất
+$sql_sp = "SELECT sp.*, loaisp.tenloai 
+           FROM sp 
+           JOIN loaisp ON sp.idloai = loaisp.idloai 
+           ORDER BY sp.idsp DESC 
+           LIMIT 6";
+$result_sp = $conn->query($sql_sp);
+
+// Truy vấn lấy danh sách loại sản phẩm
+$sql_loaisp = "SELECT idloai, tenloai FROM loaisp";
+$result_loaisp = $conn->query($sql_loaisp);
+
+// Lưu danh mục vào mảng để sử dụng trong header
+$categories = [];
+if ($result_loaisp->num_rows > 0) {
+    while ($row = $result_loaisp->fetch_assoc()) {
+        $categories[] = $row;
     }
 }
 
-// Truy vấn lấy danh sách sản phẩm (chỉnh sửa để lấy loại sản phẩm nếu cần)
-$sql = "SELECT sp.*, loaisp.tenloai 
-        FROM  sp 
-        JOIN loaisp ON sp.idloai = loaisp.idloai 
-        ORDER BY sp.idsp DESC LIMIT 6"; // Lấy 6 sản phẩm mới nhất
-$result = $conn->query($sql);
+// Truyền danh mục sang header
+include 'header.php';
 ?>
+
 
 <!DOCTYPE html>
 <html lang="zxx" class="no-js">
@@ -67,11 +91,9 @@ $result = $conn->query($sql);
     <link rel="stylesheet" href="css/Z_banner.scss">
     <link rel="stylesheet" href="css/search.css">
     <link rel="stylesheet" href="css/category.css">
-	<link rel="stylesheet" href="css/index.css">
+    <link rel="stylesheet" href="css/index.css">
 <!--start header-->
-
-	<?php include 'header.php'; ?>
-
+  <?php include 'header.php'; ?>
 <!-- end header -->
 
 <!-- bắt đầu khu vực banner1 -->
@@ -153,20 +175,17 @@ $result = $conn->query($sql);
     <section class="lattest-product-area pb-40 category-list">
         <div class="row">
             <?php
-            $sql = "SELECT idsp, idloai, tensp, soluong, giathanh, images FROM sp WHERE ansp = 0";
-            $result = $conn->query($sql);
-
-            if ($result->num_rows > 0) {
-                while ($row = $result->fetch_assoc()) {
+            if ($result_sp->num_rows > 0) {
+                while ($row = $result_sp->fetch_assoc()) {
                     ?>
-                    <!-- single product -->
                     <div class="col-lg-4 col-md-6">
                         <div class="single-product">
-                            <img src="<?php echo $row['images']; ?>">
+                            <img class="img-fluid" src="<?php echo $row['images']; ?>" alt="<?php echo $row['tensp']; ?>">
+
                             <div class="product-details">
                                 <h6><?php echo $row['tensp']; ?></h6>
                                 <div class="product-category">
-                                   <span>Loại : <?php echo $row['tenloai']; ?></span> <!-- Hiển thị tên loại -->
+                                    <span>Loại : <?php echo $row['tenloai']; ?></span>
                                 </div>
                                 <div class="price">
                                     <h6><?php echo number_format($row['giathanh'], 0, ',', '.'); ?>đ</h6>
@@ -198,7 +217,6 @@ $result = $conn->query($sql);
             ?>
         </div>
     </section>
-
 
     <!-- Kết thúc Khu vực Sản Phẩm Bán Chạy Nhất -->
 <footer class="footer-area section_gap">
