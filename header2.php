@@ -1,47 +1,41 @@
-<?php
-// Kết nối database
-$servername = "localhost";
-$username = "root"; // Thay bằng username của bạn
-$password = ""; // Nếu có mật khẩu, hãy điền vào đây
-$database = "test"; // Thay bằng tên database của bạn
-
-$conn = new mysqli($servername, $username, $password, $database);
-?>
-
 <!-- Start Header Area -->
 <header class="header_area sticky-header">
     <div class="main_menu">
         <nav class="navbar navbar-expand-lg navbar-light main_box">
             <div class="container">
-                <!-- Brand and toggle get grouped for better mobile display -->
-                <a class="navbar-brand logo_h" href="index.php"><img src="img/logo.png" alt=""></a>
+                <!-- Logo -->
+                <a class="navbar-brand logo_h" href="index.php"><img src="img/logo.png" alt="Logo"></a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
                         aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
+
                 <!-- Navbar links -->
                 <div class="collapse navbar-collapse offset" id="navbarSupportedContent">
                     <ul class="nav navbar-nav menu_nav ml-auto">
                         <li class="nav-item active"><a class="nav-link" href="index.php">Trang chủ</a></li>
 
-                        <!-- Lấy danh mục từ database -->
-                        <?php
-                        $query = "SELECT * FROM loaisp"; // Thay thế bằng tên bảng danh mục của bạn
-                        $result = mysqli_query($conn, $query);
-                        ?>
+                        <!-- Mục Sản Phẩm, danh mục được truyền từ trang chính -->
                         <li class="nav-item submenu dropdown">
                             <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
                                aria-expanded="false">Sản phẩm</a>
                             <ul class="dropdown-menu">
-                                <?php while ($row = mysqli_fetch_assoc($result)) : ?>
-                                    <li class="nav-item"><a class="nav-link" href="category.php?id=<?= $row['idloai'] ?>"><?= $row['tenloai'] ?></a></li>
-                                <?php endwhile; ?>
+                                <?php if (isset($categories) && is_array($categories)): ?>
+                                    <?php foreach ($categories as $category): ?>
+                                        <li class="nav-item"><a class="nav-link" href="category.php?id=<?= $category['idloai'] ?>">
+                                                <?= htmlspecialchars($category['tenloai']) ?></a></li>
+                                    <?php endforeach; ?>
+                                <?php endif; ?>
                             </ul>
                         </li>
 
                         <li class="nav-item"><a class="nav-link" href="checkout.php">Thanh toán</a></li>
+
+                        <?php if (isset($_SESSION['username'])) : ?>
+                            <li class="nav-item"><a class="nav-link" href="logout.php">Đăng xuất</a></li>
+                        <?php endif; ?>
                     </ul>
 
                     <!-- Search Input Box -->
@@ -56,30 +50,6 @@ $conn = new mysqli($servername, $username, $password, $database);
                         </form>
                     </div>
 
-
-                    <!-- User Dropdown -->
-                    <ul class="nav navbar-nav navbar-right">
-                        <?php if (isset($_SESSION['username'])) : ?>
-                            <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle user-btn" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    <span class="username"><?php echo $_SESSION['username']; ?></span>
-                                    <span class="lnr lnr-user"></span>
-                                </a>
-                                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                    <a class="dropdown-item" href="User.php">Thông tin người dùng</a>
-                                    <a class="dropdown-item" href="confirmation.php">Lịch sử giao dịch</a>
-                                    <div class="dropdown-divider"></div>
-                                    <a class="dropdown-item" href="logout.php">Đăng xuất</a>
-                                </div>
-                            </li>
-                        <?php else : ?>
-                            <!-- Hiển thị nút Đăng nhập nếu người dùng chưa đăng nhập -->
-                            <li class="nav-item">
-                                <a class="nav-link" href="login.php">Đăng nhập</a>
-                            </li>
-                        <?php endif; ?>
-                    </ul>
-
                     <!-- Search Icon and Cart -->
                     <ul class="nav navbar-nav navbar-right">
                         <li class="nav-item"><a href="cart.php" class="cart"><span class="ti-bag"></span></a></li>
@@ -90,6 +60,27 @@ $conn = new mysqli($servername, $username, $password, $database);
                         </li>
                     </ul>
 
+                    <!-- User Dropdown -->
+                    <ul class="nav navbar-nav navbar-right">
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle user-btn" href="#" id="navbarDropdownUser" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <span class="username">
+                                    <?php echo isset($_SESSION['username']) ? $_SESSION['username'] : "Người dùng"; ?>
+                                </span>
+                                <span class="lnr lnr-user"></span>
+                            </a>
+                            <div class="dropdown-menu" aria-labelledby="navbarDropdownUser">
+                                <?php if (isset($_SESSION['username'])) : ?>
+                                    <a class="dropdown-item" href="User.php">Thông tin người dùng</a>
+                                    <a class="dropdown-item" href="confirmation.php">Lịch sử giao dịch</a>
+                                    <div class="dropdown-divider"></div>
+                                    <a class="dropdown-item" href="logout.php">Đăng xuất</a>
+                                <?php else : ?>
+                                    <a class="dropdown-item" href="login.php">Đăng nhập</a>
+                                <?php endif; ?>
+                            </div>
+                        </li>
+                    </ul>
 
                 </div>
             </div>
