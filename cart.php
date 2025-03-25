@@ -1,3 +1,52 @@
+<?php
+// Kết nối cơ sở dữ liệu
+$host = '127.0.0.1';
+$dbname = 'huydata';
+$username = 'root';
+$password = '';
+
+try {
+    $pdo = new PDO("mysql:host=$host;dbname=$dbname;charset=utf8mb4", $username, $password);
+    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+} catch (PDOException $e) {
+    die("Kết nối thất bại: " . $e->getMessage());
+}
+
+// Lấy thông tin khách hàng
+$customerId = 1; // Giả lập ID khách hàng
+$stmt = $pdo->prepare("SELECT diachi, sdt FROM kh WHERE idKH = :idKH");
+$stmt->execute(['idKH' => $customerId]);
+$customer = $stmt->fetch(PDO::FETCH_ASSOC);
+$customerName = $customer['diachi'] ?? '12345 Phan Văn Khỏe';
+$customerPhone = $customer['sdt'] ?? '0123459992';
+
+// Giả lập ID đơn hàng (giỏ hàng)
+$orderId = 1; // Thay bằng logic thực tế để lấy ID đơn hàng từ session hoặc cơ sở dữ liệu
+
+// Xử lý xóa sản phẩm khỏi giỏ hàng
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete_item'])) {
+    $idCTDH = $_POST['idCTDH'] ?? 0;
+    try {
+        $stmt = $pdo->prepare("DELETE FROM ctdonhang WHERE idCTDH = :idCTDH AND iddonhang = :iddonhang");
+        $stmt->execute(['idCTDH' => $idCTDH, 'iddonhang' => $orderId]);
+        echo json_encode(['success' => true]);
+    } catch (PDOException $e) {
+        echo json_encode(['success' => false, 'message' => 'Lỗi khi xóa sản phẩm: ' . $e->getMessage()]);
+    }
+    exit();
+}
+
+// Lấy danh sách sản phẩm trong giỏ hàng từ bảng `ctdonhang` và `sp`
+$stmt = $pdo->prepare("
+    SELECT ctdh.idCTDH, ctdh.soluong, ctdh.giathanh, sp.images
+    FROM ctdonhang ctdh
+    JOIN sp ON ctdh.idsp = sp.idsp
+    WHERE ctdh.iddonhang = :iddonhang
+");
+$stmt->execute(['iddonhang' => $orderId]);
+$cartItems = $stmt->fetchAll(PDO::FETCH_ASSOC);
+?>
+
 <!DOCTYPE html>
 <html lang="zxx" class="no-js">
 
@@ -30,7 +79,6 @@
     <link rel="stylesheet" href="css/search.css">
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
     <style>
-
         body {
             font-family: 'Roboto', sans-serif;
         }
@@ -76,7 +124,23 @@
             background: linear-gradient(90deg, #ffba00 0%, #ff6c00 100%);
         }
 
-
+        /* CSS cho phần thông tin khách hàng */
+        .customer-info {
+            margin-bottom: 30px;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            background-color: #f9f9f9;
+        }
+        .customer-info h3 {
+            font-size: 20px;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+        .customer-info p {
+            margin: 5px 0;
+            font-size: 16px;
+        }
     </style>
 </head>
 <body>
@@ -107,14 +171,7 @@
                                 <li class="nav-item"><a class="nav-link" href="category2.html">Nike</a></li>
                             </ul>
                         </li>
-
-                        <li class="nav-item"><a class="nav-link" href="checkout.html">Thanh toán</a></li>
-                        <ul class="dropdown-menu">
-
-                        </ul>
-                        </li>
-                        <li class="nav-item submenu dropdown">
-                        </li>
+                        <li class="nav-item"><a class="nav-link" href="checkout.php">Thanh toán</a></li>
                     </ul>
                     <!-- Search Input Box -->
                     <input type="checkbox" id="search-toggle" class="search-toggle" hidden>
@@ -130,7 +187,7 @@
 
                     <!-- Search Icon and Cart -->
                     <ul class="nav navbar-nav navbar-right">
-                        <li class="nav-item"><a href="cart.html" class="cart"><span class="ti-bag"></span></a></li>
+                        <li class="nav-item"><a href="cart.php" class="cart"><span class="ti-bag"></span></a></li>
                         <li class="nav-item">
                             <!-- Search Button with Magnifier Icon -->
                             <label for="search-toggle" class="search-icon">
@@ -138,7 +195,6 @@
                             </label>
                         </li>
                     </ul>
-
 
                     <!-- User Dropdown -->
                     <ul class="nav navbar-nav navbar-right">
@@ -148,7 +204,7 @@
                                 <span class="lnr lnr-user"></span>
                             </a>
                             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                <a class="dropdown-item" href=User.html>Thông tin người dùng</a>
+                                <a class="dropdown-item" href="User.html">Thông tin người dùng</a>
                                 <a class="dropdown-item" href="confirmation.html">Lịch sử giao dịch</a>
                                 <div class="dropdown-divider"></div>
                                 <a class="dropdown-item" href="index.html">Đăng xuất</a>
@@ -160,13 +216,7 @@
         </nav>
     </div>
 </header>
-<!-- Bootstrap and jQuery -->
-<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-</body>
-</html>
-<!-- end header -->
+<!-- End Header Area -->
 
 <!-- Start Banner Area -->
 <section class="banner-area organic-breadcrumb">
@@ -188,6 +238,14 @@
 <section class="cart_area">
     <div class="container">
         <div class="cart_inner">
+            <!-- Thông tin khách hàng -->
+            <div class="customer-info">
+                <h3>Thông tin khách hàng</h3>
+                <p><strong>Tên khách hàng:</strong> <?php echo htmlspecialchars($customerName); ?></p>
+                <p><strong>Số điện thoại:</strong> <?php echo htmlspecialchars($customerPhone); ?></p>
+                <p><strong>Email:</strong> phanvankhoe@example.com</p>
+            </div>
+
             <div class="table-responsive">
                 <table class="table">
                     <thead>
@@ -200,88 +258,43 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <tr>
-                        <td>
-                            <div class="media">
-                                <div class="d-flex">
-                                    <img src="img/airjordan.png" alt="">
-                                </div>
-
-                            </div>
-                        </td>
-                        <td>
-                            <h5>2.500.000Đ</h5>
-                        </td>
-                        <td>
-                            <div class="product_count">
-                                <input type="number" name="qty" value="1" min="1" class="input-text qty">
-                            </div>
-                        </td>
-                        <td>
-                            <h5>5.000.000Đ</h5>
-                        </td>
-                        <td>
-                            <!-- Delete button -->
-                            <button class="delete-btn" onclick="deleteRow(this)">Xóa</button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <div class="media">
-                                <div class="d-flex">
-                                    <img src="img/jordan2.png" alt="">
-                                </div>
-
-                            </div>
-                        </td>
-                        <td>
-                            <h5>2.500.000Đ</h5>
-                        </td>
-                        <td>
-                            <div class="product_count">
-                                <input type="number" name="qty" value="1" min="1" class="input-text qty">
-                            </div>
-                        </td>
-                        <td>
-                            <h5>5.000.000Đ</h5>
-                        </td>
-                        <td>
-                            <!-- Delete button -->
-                            <button class="delete-btn" onclick="deleteRow(this)">Xóa</button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <div class="media">
-                                <div class="d-flex">
-                                    <img src="img/jordan3.png" alt="">
-                                </div>
-                            </div>
-                        </td>
-                        <td>
-                            <h5>2.500.000Đ</h5>
-                        </td>
-                        <td>
-                            <div class="product_count">
-                                <input type="number" name="qty" value="1" min="1" class="input-text qty">
-                            </div>
-                        </td>
-                        <td>
-                            <h5>7.500.000Đ</h5>
-                        </td>
-                        <td>
-                            <!-- Delete button -->
-                            <button class="delete-btn" onclick="deleteRow(this)">Xóa</button>
-                        </td>
-                    </tr>
-
-
+                    <?php if (empty($cartItems)): ?>
+                        <tr>
+                            <td colspan="5" class="text-center">Giỏ hàng của bạn đang trống.</td>
+                        </tr>
+                    <?php else: ?>
+                        <?php foreach ($cartItems as $item): ?>
+                            <tr data-idctdh="<?php echo htmlspecialchars($item['idCTDH']); ?>">
+                                <td>
+                                    <div class="media">
+                                        <div class="d-flex">
+                                            <img src="<?php echo htmlspecialchars($item['images']); ?>" alt="Sản phẩm">
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <h5><?php echo number_format($item['giathanh'], 0, ',', '.') . 'Đ'; ?></h5>
+                                </td>
+                                <td>
+                                    <div class="product_count">
+                                        <input type="number" name="qty" value="<?php echo htmlspecialchars($item['soluong']); ?>" min="1" class="input-text qty">
+                                    </div>
+                                </td>
+                                <td>
+                                    <h5><?php echo number_format($item['giathanh'] * $item['soluong'], 0, ',', '.') . 'Đ'; ?></h5>
+                                </td>
+                                <td>
+                                    <!-- Delete button -->
+                                    <button class="delete-btn" onclick="deleteRow(this)">Xóa</button>
+                                </td>
+                            </tr>
+                        <?php endforeach; ?>
+                    <?php endif; ?>
                     </tbody>
                 </table>
             </div>
 
-            <a class="primary-btn1" href="checkout.html">Tiến hành thanh toán</a>
-
+            <a class="primary-btn1" href="checkout.php">Tiến hành thanh toán</a>
         </div>
     </div>
 </section>
@@ -295,17 +308,16 @@
                 <div class="single-footer-widget">
                     <h6>Về Chúng Tôi</h6>
                     <p>
-                        “Kể từ lúc thành lập vào năm 2012, Karma luôn được khách hàng đánh giá là một trong những cửa hang giày chất lượng cao tại Việt Nam. Hiện tại, Karma vẫn tiếp tục duy trì chất lượng dịch vụ và sản phẩm tốt để gìn giữ sự hài lòng của khách hàng.”
+                        “Kể từ lúc thành lập vào năm 2012, Karma luôn được khách hàng đánh giá là một trong những cửa hàng giày chất lượng cao tại Việt Nam. Hiện tại, Karma vẫn tiếp tục duy trì chất lượng dịch vụ và sản phẩm tốt để gìn giữ sự hài lòng của khách hàng.”
                     </p>
                 </div>
             </div>
             <div class="col-lg-4 col-md-6 col-sm-6">
                 <div class="single-footer-widget">
                     <h6>Bảng tin</h6>
-                    <p>Luôn cập nhật thông tin mới nhất của chúng tôi
-                    </p>
+                    <p>Luôn cập nhật thông tin mới nhất của chúng tôi</p>
                     <div class="">
-                        <form target="_blank" novalidate="true" action="https://spondonit.us12.list-manage.com/subscribe/post?u=1462626880ade1ac87bd9c93a&amp;id=92a4423d01"
+                        <form target="_blank" novalidate="true" action="https://spondonit.us12.list-manage.com/subscribe/post?u=1462626880ade1ac87bd9c93a&id=92a4423d01"
                               method="get" class="form-inline">
                             <div class="form-group lbel-inline">
                                 <input type="email" class="form-control" name="EMAIL" placeholder="Nhập email" required>
@@ -337,9 +349,9 @@
             <div class="col-lg-3 col-md-6 col-sm-6">
                 <div class="single-footer-widget">
                     <h6>Liên Hệ Với Chúng Tôi</h6>
-                    <p>ĐH Sài Gòn , <br>TP.HCM, VietNam</p>
+                    <p>ĐH Sài Gòn, <br>TP.HCM, VietNam</p>
                     <p>
-                        <span class="lnr lnr-phone"></span> + 01 234 567 89<br>
+                        <span class="lnr lnr-phone"></span> +01 234 567 89<br>
                         <span class="lnr lnr-envelope"></span> support@HKTC.com
                     </p>
                 </div>
@@ -347,7 +359,7 @@
         </div>
         <div class="row footer-bottom d-flex justify-content-between align-items-center">
             <p class="footer-text m-0 col-lg-6 col-md-6">
-                2024 © Mọi quyền được bảo lưu | Mẫu này được tạo với<i class="fa fa-heart" aria-hidden="true"></i> by
+                2024 © Mọi quyền được bảo lưu | Mẫu này được tạo với <i class="fa fa-heart" aria-hidden="true"></i> by
                 <a href="https://colorlib.com" target="_blank">HKTC</a>
             </p>
             <div class="col-lg-6 col-md-6 footer-social">
@@ -359,14 +371,37 @@
         </div>
     </div>
 </footer>
+<!-- End Footer Area -->
+
+<!-- Bootstrap and jQuery -->
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
 <script>
     function deleteRow(button) {
-        // Show an alert message
-        alert("Bạn đã xóa sản phẩm ra khỏi giỏ hàng.");
+        let row = button.closest('tr');
+        let idCTDH = row.dataset.idctdh;
 
-        // Find the row that the button is in and remove it
+        // Gửi yêu cầu xóa đến server
+        fetch('cart.php', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+            body: 'delete_item=1&idCTDH=' + idCTDH
+        })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    alert("Bạn đã xóa sản phẩm ra khỏi giỏ hàng.");
+                    row.remove();
+                } else {
+                    alert("Có lỗi xảy ra khi xóa sản phẩm: " + (data.message || "Không xác định"));
+                }
+            })
+            .catch(error => {
+                alert("Có lỗi xảy ra: " + error);
+            });
     }
 </script>
-<!-- End footer Area -->
 </body>
 </html>
