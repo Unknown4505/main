@@ -12,26 +12,25 @@ if ($conn->connect_error) {
     die("Kết nối thất bại: " . $conn->connect_error);
 }
 
-if(isset($_POST['btn-reg'])){
-    // Lấy dữ liệu từ form
+if (isset($_POST['btn-reg'])) {
     $diachi = $_POST['diachi'];
     $sdt = $_POST['sdt'];
     $email = $_POST['email'];
     $dob = $_POST['dob'];
     $tenkh = $_POST['tenkh'];
-    $password= $_POST['password'];
+    $password = password_hash($_POST['password'], PASSWORD_DEFAULT); // Hash mật khẩu
 
-    // Kiểm tra các trường dữ liệu có rỗng không
-    if(!empty($tenkh) && !empty($diachi) && !empty($sdt) && !empty($email) && !empty($dob)&& !empty($password)){
-        // Câu lệnh SQL để lưu dữ liệu vào cơ sở dữ liệu
-        $sql = "INSERT INTO `kh` (`diachi`, `sdt`, `email`, `dob`, `tenkh`,`password`) VALUES ( '$diachi', '$sdt', '$email', '$dob', '$tenkh','$password')";
+    if (!empty($tenkh) && !empty($diachi) && !empty($sdt) && !empty($email) && !empty($dob) && !empty($_POST['password'])) {
+        $sql = "INSERT INTO `kh` (`diachi`, `sdt`, `email`, `dob`, `tenkh`, `password`) VALUES (?, ?, ?, ?, ?, ?)";
+        $stmt = $conn->prepare($sql);
+        $stmt->bind_param("ssssss", $diachi, $sdt, $email, $dob, $tenkh, $password);
 
-        // Thực thi câu lệnh SQL
-        if ($conn->query($sql) === TRUE) {
+        if ($stmt->execute()) {
             $message = "Đăng ký thành công!";
         } else {
             $message = "Lỗi: " . $conn->error;
         }
+        $stmt->close();
     } else {
         $message = "Bạn cần nhập đầy đủ thông tin!";
     }
