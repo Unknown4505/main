@@ -3,14 +3,15 @@
     <div class="main_menu">
         <nav class="navbar navbar-expand-lg navbar-light main_box">
             <div class="container">
-                <!-- Brand and toggle get grouped for better mobile display -->
-                <a class="navbar-brand logo_h" href="index.php"><img src="img/logo.png" alt=""></a>
+                <!-- Logo -->
+                <a class="navbar-brand logo_h" href="index.php"><img src="img/logo.png" alt="Logo"></a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
                         aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
+
                 <!-- Navbar links -->
                 <div class="collapse navbar-collapse offset" id="navbarSupportedContent">
                     <ul class="nav navbar-nav menu_nav ml-auto">
@@ -45,30 +46,6 @@
                         </form>
                     </div>
 
-
-                    <!-- User Dropdown -->
-                    <ul class="nav navbar-nav navbar-right">
-                        <?php if (isset($_SESSION['username'])) : ?>
-                            <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle user-btn" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    <span class="username"><?php echo $_SESSION['username']; ?></span>
-                                    <span class="lnr lnr-user"></span>
-                                </a>
-                                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                    <a class="dropdown-item" href="User.php">Thông tin người dùng</a>
-                                    <a class="dropdown-item" href="confirmation.php">Lịch sử giao dịch</a>
-                                    <div class="dropdown-divider"></div>
-                                    <a class="dropdown-item" href="logout.php">Đăng xuất</a>
-                                </div>
-                            </li>
-                        <?php else : ?>
-                            <!-- Hiển thị nút Đăng nhập nếu người dùng chưa đăng nhập -->
-                            <li class="nav-item">
-                                <a class="nav-link" href="login.php">Đăng nhập</a>
-                            </li>
-                        <?php endif; ?>
-                    </ul>
-
                     <!-- Search Icon and Cart -->
                     <ul class="nav navbar-nav navbar-right">
                         <li class="nav-item"><a href="cart.php" class="cart"><span class="ti-bag"></span></a></li>
@@ -79,10 +56,37 @@
                         </li>
                     </ul>
 
-
+                    <!-- User Dropdown -->
+                    <ul class="nav navbar-nav navbar-right">
+                        <li class="nav-item dropdown">
+                            <?php if (isset($_SESSION['username'])) : ?>
+                                <a class="nav-link dropdown-toggle user-btn" href="#" id="navbarDropdownUser" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <span class="username"> <?= $_SESSION['username'] ?> </span>
+                                    <span class="lnr lnr-user"></span>
+                                </a>
+                                <div class="dropdown-menu" aria-labelledby="navbarDropdownUser">
+                                    <a class="dropdown-item" href="User.php">Thông tin người dùng</a>
+                                    <a class="dropdown-item" href="confirmation.php">Lịch sử giao dịch</a>
+                                    <div class="dropdown-divider"></div>
+                                    <a class="dropdown-item" href="logout.php">Đăng xuất</a>
+                                </div>
+                            <?php else : ?>
+                                <a class="nav-link" href="login.php">Đăng nhập</a>
+                            <?php endif; ?>
+                        </li>
+                    </ul>
                 </div>
             </div>
         </nav>
     </div>
 </header>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $('.dropdown-toggle').dropdown(); // Kích hoạt dropdown của Bootstrap
+    });
+</script>
+
 <!-- End Header -->
