@@ -1,3 +1,40 @@
+
+<?php
+// Kết nối CSDL
+$servername = "localhost";
+$username = "root";
+$password = "";
+$dbname = "test";
+
+$conn = new mysqli($servername, $username, $password, $dbname);
+$conn->set_charset("utf8");
+
+// Kiểm tra kết nối
+if ($conn->connect_error) {
+die("Kết nối thất bại: " . $conn->connect_error);
+}
+
+// Lấy ID sản phẩm từ tham số URL
+$idSP = isset($_GET['idSP']) ? $_GET['idSP'] : 0;
+
+// Truy vấn danh sách đơn hàng chứa sản phẩm
+$sql = "SELECT
+dh.iddonhang,
+kh.tenkh,
+GROUP_CONCAT(sp.tensp SEPARATOR '<br>') AS sanpham
+FROM donhang dh
+JOIN kh ON dh.idKH = kh.idKH
+JOIN ctdonhang ctdh ON dh.iddonhang = ctdh.iddonhang
+JOIN sp ON ctdh.idsp = sp.idsp
+WHERE sp.idsp = ?
+GROUP BY dh.iddonhang, kh.tenkh
+ORDER BY dh.iddonhang DESC";
+
+$stmt = $conn->prepare($sql);
+$stmt->bind_param("i", $idSP);
+$stmt->execute();
+$result = $stmt->get_result();
+?>
 <!DOCTYPE html>
 <html lang="vi">
 <head>
@@ -390,7 +427,7 @@
   <!-- Phần menu bên phải -->
   <nav style="flex: 1;text-align: center">
     <ul style="list-style: none; display: flex; justify-content: right; margin: 0; padding: 0;">
-      <li style="margin: 0 20px;"><a href="admin.html" style="color: #0b0b0b; text-decoration: none; font-size: 22px;">Admin</a></li>
+      <li style="margin: 0 20px;"><a href="admin.php" style="color: #0b0b0b; text-decoration: none; font-size: 22px;">Admin</a></li>
       <li style="margin: 0 20px;"><a href="dangxuatadmin.html" style="color: #0b0b0b; text-decoration: none; font-size: 22px;">Đăng xuất</a></li>
     </ul>
   </nav>
@@ -399,15 +436,15 @@
   <!-- Sidebar -->
   <div class="sidebar">
     <ul>
-      <li><a href="admin.html">Trang chủ</a></li>
-      <li><a href="managerp.html">Quản lí sản phẩm</a></li>
+      <li><a href="admin.php">Trang chủ</a></li>
+      <li><a href="managerp.php">Quản lí sản phẩm</a></li>
       <li><a href="manager-user.html">Quản lí người dùng</a></li>
       <li><a href="ManageCustomerOrder.html">Quản lí đơn hàng</a></li>
       <li class="dropdown">
         <a href="#statistics">Thống kê</a>
         <ul class="dropdown-menu">
-          <li><a href="static.html">Sản phẩm</a></li>
-          <li><a href="static2.html">Người dùng</a></li>
+          <li><a href="static.php">Sản phẩm</a></li>
+          <li><a href="static2.php">Người dùng</a></li>
         </ul>
       </li>
 
@@ -434,36 +471,21 @@
         </tr>
         </thead>
         <tbody>
-        <tr>
-          <td>DH001</td>
-          <td>
-            Air Jordan Lagacy<br>
-            Nike Revolution 6<br>
-            NewBalance Fresh Foam
-          </td>
-          <td>Ngô Đức Huy</td>
-          <td><a href="chitietthongkesanpham.html" class="details-button">Chi Tiết</a></td>
-        </tr>
-        <tr>
-          <td>DH002</td>
-          <td>
-            Air Jordan Lagacy<br>
-            Nike Pegasus 39<br>
-            NewBalance 574 Classic
-          </td>
-          <td>Ngô Đức Huy</td>
-          <td><a href="chitietthongkesanpham.html" class="details-button">Chi Tiết</a></td>
-        </tr>
-        <tr>
-          <td>DH003</td>
-          <td>
-            Air Jordan Lagacy<br>
-            Nike Air Zoom Tempo<br>
-            NewBalance 880v12
-          </td>
-          <td>Ngô Đức Huy</td>
-          <td><a href="chitietthongkesanpham.html" class="details-button">Chi Tiết</a></td>
-        </tr>
+        <?php
+            if ($result->num_rows > 0) {
+        while ($row = $result->fetch_assoc()) {
+        echo "<tr>
+          <td>{$row['iddonhang']}</td>
+          <td>{$row['sanpham']}</td>
+          <td>{$row['tenkh']}</td>
+          <td><a href='chitietthongkesanpham.php?idDonHang={$row['iddonhang']}' class='details-button'>Chi Tiết</a></td>
+        </tr>";
+        }
+        } else {
+        echo "<tr><td colspan='4'>Không có đơn hàng nào</td></tr>";
+        }
+        $conn->close();
+        ?>
         </tbody>
       </table>
 
