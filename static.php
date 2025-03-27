@@ -1,3 +1,36 @@
+<?php
+// Kết nối đến cơ sở dữ liệu
+$servername = "localhost";
+$username = "root";
+$password = "";
+$dbname = "test";
+
+$conn = new mysqli($servername, $username, $password, $dbname);
+$conn->set_charset("utf8");
+
+// Kiểm tra kết nối
+if ($conn->connect_error) {
+    die("Kết nối thất bại: " . $conn->connect_error);
+}
+
+// Truy vấn lấy 5 sản phẩm có doanh thu cao nhất từ các đơn hàng đã hoàn thành
+$sql = "SELECT
+            sp.idsp AS idsp,
+            sp.tensp AS sanpham,
+            SUM(ctdonhang.soluong * ctdonhang.giathanh) AS tongdoanhthu,
+            SUM(ctdonhang.soluong) AS soluong_sanpham
+        FROM ctdonhang ctdonhang
+        JOIN sp ON ctdonhang.idsp = sp.idsp
+        JOIN donhang dh ON ctdonhang.iddonhang = dh.iddonhang
+        WHERE dh.trangthai = 'Hoàn thành'
+        GROUP BY sp.idsp, sp.tensp
+        ORDER BY tongdoanhthu DESC
+        LIMIT 5";
+
+$result = $conn->query($sql);
+?>
+
+
 <!DOCTYPE html>
 <html lang="vi">
 <head>
@@ -403,7 +436,7 @@
   <!-- Phần menu bên phải -->
   <nav style="flex: 1;text-align: center">
     <ul style="list-style: none; display: flex; justify-content: right; margin: 0; padding: 0;">
-      <li style="margin: 0 20px;"><a href="admin.html" style="color: #0b0b0b; text-decoration: none; font-size: 22px;">Admin</a></li>
+      <li style="margin: 0 20px;"><a href="admin.php" style="color: #0b0b0b; text-decoration: none; font-size: 22px;">Admin</a></li>
       <li style="margin: 0 20px;"><a href="dangxuatadmin.html" style="color: #0b0b0b; text-decoration: none; font-size: 22px;">Đăng xuất</a></li>
     </ul>
   </nav>
@@ -412,15 +445,15 @@
   <!-- Sidebar -->
   <div class="sidebar">
     <ul>
-      <li><a href="admin.html">Trang chủ</a></li>
-      <li><a href="managerp.html">Quản lí sản phẩm</a></li>
+      <li><a href="admin.php">Trang chủ</a></li>
+      <li><a href="managerp.php">Quản lí sản phẩm</a></li>
       <li><a href="manager-user.html">Quản lí người dùng</a></li>
       <li><a href="ManageCustomerOrder.html">Quản lí đơn hàng</a></li>
       <li class="dropdown">
         <a href="#statistics">Thống kê</a>
         <ul class="dropdown-menu">
-          <li><a href="static.html">Sản phẩm</a></li>
-          <li><a href="static2.html">Người dùng</a></li>
+          <li><a href="static.php">Sản phẩm</a></li>
+          <li><a href="static2.php">Người dùng</a></li>
         </ul>
       </li>
 
@@ -435,7 +468,6 @@
 
     <div class="container">
       <!-- Back Button -->
-
       <!-- Table Section -->
       <table>
         <thead>
@@ -448,39 +480,33 @@
         </tr>
         </thead>
         <tbody>
-        <tr>
-          <td>1</td>
-          <td>Giày Air Jordan Legacy</td>
-          <td>120.000.000</td>
-          <td>9</td>
-          <td class="view-details"><a href="thongkesanphambanduoc.html">Chi Tiết</a></td>
-        </tr>
-        <tr>
-          <td>2</td>
-          <td>Giày Air Jordan Legacy</td>
-          <td>100.000.000</td>
-          <td>6</td>
-          <td class="view-details"><a href="thongkesanphambanduoc.html">Chi Tiết</a></td>
-
-        </tr>
-        <tr>
-          <td>3</td>
-          <td>Giày Air Jordan Legacy</td>
-          <td>90.000.000</td>
-          <td>20</td>
-          <td class="view-details"><a href="thongkesanphambanduoc.html">Chi Tiết</a></td>
-        </tr>
-        </tr>
+        <?php
+            if ($result->num_rows > 0) {
+        $stt = 1;
+        while ($row = $result->fetch_assoc()) {
+        echo "<tr>
+          <td>" . $stt++ . "</td>
+          <td>" . $row["sanpham"] . "</td>
+          <td>" . number_format($row["tongdoanhthu"], 0, ',', '.') . "</td>
+          <td>" . $row["soluong_sanpham"] . "</td>
+          <td class='view-details'><a href='thongkesanphambanduoc.php?id=" . $row["idsp"] . "'>Chi Tiết</a></td>
+        </tr>";
+        }
+        } else {
+        echo "<tr><td colspan='5'>Không có dữ liệu</td></tr>";
+        }
+        $conn->close();
+        ?>
         </tbody>
       </table>
       <div class="pagination">
-       <a href="static.html">&laquo;</a> <!-- Quay lại trang 1 -->
-        <a href="static.html">1</a> <!-- Trang 1 -->
-        <a href="static.html">2</a> <!-- Trang 2 -->
-        <a href="static.html">3</a> <!-- Trang 3 -->
-        <a href="static.html">4</a> <!-- Trang 4 -->
-        <a href="static.html">5</a> <!-- Trang 5 -->
-        <a href="static.html">&raquo;</a> <!-- Chuyển tới trang 5 -->
+       <a href="static.php">&laquo;</a> <!-- Quay lại trang 1 -->
+        <a href="static.php">1</a> <!-- Trang 1 -->
+        <a href="static.php">2</a> <!-- Trang 2 -->
+        <a href="static.php">3</a> <!-- Trang 3 -->
+        <a href="static.php">4</a> <!-- Trang 4 -->
+        <a href="static.php">5</a> <!-- Trang 5 -->
+        <a href="static.php">&raquo;</a> <!-- Chuyển tới trang 5 -->
       </div>
     </div>
   </div>
