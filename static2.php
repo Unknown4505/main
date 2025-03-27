@@ -1,3 +1,34 @@
+<?php
+// Kết nối đến cơ sở dữ liệu
+$servername = "localhost";
+$username = "root";
+$password = "";
+$dbname = "test";
+
+$conn = new mysqli($servername, $username, $password, $dbname);
+$conn->set_charset("utf8");
+
+// Kiểm tra kết nối
+if ($conn->connect_error) {
+    die("Kết nối thất bại: " . $conn->connect_error);
+}
+
+// Truy vấn lấy 5 khách hàng có doanh thu cao nhất từ các đơn hàng đã hoàn thành
+$sql = "SELECT
+            kh.idKH AS idkh,
+            kh.tenkh AS tenkhachhang,
+            SUM(ctdonhang.soluong * ctdonhang.giathanh) AS tongdoanhthu,
+            SUM(ctdonhang.soluong) AS soluong_sanpham
+        FROM ctdonhang
+        JOIN donhang dh ON ctdonhang.iddonhang = dh.iddonhang
+        JOIN kh ON dh.idKH = kh.idKH
+        WHERE dh.trangthai = 'Hoàn thành'
+        GROUP BY kh.idKH, kh.tenkh
+        ORDER BY tongdoanhthu DESC
+        LIMIT 5";
+
+$result = $conn->query($sql);
+?>
 <!DOCTYPE html>
 <html lang="vi">
 <head>
@@ -378,7 +409,7 @@
   <!-- Phần menu bên phải -->
   <nav style="flex: 1;text-align: center">
     <ul style="list-style: none; display: flex; justify-content: right; margin: 0; padding: 0;">
-      <li style="margin: 0 20px;"><a href="admin.html" style="color: #0b0b0b; text-decoration: none; font-size: 22px;">Admin</a></li>
+      <li style="margin: 0 20px;"><a href="admin.php" style="color: #0b0b0b; text-decoration: none; font-size: 22px;">Admin</a></li>
       <li style="margin: 0 20px;"><a href="dangxuatadmin.html" style="color: #0b0b0b; text-decoration: none; font-size: 22px;">Đăng xuất</a></li>
     </ul>
   </nav>
@@ -387,15 +418,15 @@
   <!-- Sidebar -->
   <div class="sidebar">
     <ul>
-      <li><a href="admin.html">Trang chủ</a></li>
-      <li><a href="managerp.html">Quản lí sản phẩm</a></li>
+      <li><a href="admin.php">Trang chủ</a></li>
+      <li><a href="managerp.php">Quản lí sản phẩm</a></li>
       <li><a href="manager-user.html">Quản lí người dùng</a></li>
       <li><a href="ManageCustomerOrder.html">Quản lí đơn hàng</a></li>
       <li class="dropdown">
         <a href="#statistics">Thống kê</a>
         <ul class="dropdown-menu">
-          <li><a href="static.html">Sản phẩm</a></li>
-          <li><a href="static2.html">Người dùng</a></li>
+          <li><a href="static.php">Sản phẩm</a></li>
+          <li><a href="static2.php">Người dùng</a></li>
         </ul>
       </li>
 
@@ -423,42 +454,23 @@
         </tr>
         </thead>
         <tbody>
-        <tr>
-          <td>1</td>
-          <td>Nguyễn Văn A</td>
-          <td>120.000.000</td>
-          <td>9</td>
-          <td class="view-details"><a href="thongkesanpham.html">Chi Tiết</a></td>
-        </tr>
-        <tr>
-          <td>2</td>
-          <td>Trần Thị B</td>
-          <td>100.000.000</td>
-          <td>6</td>
-          <td class="view-details"><a href="thongkesanpham.html">Chi Tiết</a></td>
-
-        </tr>
-        <tr>
-          <td>3</td>
-          <td>Phạm Văn C</td>
-          <td>90.000.000</td>
-          <td>20</td>
-          <td class="view-details"><a href="thongkesanpham.html">Chi Tiết</a></td>
-        </tr>
-        <tr>
-          <td>4</td>
-          <td>Lê Thị D</td>
-          <td>75.000.000</td>
-          <td>14</td>
-          <td class="view-details"><a href="thongkesanpham.html">Chi Tiết</a></td>
-        </tr>
-        <tr>
-          <td>5</td>
-          <td>Võ Thị E</td>
-          <td>65.000.000</td>
-          <td>6</td>
-          <td class="view-details"><a href="thongkesanpham.html">Chi Tiết</a></td>
-        </tr>
+        <?php
+            if ($result->num_rows > 0) {
+        $stt = 1;
+        while ($row = $result->fetch_assoc()) {
+        echo "<tr>
+          <td>" . $stt++ . "</td>
+          <td>" . $row["ten_khach_hang"] . "</td>
+          <td>" . number_format($row["tong_doanh_thu"], 0, ',', '.') . " VNĐ</td>
+          <td>" . $row["tong_soluong_sanpham"] . "</td>
+          <td class='view-details'><a href='thongkesanpham.php?idKH=" . $row["idKH"] . "'>Chi Tiết</a></td>
+        </tr>";
+        }
+        } else {
+        echo "<tr><td colspan='5'>Không có dữ liệu</td></tr>";
+        }
+        $conn->close();
+        ?>
         </tbody>
       </table>
     </div>
