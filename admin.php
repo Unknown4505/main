@@ -1,3 +1,48 @@
+<?php
+// Kết nối CSDL
+$servername = "localhost";
+$username = "root";
+$password = "";
+$dbname = "test";
+
+$conn = new mysqli($servername, $username, $password, $dbname);
+$conn->set_charset("utf8");
+
+// Kiểm tra kết nối
+if ($conn->connect_error) {
+die("Kết nối thất bại: " . $conn->connect_error);
+}
+
+// Truy vấn tổng doanh thu từ đơn hàng có trạng thái "Hoàn thành"
+$sql_tongthu = "SELECT SUM(tongtien) AS total_revenue FROM donhang WHERE trangthai = 'Hoàn thành'";
+$result_tongthu = $conn->query($sql_tongthu);
+$row_tongthu = $result_tongthu->fetch_assoc();
+$total_revenue = $row_tongthu['total_revenue'] ?? 0;
+
+// Truy vấn số lượng người dùng
+$sql_users = "SELECT COUNT(*) AS total_users FROM kh";
+$result_users = $conn->query($sql_users);
+$row_users = $result_users->fetch_assoc();
+$total_users = $row_users['total_users'] ?? 0;
+
+// Truy vấn số lượng sản phẩm
+$sql_products = "SELECT COUNT(*) AS total_products FROM sp";
+$result_products = $conn->query($sql_products);
+$row_products = $result_products->fetch_assoc();
+$total_products = $row_products['total_products'] ?? 0;
+
+// Truy vấn số lượng đơn hàng
+$sql_orders = "SELECT COUNT(*) AS total_orders FROM donhang";
+$result_orders = $conn->query($sql_orders);
+$row_orders = $result_orders->fetch_assoc();
+$total_orders = $row_orders['total_orders'] ?? 0;
+
+// Kiểm tra tình trạng shop
+$status = ($total_orders > 0) ? "Hoạt động" : "Chưa có giao dịch";
+
+// Đóng kết nối
+$conn->close();
+?>
 <!DOCTYPE html>
 <html lang="vi">
 <head>
@@ -230,7 +275,7 @@
   <!-- Phần menu bên phải -->
   <nav style="flex: 1;text-align: center">
     <ul style="list-style: none; display: flex; justify-content: right; margin: 0; padding: 0;">
-      <li style="margin: 0 20px;"><a href="admin.html" style="color: #0b0b0b; text-decoration: none; font-size: 22px;">Admin</a></li>
+      <li style="margin: 0 20px;"><a href="admin.php" style="color: #0b0b0b; text-decoration: none; font-size: 22px;">Admin</a></li>
       <li style="margin: 0 20px;"><a href="dangxuatadmin.html" style="color: #0b0b0b; text-decoration: none; font-size: 22px;">Đăng xuất</a></li>
     </ul>
   </nav>
@@ -245,15 +290,15 @@
   <div class="sidebar">
 
     <ul>
-      <li><a href="admin.html">Trang chủ</a></li>
-      <li><a href="managerp.html">Quản lí sản phẩm</a></li>
+      <li><a href="admin.php">Trang chủ</a></li>
+      <li><a href="managerp.php">Quản lí sản phẩm</a></li>
       <li><a href="manager-user.html">Quản lí người dùng</a></li>
       <li><a href="ManageCustomerOrder.html">Quản lí đơn hàng</a></li>
       <li class="dropdown">
         <a href="#statistics">Thống kê</a>
         <ul class="dropdown-menu">
-          <li><a href="static.html">Sản phẩm</a></li>
-          <li><a href="static2.html">Người dùng</a></li>
+          <li><a href="static.php">Sản phẩm</a></li>
+          <li><a href="static2.php">Người dùng</a></li>
         </ul>
       </li>
     </ul>
@@ -265,29 +310,26 @@
     <div class="dashboard">
       <div class="card">
         <h3>Tổng thu</h3>
-        <p>500,000,000 VND</p>
+        <p><?php echo number_format($total_revenue, 0, ',', '.'); ?> VND</p>
       </div>
       <div class="card">
         <h3>Số lượng người dùng</h3>
-        <p>1,200</p>
+        <p><?php echo number_format($total_users); ?></p>
       </div>
       <div class="card">
         <h3>Số lượng sản phẩm</h3>
-        <p>350</p>
+        <p><?php echo number_format($total_products); ?></p>
       </div>
       <div class="card">
         <h3>Số lượng đơn hàng</h3>
-        <p>780</p>
+        <p><?php echo number_format($total_orders); ?></p>
       </div>
       <div class="card">
         <h3>Tình trạng shop</h3>
-        <p>Hoạt động</p>
+        <p><?php echo $status; ?></p>
       </div>
-
     </div>
   </div>
 </div>
-
-
 </body>
 </html>
