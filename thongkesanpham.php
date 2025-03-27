@@ -1,3 +1,39 @@
+<?php
+// Kết nối đến CSDL
+$servername = "localhost";
+$username = "root";
+$password = "";
+$dbname = "test";
+
+$conn = new mysqli($servername, $username, $password, $dbname);
+$conn->set_charset("utf8");
+
+// Kiểm tra kết nối
+if ($conn->connect_error) {
+die("Kết nối thất bại: " . $conn->connect_error);
+}
+
+// Lấy idKH từ URL
+$idKH = isset($_GET['idKH']) ? intval($_GET['idKH']) : 0;
+
+if ($idKH == 0) {
+die("Không tìm thấy khách hàng.");
+}
+
+// Truy vấn lấy thông tin chi tiết giao dịch của khách hàng
+$sql = "SELECT
+dh.iddonhang AS id_chuyen_hang,
+kh.tenkh AS ho_ten_khach_hang,
+sp.ten AS ten_san_pham,
+ctdh.soluong AS so_luong
+FROM donhang dh
+JOIN kh ON dh.idKH = kh.idKH
+JOIN ctdonhang ctdh ON dh.iddonhang = ctdh.iddonhang
+JOIN sp ON ctdh.idsp = sp.id
+WHERE kh.idKH = $idKH";
+
+$result = $conn->query($sql);
+?>
 <!DOCTYPE html>
 <html lang="vi">
 <head>
@@ -390,7 +426,7 @@
     <!-- Phần menu bên phải -->
     <nav style="flex: 1;text-align: center">
         <ul style="list-style: none; display: flex; justify-content: right; margin: 0; padding: 0;">
-            <li style="margin: 0 20px;"><a href="admin.html" style="color: #0b0b0b; text-decoration: none; font-size: 22px;">Admin</a></li>
+            <li style="margin: 0 20px;"><a href="admin.php" style="color: #0b0b0b; text-decoration: none; font-size: 22px;">Admin</a></li>
             <li style="margin: 0 20px;"><a href="dangxuatadmin.html" style="color: #0b0b0b; text-decoration: none; font-size: 22px;">Đăng xuất</a></li>
         </ul>
     </nav>
@@ -399,15 +435,15 @@
     <!-- Sidebar -->
     <div class="sidebar">
         <ul>
-            <li><a href="admin.html">Trang chủ</a></li>
-            <li><a href="managerp.html">Quản lí sản phẩm</a></li>
+            <li><a href="admin.php">Trang chủ</a></li>
+            <li><a href="managerp.php">Quản lí sản phẩm</a></li>
             <li><a href="manager-user.html">Quản lí người dùng</a></li>
             <li><a href="ManageCustomerOrder.html">Quản lí đơn hàng</a></li>
             <li class="dropdown">
                 <a href="#statistics">Thống kê</a>
                 <ul class="dropdown-menu">
-                    <li><a href="static.html">Sản phẩm</a></li>
-                    <li><a href="static2.html">Người dùng</a></li>
+                    <li><a href="static.php">Sản phẩm</a></li>
+                    <li><a href="static2.php">Người dùng</a></li>
                 </ul>
             </li>
 
@@ -435,27 +471,22 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr>
-                    <td>CH001</td>
-                    <td>Nguyễn Văn A</td>
-                    <td>Air Jordan Lagacy</td>
-                    <td>2</td>
-                    <td><a href="chitietgiaodich.html?id=CH001" class="details-button">Chi Tiết</a></td>
-                </tr>
-                <tr>
-                    <td>CH002</td>
-                    <td>Nguyễn Văn A</td>
-                    <td>Nike Air Max 2023</td>
-                    <td>1</td>
-                    <td><a href="chitietgiaodich.html?id=CH002" class="details-button">Chi Tiết</a></td>
-                </tr>
-                <tr>
-                    <td>CH003</td>
-                    <td>Nguyễn Văn A</td>
-                    <td>Puma Running Shoes</td>
-                    <td>3</td>
-                    <td><a href="chitietgiaodich.html?id=CH003" class="details-button">Chi Tiết</a></td>
-                </tr>
+                <?php
+            if ($result->num_rows > 0) {
+                while ($row = $result->fetch_assoc()) {
+                echo "<tr>
+                    <td>" . $row["id_chuyen_hang"] . "</td>
+                    <td>" . $row["ho_ten_khach_hang"] . "</td>
+                    <td>" . $row["ten_san_pham"] . "</td>
+                    <td>" . $row["so_luong"] . "</td>
+                    <td><a href='chitietthongkesanpham.php?id=" . $row["id_chuyen_hang"] . "' class='details-button'>Chi Tiết</a></td>
+                </tr>";
+                }
+                } else {
+                echo "<tr><td colspan='5'>Không có dữ liệu</td></tr>";
+                }
+                $conn->close();
+                ?>
                 </tbody>
             </table>
 
