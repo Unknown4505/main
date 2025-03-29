@@ -1,3 +1,78 @@
+<?php
+session_start();
+
+// Kết nối database
+$servername = "localhost";
+$username = "root";
+$password = "";
+$database = "test";
+
+$conn = new mysqli($servername, $username, $password, $database);
+
+// Kiểm tra lỗi kết nối
+if ($conn->connect_error) {
+    die("Kết nối thất bại: " . $conn->connect_error);
+}
+
+// Lấy `idloai` từ URL
+$idloai = isset($_GET['idloai']) ? intval($_GET['idloai']) : 0;
+
+// Kiểm tra xem có lọc không
+$hasFilter = isset($_GET['query']) || isset($_GET['priceRange']);
+$searchMessage = "";
+
+// Xây dựng câu truy vấn
+$sql = "SELECT sp.*, loaisp.tenloai FROM sp 
+        JOIN loaisp ON sp.idloai = loaisp.idloai 
+        WHERE sp.idloai = ? AND sp.ansp = 0";
+
+// Nếu có bộ lọc, thêm điều kiện
+if ($hasFilter) {
+    $query = isset($_GET['query']) ? trim($_GET['query']) : '';
+    $priceRange = isset($_GET['priceRange']) ? $_GET['priceRange'] : '';
+
+    if (!empty($query)) {
+        $sql .= " AND sp.tensp LIKE ?";
+    }
+    if (!empty($priceRange)) {
+        [$minPrice, $maxPrice] = explode("-", $priceRange);
+        $sql .= " AND sp.giathanh BETWEEN ? AND ?";
+    }
+}
+
+// Chuẩn bị truy vấn
+$stmt = $conn->prepare($sql);
+
+// Gán giá trị tham số
+if ($hasFilter) {
+    if (!empty($query) && !empty($priceRange)) {
+        $likeQuery = "%$query%";
+        $stmt->bind_param("isss", $idloai, $likeQuery, $minPrice, $maxPrice);
+    } elseif (!empty($query)) {
+        $likeQuery = "%$query%";
+        $stmt->bind_param("is", $idloai, $likeQuery);
+    } elseif (!empty($priceRange)) {
+        $stmt->bind_param("iss", $idloai, $minPrice, $maxPrice);
+    } else {
+        $stmt->bind_param("i", $idloai);
+    }
+} else {
+    $stmt->bind_param("i", $idloai);
+}
+
+// Thực thi truy vấn
+$stmt->execute();
+$result = $stmt->get_result();
+
+// Đếm số sản phẩm tìm thấy
+$totalProducts = $result->num_rows;
+if ($hasFilter) {
+    $searchMessage = "Tìm thấy <strong>$totalProducts</strong> sản phẩm";
+}
+
+// Truyền danh mục sang header
+include 'header.php';
+?>
 <!DOCTYPE html>
 <html lang="zxx" class="no-js">
 
@@ -167,84 +242,6 @@
 <body id="category">
 
 <!-- Start Header Area -->
-<header class="header_area sticky-header">
-    <div class="main_menu">
-        <nav class="navbar navbar-expand-lg navbar-light main_box">
-            <div class="container">
-                <!-- Brand and toggle get grouped for better mobile display -->
-                <a class="navbar-brand logo_h" href="index.html"><img src="img/logo.png" alt=""></a>
-                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
-                        aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                <!-- Collect the nav links, forms, and other content for toggling -->
-                <div class="collapse navbar-collapse offset" id="navbarSupportedContent">
-                    <ul class="nav navbar-nav menu_nav ml-auto">
-                        <li class="nav-item active"><a class="nav-link" href="index2.html">Trang chủ</a></li>
-                        <li class="nav-item submenu dropdown">
-                            <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
-                               aria-expanded="false">Sản phẩm</a>
-                            <ul class="dropdown-menu">
-                                <li class="nav-item"><a class="nav-link" href="category.html">Adidas</a></li>
-                                <li class="nav-item"><a class="nav-link" href="category1.html">Vans</a></li>
-                                <li class="nav-item"><a class="nav-link" href="category2.html">Nike</a></li>
-                            </ul>
-                        </li>
-
-                        <li class="nav-item"><a class="nav-link" href="checkout.html">Thanh toán</a></li>
-                        <ul class="dropdown-menu">
-
-                        </ul>
-                        </li>
-                        <li class="nav-item submenu dropdown">
-                        </li>
-                    </ul>
-                    <!-- Search Input Box -->
-                    <input type="checkbox" id="search-toggle" class="search-toggle" hidden>
-                    <div class="search_input">
-                        <form id="search-form" action="ResultOfSearch.html" method="GET" class="d-flex justify-content-between">
-                            <input type="text" class="search-input" name="query" placeholder="Tìm kiếm" required>
-                            <button type="submit" class="search-btn">
-                                <span class="lnr lnr-magnifier"></span>
-                            </button>
-                            <label for="search-toggle" class="lnr lnr-cross" title="Close Search"></label>
-                        </form>
-                    </div>
-
-                    <!-- Search Icon and Cart -->
-                    <ul class="nav navbar-nav navbar-right">
-                        <li class="nav-item"><a href="cart.html" class="cart"><span class="ti-bag"></span></a></li>
-                        <li class="nav-item">
-                            <!-- Search Button with Magnifier Icon -->
-                            <label for="search-toggle" class="search-icon">
-                                <span class="lnr lnr-magnifier"></span>
-                            </label>
-                        </li>
-                    </ul>
-
-
-                    <!-- User Dropdown -->
-                    <ul class="nav navbar-nav navbar-right">
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle user-btn" href="" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <span class="username">Người dùng</span>
-                                <span class="lnr lnr-user"></span>
-                            </a>
-                            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                <a class="dropdown-item" href=User.html>Thông tin người dùng</a>
-                                <a class="dropdown-item" href="confirmation.html">Lịch sử giao dịch</a>
-                                <div class="dropdown-divider"></div>
-                                <a class="dropdown-item" href="index.html">Đăng xuất</a>
-                            </div>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </nav>
-    </div>
-</header>
 <!-- Bootstrap and jQuery -->
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
@@ -261,8 +258,8 @@
 				<h1>Adidas</h1>
 				<nav class="d-flex align-items-center">
 					<a href="index.html">Trang chủ<span class="lnr lnr-arrow-right"></span></a>
-					<a href="category.html">Cửa hàng<span class="lnr lnr-arrow-right"></span></a>
-					<a href="category.html">Sản phẩm</a>
+					<a href="category.php">Cửa hàng<span class="lnr lnr-arrow-right"></span></a>
+					<a href="category.php">Sản phẩm</a>
 				</nav>
 			</div>
 		</div>
@@ -278,226 +275,91 @@
 
 	<!-- Start Category Section -->
 
-	<div class="filter-button-container">
-		<label for="toggleFilter" class="filter-button">Lọc</label>
-		<input type="checkbox" id="toggleFilter" style="display: none;">
+<!-- Bộ lọc -->
+<div class="filter-button-container">
+    <label for="toggleFilter" class="filter-button">Lọc</label>
+    <input type="checkbox" id="toggleFilter" style="display: none;">
 
-		<div class="filter-form-container">
-			<form action="ResultOfSearch.html" method="GET" class="filter-form">
-				<label for="productName">Sản phẩm:</label>
-				<input type="text" id="productName" name="productName" placeholder="Tên sản phẩm">
+    <div class="filter-form-container">
+        <form action="category.php" method="GET" class="filter-form">
+            <input type="hidden" name="idloai" value="<?php echo $idloai; ?>">
 
-				<label for="priceRange">Mức giá (đ):</label>
-				<select id="priceRange" name="priceRange">
-					<option value="" selected>Chọn giá tiền</option>
-					<option value="0-100">Từ 0đ-2.500.000đ</option>
-					<option value="100-500">Từ 2.500.000đ đến 5.000.000đ</option>
-					<option value="500-1000">Từ 5.000.000đ đến 10.000.000đ</option>
-				</select>
-				<label for="priceRange">Loại</label>
-				<select id="priceRange" name="priceRange">
-					<option value="" selected>Chọn loại</option>
-					<option value="0-100">Adidas</option>
-					<option value="100-500">Nike</option>
-					<option value="500-1000">Van</option>
-				</select>
+            <label for="productName">Sản phẩm:</label>
+            <input type="text" id="productName" name="query" placeholder="Nhập tên sản phẩm"
+                   value="<?php echo isset($_GET['query']) ? $_GET['query'] : ''; ?>">
 
-				<button type="submit" class="apply-filter-button">Áp dụng</button>
-			</form>
-		</div>
-	</div>
+            <label for="priceRange">Mức giá (đ):</label>
+            <select id="priceRange" name="priceRange">
+                <option value="" selected>Chọn mức giá</option>
+                <option value="0-2500000" <?php if (isset($_GET['priceRange']) && $_GET['priceRange'] == "0-2500000") echo "selected"; ?>>0đ - 2.500.000đ</option>
+                <option value="2500000-5000000" <?php if (isset($_GET['priceRange']) && $_GET['priceRange'] == "2500000-5000000") echo "selected"; ?>>2.500.000đ - 5.000.000đ</option>
+                <option value="5000000-10000000" <?php if (isset($_GET['priceRange']) && $_GET['priceRange'] == "5000000-10000000") echo "selected"; ?>>5.000.000đ - 10.000.000đ</option>
+            </select>
 
-	<!-- Start Best Seller -->
-	<section class="lattest-product-area pb-40 category-list">
-		<div class="row">
-			<!-- single product -->
-			<div class="col-lg-4 col-md-6">
-				<div class="single-product">
-					<img class="img-fluid" src="img/product/jordan2.png" alt="">
-					<div class="product-details">
-						<h6>Giày Air Jordan Legacy</h6>
-						<div class="product-category">
-							<span>Loại : Nike</span> <!-- Phân loại sản phẩm -->
-						</div>
-						<div class="price">
-							<h6>2.500.000đ</h6>
-						</div>
-						<div class="prd-bottom">
-							<a href="#" class="social-info" onclick="addToBag()">
-								<span class="ti-bag"></span>
-								<p class="hover-text">Thêm vào giỏ hàng</p>
-							</a>
+            <button type="submit" class="apply-filter-button">Áp dụng</button>
+        </form>
+    </div>
+</div>
 
-							<a href="single-product.html" class="social-info button">
-								<span class="lnr lnr-move"></span>
-								<span class="hover-text">Xem chi tiết</span>
-							</a>
-						</div>
-					</div>
-				</div>
-			</div>
+<!-- Hiển thị thông báo tìm kiếm nếu đã bấm lọc -->
+<?php if ($hasFilter) { ?>
+    <div class="search-message">
+        <p><?php echo $searchMessage; ?></p>
+    </div>
+<?php } ?>
 
-			<!-- Bạn có thể lặp lại tương tự cho các sản phẩm còn lại -->
+<!-- Hiển thị sản phẩm -->
+<section class="lattest-product-area pb-40 category-list">
+    <div class="row">
+        <?php if ($totalProducts > 0) { ?>
+            <?php while ($row = $result->fetch_assoc()) { ?>
+                <div class="col-lg-4 col-md-6">
+                    <div class="single-product">
+                        <img class="img-fluid" src="<?php echo $row['images']; ?>" alt="<?php echo $row['tensp']; ?>">
+                        <div class="product-details">
+                            <h6><?php echo $row['tensp']; ?></h6>
+                            <div class="product-category">
+                                <span>Loại: <?php echo $row['tenloai']; ?></span>
+                            </div>
+                            <div class="price">
+                                <h6><?php echo number_format($row['giathanh'], 0, ',', '.'); ?>đ</h6>
+                            </div>
+                            <div class="prd-bottom">
+                                <a href="cart.php?add=<?php echo $row['idsp']; ?>" class="social-info">
+                                    <span class="ti-bag"></span>
+                                    <p class="hover-text">Thêm vào giỏ hàng</p>
+                                </a>
+                                <a href="single-product.php?id=<?php echo $row['idsp']; ?>" class="social-info button">
+                                    <span class="lnr lnr-move"></span>
+                                    <span class="hover-text">Xem chi tiết</span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            <?php } ?>
+        <?php } else { ?>
+            <div class="col-12">
+                <p class="text-center">Không có sản phẩm nào thuộc loại này.</p>
+            </div>
+        <?php } ?>
+    </div>
+</section>
 
-			<!-- single product -->
-			<div class="col-lg-4 col-md-6">
-				<div class="single-product">
-					<img class="img-fluid" src="img/product/jordan4.png" alt="">
-					<div class="product-details">
-						<h6>Giày Air Jordan Legacy</h6>
-						<div class="product-category">
-							<span>Loại : Nike</span> <!-- Phân loại sản phẩm -->
-						</div>
-						<div class="price">
-							<h6>2.500.000đ</h6>
-						</div>
-						<div class="prd-bottom">
-							<a href="#" class="social-info" onclick="addToBag()">
-								<span class="ti-bag"></span>
-								<p class="hover-text">Thêm vào giỏ hàng</p>
-							</a>
-
-							<a href="single-product.html" class="social-info button">
-								<span class="lnr lnr-move"></span>
-								<span class="hover-text">Xem chi tiết</span>
-							</a>
-						</div>
-					</div>
-				</div>
-			</div>
-
-			<!-- Bạn có thể lặp lại tương tự cho các sản phẩm còn lại -->
-
-			<!-- single product -->
-			<div class="col-lg-4 col-md-6">
-				<div class="single-product">
-					<img class="img-fluid" src="img/product/jordan1.png" alt="">
-					<div class="product-details">
-						<h6>Giày Air Jordan Legacy</h6>
-						<div class="product-category">
-							<span>Loại : Nike</span> <!-- Phân loại sản phẩm -->
-						</div>
-						<div class="price">
-							<h6>2.500.000đ</h6>
-						</div>
-						<div class="prd-bottom">
-							<a href="#" class="social-info" onclick="addToBag()">
-								<span class="ti-bag"></span>
-								<p class="hover-text">Thêm vào giỏ hàng</p>
-							</a>
-
-							<a href="single-product.html" class="social-info button">
-								<span class="lnr lnr-move"></span>
-								<span class="hover-text">Xem chi tiết</span>
-							</a>
-						</div>
-					</div>
-				</div>
-			</div>
-
-			<!-- Bạn có thể lặp lại tương tự cho các sản phẩm còn lại -->
-
-			<!-- single product -->
-			<div class="col-lg-4 col-md-6">
-				<div class="single-product">
-					<img class="img-fluid" src="img/product/jordan3.png" alt="">
-					<div class="product-details">
-						<h6>Giày Air Jordan Legacy</h6>
-						<div class="product-category">
-							<span>Loại : Nike</span> <!-- Phân loại sản phẩm -->
-						</div>
-						<div class="price">
-							<h6>2.500.000đ</h6>
-						</div>
-						<div class="prd-bottom">
-							<a href="#" class="social-info" onclick="addToBag()">
-								<span class="ti-bag"></span>
-								<p class="hover-text">Thêm vào giỏ hàng</p>
-							</a>
-
-							<a href="single-product.html" class="social-info button">
-								<span class="lnr lnr-move"></span>
-								<span class="hover-text">Xem chi tiết</span>
-							</a>
-						</div>
-					</div>
-				</div>
-			</div>
-
-			<!-- Bạn có thể lặp lại tương tự cho các sản phẩm còn lại -->
-
-			<!-- single product -->
-			<div class="col-lg-4 col-md-6">
-				<div class="single-product">
-					<img class="img-fluid" src="img/product/jordan6.png" alt="">
-					<div class="product-details">
-						<h6>Giày Air Jordan Legacy</h6>
-						<div class="product-category">
-							<span>Loại : Nike</span> <!-- Phân loại sản phẩm -->
-						</div>
-						<div class="price">
-							<h6>2.500.000đ</h6>
-						</div>
-						<div class="prd-bottom">
-							<a href="#" class="social-info" onclick="addToBag()">
-								<span class="ti-bag"></span>
-								<p class="hover-text">Thêm vào giỏ hàng</p>
-							</a>
-
-							<a href="single-product.html" class="social-info button">
-								<span class="lnr lnr-move"></span>
-								<span class="hover-text">Xem chi tiết</span>
-							</a>
-						</div>
-					</div>
-				</div>
-			</div>
-
-			<!-- Bạn có thể lặp lại tương tự cho các sản phẩm còn lại -->
-
-			<!-- single product -->
-			<div class="col-lg-4 col-md-6">
-				<div class="single-product">
-					<img class="img-fluid" src="img/product/jordan5.png" alt="">
-					<div class="product-details">
-						<h6>Giày Air Jordan Legacy</h6>
-						<div class="product-category">
-							<span>Loại : Nike</span> <!-- Phân loại sản phẩm -->
-						</div>
-						<div class="price">
-							<h6>2.500.000đ</h6>
-
-						</div>
-						<div class="prd-bottom">
-							<a href="#" class="social-info" onclick="addToBag()">
-								<span class="ti-bag"></span>
-								<p class="hover-text">Thêm vào giỏ hàng</p>
-							</a>
-
-							<a href="single-product.html" class="social-info button">
-								<span class="lnr lnr-move"></span>
-								<span class="hover-text">Xem chi tiết</span>
-							</a>
-						</div>
-					</div>
-				</div>
-			</div>
-			<!-- Bạn có thể lặp lại tương tự cho các sản phẩm còn lại -->
-		</div>
-	</section>
-	<!-- End Best Seller -->
+<?php $conn->close(); ?>
+<!-- End Best Seller -->
 
 	<!-- Start Filter Bar -->
 	<div class="filter-bar d-flex flex-wrap align-items-center">
 
 		<div class="pagination">
-			<a href="category.html" class="prev-arrow"><i class="fa fa-long-arrow-left" aria-hidden="true"></i></a>
-			<a href="category.html" class="active">1</a>
-			<a href="category.html">2</a>
-			<a href="category.html">3</a>
-			<a href="category.html" class="dot-dot"><i class="fa fa-ellipsis-h" aria-hidden="true"></i></a>
-			<a href="category.html">6</a>
-			<a href="category.html" class="next-arrow"><i class="fa fa-long-arrow-right" aria-hidden="true"></i></a>
+			<a href="category.php" class="prev-arrow"><i class="fa fa-long-arrow-left" aria-hidden="true"></i></a>
+			<a href="category.php" class="active">1</a>
+			<a href="category.php">2</a>
+			<a href="category.php">3</a>
+			<a href="category.php" class="dot-dot"><i class="fa fa-ellipsis-h" aria-hidden="true"></i></a>
+			<a href="category.php">6</a>
+			<a href="category.php" class="next-arrow"><i class="fa fa-long-arrow-right" aria-hidden="true"></i></a>
 		</div>
 	</div>
 	<!-- End Filter Bar -->
