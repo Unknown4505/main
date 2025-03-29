@@ -45,7 +45,7 @@ body {
 .profile-name {
     font-size: 36px; /* Tăng kích thước chữ */
     font-weight: bold;
-    margin-bottom: 5px;
+    margin-bottom: 10px;
     color: white; /* Màu chữ trắng trong header */
 }
 
