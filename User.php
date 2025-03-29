@@ -1,3 +1,69 @@
+<?php
+session_start();
+
+$servername = "localhost";
+$username = "root"; // Tên tài khoản MySQL
+$password = ""; // Mật khẩu MySQL
+$dbname = "test"; // Tên cơ sở dữ liệu
+
+// Tạo kết nối
+$conn = new mysqli($servername, $username, $password, $dbname);
+
+// Kiểm tra kết nối
+if ($conn->connect_error) {
+    die("Kết nối thất bại: " . $conn->connect_error);
+}
+
+// Kiểm tra nếu người dùng đã đăng nhập
+if (!isset($_SESSION['user_id'])) {
+    header("Location: login.php");
+    exit;
+}
+
+$user_id = $_SESSION['user_id'];
+
+// Lấy thông tin người dùng từ cơ sở dữ liệu
+$stmt = $conn->prepare("SELECT * FROM kh WHERE idKH = ?");
+$stmt->bind_param("i", $user_id);
+$stmt->execute();
+$result = $stmt->get_result();
+$user = $result->fetch_assoc();
+
+// Kiểm tra nếu form được gửi đi
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    // Nhận dữ liệu từ form
+    $tenkh = $_POST['tenkh'];
+    $email = $_POST['email'];
+    $dob = $_POST['dob'];
+    $sdt = $_POST['sdt'];
+    $diachi = $_POST['diachi'];
+
+    // Cập nhật thông tin người dùng
+    $update_stmt = $conn->prepare("UPDATE kh SET tenkh = ?, email = ?, dob = ?, sdt = ?, diachi = ? WHERE idKH = ?");
+    $update_stmt->bind_param("sssssi", $tenkh, $email, $dob, $sdt, $diachi, $user_id);
+
+    if ($update_stmt->execute()) {
+        // Cập nhật thành công, lấy lại dữ liệu người dùng mới nhất
+        $stmt = $conn->prepare("SELECT * FROM kh WHERE idKH = ?");
+        $stmt->bind_param("i", $user_id);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $user = $result->fetch_assoc();
+
+        // Thông báo thành công
+        $success_message = "Cập nhật thông tin thành công!";
+    } else {
+        // Thông báo lỗi
+        $error_message = "Lỗi cập nhật: " . $update_stmt->error;
+    }
+}
+
+// Đóng kết nối
+$conn->close();
+?>
+
+
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -43,6 +109,7 @@
     <link rel="stylesheet" href="css/Z_banner.scss">
     <link rel="stylesheet" href="css/search.css">
     <link rel="stylesheet" href="css/main.css">
+    <?php include 'header.php'; ?>
     <style>
         /* Ẩn thông báo kết quả tìm kiếm theo mặc định */
         .results-header {
@@ -227,85 +294,7 @@
 
 <body>
 
-<!-- Start Header Area -->
-<header class="header_area sticky-header">
-    <div class="main_menu">
-        <nav class="navbar navbar-expand-lg navbar-light main_box">
-            <div class="container">
-                <!-- Brand and toggle get grouped for better mobile display -->
-                <a class="navbar-brand logo_h" href="index.html"><img src="img/logo.png" alt=""></a>
-                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
-                        aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                <!-- Collect the nav links, forms, and other content for toggling -->
-                <div class="collapse navbar-collapse offset" id="navbarSupportedContent">
-                    <ul class="nav navbar-nav menu_nav ml-auto">
-                        <li class="nav-item active"><a class="nav-link" href="index2.html">Trang chủ</a></li>
-                        <li class="nav-item submenu dropdown">
-                            <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
-                               aria-expanded="false">Sản phẩm</a>
-                            <ul class="dropdown-menu">
-                                <li class="nav-item"><a class="nav-link" href="category.html">Adidas</a></li>
-                                <li class="nav-item"><a class="nav-link" href="category1.html">Vans</a></li>
-                                <li class="nav-item"><a class="nav-link" href="category2.html">Nike</a></li>
-                            </ul>
-                        </li>
 
-                        <li class="nav-item"><a class="nav-link" href="checkout.html">Thanh toán</a></li>
-                        <ul class="dropdown-menu">
-
-                        </ul>
-                        </li>
-                        <li class="nav-item submenu dropdown">
-                        </li>
-                    </ul>
-                    <!-- Search Input Box -->
-                    <input type="checkbox" id="search-toggle" class="search-toggle" hidden>
-                    <div class="search_input">
-                        <form id="search-form" action="ResultofSearch.html" method="GET" class="d-flex justify-content-between">
-                            <input type="text" class="search-input" name="query" placeholder="Tìm kiếm" required>
-                            <button type="submit" class="search-btn">
-                                <span class="lnr lnr-magnifier"></span>
-                            </button>
-                            <label for="search-toggle" class="lnr lnr-cross" title="Close Search"></label>
-                        </form>
-                    </div>
-
-                    <!-- Search Icon and Cart -->
-                    <ul class="nav navbar-nav navbar-right">
-                        <li class="nav-item"><a href="cart.html" class="cart"><span class="ti-bag"></span></a></li>
-                        <li class="nav-item">
-                            <!-- Search Button with Magnifier Icon -->
-                            <label for="search-toggle" class="search-icon">
-                                <span class="lnr lnr-magnifier"></span>
-                            </label>
-                        </li>
-                    </ul>
-
-
-                    <!-- User Dropdown -->
-                    <ul class="nav navbar-nav navbar-right">
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle user-btn" href="" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <span class="username">Người dùng</span>
-                                <span class="lnr lnr-user"></span>
-                            </a>
-                            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                <a class="dropdown-item" href=User.html>Thông tin người dùng</a>
-                                <a class="dropdown-item" href="confirmation.html">Lịch sử giao dịch</a>
-                                <div class="dropdown-divider"></div>
-                                <a class="dropdown-item" href="index.html">Đăng xuất</a>
-                            </div>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </nav>
-    </div>
-</header>
 <!-- Bootstrap and jQuery -->
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
@@ -317,38 +306,47 @@
 <!-- Start User Profile Section -->
 <div class="profile-container">
     <div class="profile-header">
-        <h1 class="profile-name">Người dùng</h1>
-        <p class="profile-email">Người dùng.1234@email.com</p>
+        <h1 class="profile-name">Thông tin người dùng</h1>
     </div>
     <div class="profile-details">
-        <h2>Thông tin người dùng</h2>
 
+        <!-- Hiển thị thông báo thành công hoặc lỗi -->
+        <?php if (isset($success_message)): ?>
+            <div class="alert alert-success">
+                <strong>Thành công!</strong> <?php echo $success_message; ?>
+            </div>
+        <?php endif; ?>
+
+        <?php if (isset($error_message)): ?>
+            <div class="alert alert-danger">
+                <strong>Lỗi!</strong> <?php echo $error_message; ?>
+            </div>
+        <?php endif; ?>
         <!-- Success message -->
         <div id="success-alert" class="alert alert-success" style="display: none;">
             <strong>Thành công!</strong> Đã lưu thay đổi của bạn.
         </div>
 
         <!-- Start form for editing information -->
-        <form action="update_profile.php" method="POST" id="edit-profile-form">
+        <form action="" method="POST" id="edit-profile-form">
             <div class="profile-info">
-                <label for="full-name"><strong>Tên đầy đủ:</strong></label>
-                <input type="text" id="full-name" name="full_name" value="Nguoidung1234"><br>
+                <label for="fullname">Tên đầy đủ</label>
+                <input type="text" id="fullname" name="tenkh" value="<?php echo htmlspecialchars($user['tenkh']); ?>">
 
-                <label for="email"><strong>Địa chỉ email:</strong></label>
-                <input type="email" id="email" name="email" value="Nguoidung.1234@email.com"><br>
+                <label for="email">Email</label>
+                <input type="email" id="email" name="email" value="<?php echo htmlspecialchars($user['email']); ?>">
 
-                <label for="dob"><strong>Ngày sinh:</strong></label>
-                <input type="date" id="dob" name="dob" value="2024-01-01"><br>
+                <label for="dob">Ngày sinh</label>
+                <input type="date" id="dob" name="dob" value="<?php echo htmlspecialchars($user['dob']); ?>">
 
-                <label for="phone"><strong>Số điện thoại:</strong></label>
-                <input type="text" id="phone" name="phone" value="0905991508"><br>
+                <label for="sdt">Số điện thoại</label>
+                <input type="text" id="sdt" name="sdt" value="<?php echo htmlspecialchars($user['sdt']); ?>">
 
-                <label for="address"><strong>Địa chỉ:</strong></label>
-                <input type="text" id="address" name="address" value="1234 An Dương Vương, Q5, TP.HCM"><br>
+                <label for="diachi">Địa chỉ</label>
+                <input type="text" id="diachi" name="diachi" value="<?php echo htmlspecialchars($user['diachi']); ?>">
+
+                <button type="submit">Lưu chỉnh sửa</button>
             </div>
-
-            <!-- Submit button -->
-            <button type="submit" class="btn btn-primary">Lưu </button>
         </form>
     </div>
 </div>
@@ -422,19 +420,3 @@
 </footer>
 <!-- End footer Area -->
 <!-- JavaScript to handle success message -->
-<script>
-    function showSuccessAlert(event) {
-        event.preventDefault(); // Prevent form submission
-        var alertBox = document.getElementById('success-alert');
-        alertBox.style.display = 'block'; // Show success message
-
-        // Hide success message after 3 seconds
-        setTimeout(function() {
-            alertBox.style.display = 'none';
-        }, 3000);
-    }
-
-    // Attach event listener to the form
-    document.getElementById('edit-profile-form').addEventListener('submit', showSuccessAlert);
-</script>
-
