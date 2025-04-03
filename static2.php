@@ -15,10 +15,10 @@ if ($conn->connect_error) {
 
 // Truy vấn lấy 5 khách hàng có doanh thu cao nhất từ các đơn hàng đã hoàn thành
 $sql = "SELECT
-            kh.idKH AS idkh,
-            kh.tenkh AS tenkhachhang,
+            kh.idKH ,
+            kh.tenkh ,
             SUM(ctdonhang.soluong * ctdonhang.giathanh) AS tongdoanhthu,
-            SUM(ctdonhang.soluong) AS soluong_sanpham
+            SUM(ctdonhang.soluong) AS soluong
         FROM ctdonhang
         JOIN donhang dh ON ctdonhang.iddonhang = dh.iddonhang
         JOIN kh ON dh.idKH = kh.idKH
@@ -460,9 +460,9 @@ $result = $conn->query($sql);
         while ($row = $result->fetch_assoc()) {
         echo "<tr>
           <td>" . $stt++ . "</td>
-          <td>" . $row["ten_khach_hang"] . "</td>
-          <td>" . number_format($row["tong_doanh_thu"], 0, ',', '.') . " VNĐ</td>
-          <td>" . $row["tong_soluong_sanpham"] . "</td>
+          <td>" . $row["tenkh"] . "</td>
+          <td>" . number_format($row["tongdoanhthu"], 0, ',', '.') . " VNĐ</td>
+          <td>" . $row["soluong"] . "</td>
           <td class='view-details'><a href='thongkesanpham.php?idKH=" . $row["idKH"] . "'>Chi Tiết</a></td>
         </tr>";
         }
