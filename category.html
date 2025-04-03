@@ -18,7 +18,7 @@ if ($conn->connect_error) {
 $idloai = isset($_GET['idloai']) ? intval($_GET['idloai']) : 0;
 
 // Kiểm tra xem có lọc không
-$hasFilter = isset($_GET['query']) || isset($_GET['priceRange']);
+$hasFilter = !empty($_GET['query']) || !empty($_GET['priceRange']);
 $searchMessage = "";
 
 // Xây dựng câu truy vấn
@@ -26,38 +26,37 @@ $sql = "SELECT sp.*, loaisp.tenloai FROM sp
         JOIN loaisp ON sp.idloai = loaisp.idloai 
         WHERE sp.idloai = ? AND sp.ansp = 0";
 
-// Nếu có bộ lọc, thêm điều kiện
-if ($hasFilter) {
-    $query = isset($_GET['query']) ? trim($_GET['query']) : '';
-    $priceRange = isset($_GET['priceRange']) ? $_GET['priceRange'] : '';
+// Danh sách tham số
+$params = [];
+$types = "i"; // idloai là số nguyên
+$params[] = &$idloai;
 
-    if (!empty($query)) {
-        $sql .= " AND sp.tensp LIKE ?";
-    }
-    if (!empty($priceRange)) {
-        [$minPrice, $maxPrice] = explode("-", $priceRange);
-        $sql .= " AND sp.giathanh BETWEEN ? AND ?";
-    }
+// Nếu có từ khóa tìm kiếm
+if (!empty($_GET['query'])) {
+    $query = "%" . trim($_GET['query']) . "%";
+    $sql .= " AND sp.tensp LIKE ?";
+    $types .= "s"; // String
+    $params[] = &$query;
+}
+
+// Nếu có khoảng giá
+if (!empty($_GET['priceRange'])) {
+    [$minPrice, $maxPrice] = explode("-", $_GET['priceRange']);
+    $minPrice = intval($minPrice);
+    $maxPrice = intval($maxPrice);
+
+    $sql .= " AND sp.giathanh BETWEEN ? AND ?";
+    $types .= "ii"; // Cả hai là số nguyên
+    $params[] = &$minPrice;
+    $params[] = &$maxPrice;
 }
 
 // Chuẩn bị truy vấn
 $stmt = $conn->prepare($sql);
 
-// Gán giá trị tham số
-if ($hasFilter) {
-    if (!empty($query) && !empty($priceRange)) {
-        $likeQuery = "%$query%";
-        $stmt->bind_param("isss", $idloai, $likeQuery, $minPrice, $maxPrice);
-    } elseif (!empty($query)) {
-        $likeQuery = "%$query%";
-        $stmt->bind_param("is", $idloai, $likeQuery);
-    } elseif (!empty($priceRange)) {
-        $stmt->bind_param("iss", $idloai, $minPrice, $maxPrice);
-    } else {
-        $stmt->bind_param("i", $idloai);
-    }
-} else {
-    $stmt->bind_param("i", $idloai);
+// Nếu có tham số thì bind_param
+if (!empty($params)) {
+    $stmt->bind_param($types, ...$params);
 }
 
 // Thực thi truy vấn
@@ -504,12 +503,5 @@ include 'header.php';
 			</div>
 		</div>
 	</div>
-</header>
 </body>
-<script>
-	function addToBag() {
-		alert("Bạn đã thêm vào giỏ hàng thành công!");
-	}
-</script>
-
 </html>
