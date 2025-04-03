@@ -29,6 +29,7 @@ if (isset($_GET['add'])) {
     if (!$exists) {
         // Nếu chưa có, thêm sản phẩm với số lượng mặc định là 1
         $stmt = $pdo->prepare("INSERT INTO cart (idKH, idsp, quantity) VALUES (:idKH, :idsp, 1)");
+
         $stmt->execute(['idKH' => $customerId, 'idsp' => $idsp]);
 
         echo "<script>alert('Đã thêm vào giỏ hàng!'); window.location.href='cart.php';</script>";
