@@ -15,7 +15,7 @@ die("Kết nối thất bại: " . $conn->connect_error);
 }
 
 // Lấy ID sản phẩm từ tham số URL
-$idSP = isset($_GET['idSP']) ? $_GET['idSP'] : 0;
+$idSP = isset($_GET['idsp']) ? $_GET['idsp'] : 0;
 
 // Truy vấn danh sách đơn hàng chứa sản phẩm
 $sql = "SELECT
@@ -478,7 +478,7 @@ $result = $stmt->get_result();
           <td>{$row['iddonhang']}</td>
           <td>{$row['sanpham']}</td>
           <td>{$row['tenkh']}</td>
-          <td><a href='chitietthongkesanpham.php?idDonHang={$row['iddonhang']}' class='details-button'>Chi Tiết</a></td>
+          <td><a href='chitietgiaodich.php?iddonhang={$row['iddonhang']}' class='details-button'>Chi Tiết</a></td>
         </tr>";
         }
         } else {
