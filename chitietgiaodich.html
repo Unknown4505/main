@@ -1,3 +1,61 @@
+<?php
+// Kết nối cơ sở dữ liệu
+session_start();
+$servername = "localhost";
+$username = "root";
+$password = "";
+$dbname = "test";
+
+$conn = new mysqli($servername, $username, $password, $dbname);
+
+// Kiểm tra kết nối
+if ($conn->connect_error) {
+die("Kết nối thất bại: " . $conn->connect_error);
+}
+
+// Lấy iddonhang từ URL
+if (!isset($_GET['iddonhang']) || empty($_GET['iddonhang'])) {
+echo "<p>Không tìm thấy mã đơn hàng.</p>";
+exit();
+}
+
+$iddonhang = $_GET['iddonhang'];
+
+// Truy vấn thông tin đơn hàng và khách hàng
+$sql_order = "SELECT dh.iddonhang, dh.ngaymua, dh.diachi, dh.sdt, dh.ghichu, dh.phuongthucthanhtoan, kh.tenkh
+FROM donhang dh
+JOIN kh ON dh.idKH = kh.idKH
+WHERE dh.iddonhang = ?";
+$stmt_order = $conn->prepare($sql_order);
+$stmt_order->bind_param("i", $iddonhang);
+$stmt_order->execute();
+$result_order = $stmt_order->get_result();
+
+if ($result_order->num_rows == 0) {
+echo "<p>Không tìm thấy đơn hàng với mã này.</p>";
+exit();
+}
+
+$order = $result_order->fetch_assoc();
+
+// Truy vấn chi tiết sản phẩm trong đơn hàng
+$sql_details = "SELECT sp.tensp, ctdh.soluong, ctdh.giathanh
+FROM ctdonhang ctdh
+JOIN sp ON ctdh.idsp = sp.idsp
+WHERE ctdh.iddonhang = ?";
+$stmt_details = $conn->prepare($sql_details);
+$stmt_details->bind_param("i", $iddonhang);
+$stmt_details->execute();
+$result_details = $stmt_details->get_result();
+
+// Tính tổng tiền
+$total = 0;
+$products = [];
+while ($row = $result_details->fetch_assoc()) {
+$products[] = $row;
+$total += $row['soluong'] * $row['giathanh'];
+}
+?>
 <!DOCTYPE html>
 <html lang="vi">
 <head>
@@ -349,76 +407,54 @@
     </ul>
   </nav>
 </header>
-<div class="admin-container">
-  <!-- Sidebar -->
-  <div class="sidebar">
-    <ul>
-      <li><a href="admin.html">Trang chủ</a></li>
-      <li><a href="managerp.html">Quản lí sản phẩm</a></li>
-      <li><a href="manager-user.html">Quản lí người dùng</a></li>
-      <li><a href="ManageCustomerOrder.html">Quản lí đơn hàng</a></li>
-      <li class="dropdown">
-        <a href="#statistics">Thống kê</a>
-        <ul class="dropdown-menu">
-          <li><a href="static.html">Sản phẩm</a></li>
-          <li><a href="static2.html">Người dùng</a></li>
-        </ul>
-      </li>
-
-    </ul>
-  </div>
   <div class="container">
     <h2>Chi Tiết Hóa Đơn</h2>
 
     <!-- Thông tin khách hàng -->
     <div class="info-group">
       <label>Tên khách hàng:</label>
-      <div class="info">Ngô Đức Huy</div>
+        <div class="info"><?php echo htmlspecialchars($order['tenkh']); ?></div>
     </div>
     <div class="info-group">
       <label>Số điện thoại:</label>
-      <div class="info">0123456789</div>
+        <div class="info"><?php echo htmlspecialchars($order['sdt']); ?></div>
     </div>
     <div class="info-group">
       <label>Địa chỉ nhận hàng:</label>
-      <div class="info">123 Đường ABC, Phường XYZ, TP. Hồ Chí Minh</div>
+        <div class="info"><?php echo htmlspecialchars($order['diachi']); ?></div>
     </div>
     <div class="info-group">
       <label>Phương thức thanh toán:</label>
-      <div class="info">Thanh toán khi nhận hàng</div>
+        <div class="info"><?php echo htmlspecialchars($order['phuongthucthanhtoan']); ?></div>
     </div>
     <div class="info-group">
-      <label>Ghi Chú: </label>
-      <textarea disabled rows="3" class="info" style="font-family: 'Roboto', sans-serif;">Gọi trước khi giao giúp em</textarea>
+        <label>Ghi Chú:</label>
+        <textarea disabled rows="3" class="info" style="font-family: 'Roboto', sans-serif;"><?php echo htmlspecialchars($order['ghichu']); ?></textarea>
     </div>
     <div class="info-group">
       <label>Mã giao dịch:</label>
-      <div class="info">GiaoDich12345</div>
+        <div class="info"><?php echo htmlspecialchars($order['iddonhang']); ?></div>
     </div>
     <div class="info-group">
       <label>Ngày đặt hàng:</label>
-      <div class="info">26/11/2024</div>
+        <div class="info"><?php echo htmlspecialchars($order['ngaymua']); ?></div>
     </div>
 
-    <!-- Sản phẩm và số lượng -->
-    <div class="product-info">
-      <label>Danh sách sản phẩm:</label>
-      <div class="info">
-        <span>Air Jordan Lagacy</span>
-        <span>x2</span>
+      <div class="product-info">
+          <label>Danh sách sản phẩm:</label>
+          <?php foreach ($products as $product): ?>
+              <div class="info">
+                  <span><?php echo htmlspecialchars($product['tensp']); ?></span>
+                  <span>x<?php echo htmlspecialchars($product['soluong']); ?></span>
+              </div>
+          <?php endforeach; ?>
       </div>
-      <div class="info">
-        <span>Air Jordan Lagacy</span>
-        <span>x5</span>
+
+      <!-- Giá tiền thanh toán -->
+      <div class="total-info">
+          <span>Tổng tiền:</span>
+          <span><?php echo number_format($total, 0, ',', '.') . ' VND'; ?></span>
       </div>
-    </div>
-
-    <!-- Giá tiền thanh toán -->
-    <div class="total-info">
-      <span>Tổng tiền:</span>
-      <span>1,500,000 VND</span>
-    </div>
-
     <!-- Nút quay lại -->
   </div>
 </div>
