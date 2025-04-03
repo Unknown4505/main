@@ -1,7 +1,9 @@
 <?php
-// Kết nối cơ sở dữ liệu
+session_start(); // Bắt đầu session
+
+// Cấu hình kết nối CSDL
 $host = '127.0.0.1';
-$dbname = 'huydata';
+$dbname = 'test';
 $username = 'root';
 $password = '';
 
@@ -12,23 +14,53 @@ try {
     die("Kết nối thất bại: " . $e->getMessage());
 }
 
-// Lấy thông tin khách hàng
-$customerId = 1; // Giả lập ID khách hàng
-$stmt = $pdo->prepare("SELECT diachi, sdt FROM kh WHERE idKH = :idKH");
-$stmt->execute(['idKH' => $customerId]);
-$customer = $stmt->fetch(PDO::FETCH_ASSOC);
-$customerName = $customer['diachi'] ?? '12345 Phan Văn Khỏe';
-$customerPhone = $customer['sdt'] ?? '0123459992';
+// Lấy ID khách hàng từ session (giả sử nếu chưa có thì mặc định là 1)
+$customerId = $_SESSION['user_id'] ?? 1;
 
-// Giả lập ID đơn hàng (giỏ hàng)
-$orderId = 1; // Thay bằng logic thực tế để lấy ID đơn hàng từ session hoặc cơ sở dữ liệu
+// Xử lý thêm sản phẩm vào giỏ hàng với số lượng mặc định là 1
+if (isset($_GET['add'])) {
+    $idsp = intval($_GET['add']);
+
+    // Kiểm tra xem sản phẩm đã có trong giỏ hàng chưa
+    $stmt = $pdo->prepare("SELECT * FROM cart WHERE idKH = :idKH AND idsp = :idsp");
+    $stmt->execute(['idKH' => $customerId, 'idsp' => $idsp]);
+    $exists = $stmt->fetch(PDO::FETCH_ASSOC);
+
+    if (!$exists) {
+        // Nếu chưa có, thêm sản phẩm với số lượng mặc định là 1
+        $stmt = $pdo->prepare("INSERT INTO cart (idKH, idsp, quantity) VALUES (:idKH, :idsp, 1)");
+        $stmt->execute(['idKH' => $customerId, 'idsp' => $idsp]);
+
+        echo "<script>alert('Đã thêm vào giỏ hàng!'); window.location.href='cart.php';</script>";
+    } else {
+        echo "<script>alert('Sản phẩm đã có trong giỏ hàng!'); window.location.href='cart.php';</script>";
+    }
+}
+
+// Xử lý cập nhật số lượng sản phẩm trong giỏ hàng
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_quantity'])) {
+    $idcart = $_POST['idcart'];
+    $quantity = max(1, intval($_POST['quantity'])); // Số lượng không thể nhỏ hơn 1
+
+    try {
+        $stmt = $pdo->prepare("UPDATE cart SET quantity = :quantity WHERE idcart = :idcart AND idKH = :idKH");
+        $stmt->execute(['quantity' => $quantity, 'idcart' => $idcart, 'idKH' => $customerId]);
+
+        echo json_encode(['success' => true]);
+    } catch (PDOException $e) {
+        echo json_encode(['success' => false, 'message' => 'Lỗi khi cập nhật số lượng: ' . $e->getMessage()]);
+    }
+    exit();
+}
 
 // Xử lý xóa sản phẩm khỏi giỏ hàng
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete_item'])) {
-    $idCTDH = $_POST['idCTDH'] ?? 0;
+    $idcart = $_POST['idcart'];
+
     try {
-        $stmt = $pdo->prepare("DELETE FROM ctdonhang WHERE idCTDH = :idCTDH AND iddonhang = :iddonhang");
-        $stmt->execute(['idCTDH' => $idCTDH, 'iddonhang' => $orderId]);
+        $stmt = $pdo->prepare("DELETE FROM cart WHERE idcart = :idcart AND idKH = :idKH");
+        $stmt->execute(['idcart' => $idcart, 'idKH' => $customerId]);
+
         echo json_encode(['success' => true]);
     } catch (PDOException $e) {
         echo json_encode(['success' => false, 'message' => 'Lỗi khi xóa sản phẩm: ' . $e->getMessage()]);
@@ -36,38 +68,37 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete_item'])) {
     exit();
 }
 
-// Lấy danh sách sản phẩm trong giỏ hàng từ bảng `ctdonhang` và `sp`
+// Lấy danh sách sản phẩm trong giỏ hàng
 $stmt = $pdo->prepare("
-    SELECT ctdh.idCTDH, ctdh.soluong, ctdh.giathanh, sp.images
-    FROM ctdonhang ctdh
-    JOIN sp ON ctdh.idsp = sp.idsp
-    WHERE ctdh.iddonhang = :iddonhang
+    SELECT cart.idcart, sp.idsp, sp.tensp, sp.giathanh, sp.images, cart.quantity
+    FROM cart
+    JOIN sp ON cart.idsp = sp.idsp
+    WHERE cart.idkh = :idkh
 ");
-$stmt->execute(['iddonhang' => $orderId]);
+$stmt->execute(['idkh' => $customerId]);
 $cartItems = $stmt->fetchAll(PDO::FETCH_ASSOC);
-?>
 
+// Tính tổng tiền
+$total = 0;
+foreach ($cartItems as $item) {
+    $total += $item['giathanh'] * $item['quantity'];
+}
+
+// Hiển thị giao diện
+include 'header.php';
+?>
 <!DOCTYPE html>
-<html lang="zxx" class="no-js">
+<html lang="zxx" class="no-js" xmlns="http://www.w3.org/1999/html">
 
 <head>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
-    <!-- Mobile Specific Meta -->
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <!-- Favicon-->
     <link rel="shortcut icon" href="img/fav.png">
-    <!-- Author Meta -->
     <meta name="author" content="CodePixar">
-    <!-- Meta Description -->
     <meta name="description" content="">
-    <!-- Meta Keyword -->
     <meta name="keywords" content="">
-    <!-- meta character set -->
     <meta charset="UTF-8">
-    <!-- Site Title -->
-    <title>Karma Shop</title>
+    <title>Karma Shop - Giỏ hàng</title>
 
-    <!-- CSS -->
     <link rel="stylesheet" href="css/linearicons.css">
     <link rel="stylesheet" href="css/owl.carousel.css">
     <link rel="stylesheet" href="css/font-awesome.min.css">
@@ -79,32 +110,23 @@ $cartItems = $stmt->fetchAll(PDO::FETCH_ASSOC);
     <link rel="stylesheet" href="css/search.css">
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
     <style>
-        body {
-            font-family: 'Roboto', sans-serif;
-        }
+        body { font-family: 'Roboto', sans-serif; }
         .delete-btn {
-            background-color: #ff4d4d; /* Red background */
-            color: white; /* White text */
-            border: none; /* Remove border */
-            padding: 8px 15px; /* Padding for the button */
-            font-size: 14px; /* Font size */
-            border-radius: 5px; /* Rounded corners */
-            cursor: pointer; /* Pointer cursor on hover */
-            transition: background-color 0.3s ease; /* Smooth background color transition */
+            background-color: #ff4d4d;
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            font-size: 14px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
         }
-
-        .delete-btn:hover {
-            background-color: #e60000; /* Darker red when hovered */
-        }
-
-        .delete-btn:focus {
-            outline: none; /* Remove the focus outline */
-        }
-
+        .delete-btn:hover { background-color: #e60000; }
+        .delete-btn:focus { outline: none; }
         .primary-btn1 {
             position: relative;
             overflow: hidden;
-            justify-content: center; /* Căn giữa theo chiều ngang */
+            justify-content: center;
             color: #fff;
             left: 50%;
             padding: 0 30px;
@@ -123,8 +145,6 @@ $cartItems = $stmt->fetchAll(PDO::FETCH_ASSOC);
             background: -o-linear-gradient(90deg, #ffba00 0%, #ff6c00 100%);
             background: linear-gradient(90deg, #ffba00 0%, #ff6c00 100%);
         }
-
-        /* CSS cho phần thông tin khách hàng */
         .customer-info {
             margin-bottom: 30px;
             padding: 20px;
@@ -132,275 +152,110 @@ $cartItems = $stmt->fetchAll(PDO::FETCH_ASSOC);
             border-radius: 5px;
             background-color: #f9f9f9;
         }
-        .customer-info h3 {
-            font-size: 20px;
-            font-weight: bold;
-            margin-bottom: 15px;
-        }
-        .customer-info p {
-            margin: 5px 0;
-            font-size: 16px;
-        }
+        .customer-info h3 { font-size: 20px; font-weight: bold; margin-bottom: 15px; }
+        .customer-info p { margin: 5px 0; font-size: 16px; }
+        .total-amount { font-size: 18px; font-weight: bold; margin-top: 20px; }
     </style>
 </head>
+
 <body>
 
-<!-- Start Header Area -->
-<header class="header_area sticky-header">
-    <div class="main_menu">
-        <nav class="navbar navbar-expand-lg navbar-light main_box">
-            <div class="container">
-                <!-- Brand and toggle get grouped for better mobile display -->
-                <a class="navbar-brand logo_h" href="index.html"><img src="img/logo.png" alt=""></a>
-                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
-                        aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                <!-- Collect the nav links, forms, and other content for toggling -->
-                <div class="collapse navbar-collapse offset" id="navbarSupportedContent">
-                    <ul class="nav navbar-nav menu_nav ml-auto">
-                        <li class="nav-item active"><a class="nav-link" href="index2.html">Trang chủ</a></li>
-                        <li class="nav-item submenu dropdown">
-                            <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
-                               aria-expanded="false">Sản phẩm</a>
-                            <ul class="dropdown-menu">
-                                <li class="nav-item"><a class="nav-link" href="category.html">Adidas</a></li>
-                                <li class="nav-item"><a class="nav-link" href="category1.html">Vans</a></li>
-                                <li class="nav-item"><a class="nav-link" href="category2.html">Nike</a></li>
-                            </ul>
-                        </li>
-                        <li class="nav-item"><a class="nav-link" href="checkout.php">Thanh toán</a></li>
-                    </ul>
-                    <!-- Search Input Box -->
-                    <input type="checkbox" id="search-toggle" class="search-toggle" hidden>
-                    <div class="search_input">
-                        <form id="search-form" action="ResultofSearch.html" method="GET" class="d-flex justify-content-between">
-                            <input type="text" class="search-input" name="query" placeholder="Tìm kiếm" required>
-                            <button type="submit" class="search-btn">
-                                <span class="lnr lnr-magnifier"></span>
-                            </button>
-                            <label for="search-toggle" class="lnr lnr-cross" title="Close Search"></label>
-                        </form>
-                    </div>
+<!-- Header Area -->
 
-                    <!-- Search Icon and Cart -->
-                    <ul class="nav navbar-nav navbar-right">
-                        <li class="nav-item"><a href="cart.php" class="cart"><span class="ti-bag"></span></a></li>
-                        <li class="nav-item">
-                            <!-- Search Button with Magnifier Icon -->
-                            <label for="search-toggle" class="search-icon">
-                                <span class="lnr lnr-magnifier"></span>
-                            </label>
-                        </li>
-                    </ul>
 
-                    <!-- User Dropdown -->
-                    <ul class="nav navbar-nav navbar-right">
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle user-btn" href="" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <span class="username">Người dùng</span>
-                                <span class="lnr lnr-user"></span>
-                            </a>
-                            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                <a class="dropdown-item" href="User.html">Thông tin người dùng</a>
-                                <a class="dropdown-item" href="confirmation.html">Lịch sử giao dịch</a>
-                                <div class="dropdown-divider"></div>
-                                <a class="dropdown-item" href="index.html">Đăng xuất</a>
-                            </div>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </nav>
-    </div>
-</header>
-<!-- End Header Area -->
-
-<!-- Start Banner Area -->
+<!-- Banner Area -->
 <section class="banner-area organic-breadcrumb">
     <div class="container">
         <div class="breadcrumb-banner d-flex flex-wrap align-items-center justify-content-end">
-            <div class="col-first">
-                <h1>Giỏ hàng</h1>
-                <nav class="d-flex align-items-center">
-                    <a href="index.html">Trang chủ<span class="lnr lnr-arrow-right"></span></a>
-                    <a href="category.html">Giỏ hàng</a>
-                </nav>
-            </div>
+            <div class="col-first"><h1>Giỏ hàng</h1><nav class="d-flex align-items-center"><a href="index.php">Trang chủ<span class="lnr lnr-arrow-right"></span></a><a href="cart.php">Giỏ hàng</a></nav></div>
         </div>
     </div>
 </section>
-<!-- End Banner Area -->
 
-<!--================Cart Area =================-->
-<section class="cart_area">
-    <div class="container">
-        <div class="cart_inner">
-            <!-- Thông tin khách hàng -->
-            <div class="customer-info">
-                <h3>Thông tin khách hàng</h3>
-                <p><strong>Tên khách hàng:</strong> <?php echo htmlspecialchars($customerName); ?></p>
-                <p><strong>Số điện thoại:</strong> <?php echo htmlspecialchars($customerPhone); ?></p>
-                <p><strong>Email:</strong> phanvankhoe@example.com</p>
-            </div>
-
-            <div class="table-responsive">
-                <table class="table">
-                    <thead>
-                    <tr>
-                        <th scope="col">Sản phẩm</th>
-                        <th scope="col">Giá</th>
-                        <th scope="col">Số lượng</th>
-                        <th scope="col">Tổng</th>
-                        <th scope="col">Hành động</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <?php if (empty($cartItems)): ?>
-                        <tr>
-                            <td colspan="5" class="text-center">Giỏ hàng của bạn đang trống.</td>
-                        </tr>
-                    <?php else: ?>
-                        <?php foreach ($cartItems as $item): ?>
-                            <tr data-idctdh="<?php echo htmlspecialchars($item['idCTDH']); ?>">
-                                <td>
-                                    <div class="media">
-                                        <div class="d-flex">
-                                            <img src="<?php echo htmlspecialchars($item['images']); ?>" alt="Sản phẩm">
-                                        </div>
-                                    </div>
-                                </td>
-                                <td>
-                                    <h5><?php echo number_format($item['giathanh'], 0, ',', '.') . 'Đ'; ?></h5>
-                                </td>
-                                <td>
-                                    <div class="product_count">
-                                        <input type="number" name="qty" value="<?php echo htmlspecialchars($item['soluong']); ?>" min="1" class="input-text qty">
-                                    </div>
-                                </td>
-                                <td>
-                                    <h5><?php echo number_format($item['giathanh'] * $item['soluong'], 0, ',', '.') . 'Đ'; ?></h5>
-                                </td>
-                                <td>
-                                    <!-- Delete button -->
-                                    <button class="delete-btn" onclick="deleteRow(this)">Xóa</button>
-                                </td>
-                            </tr>
-                        <?php endforeach; ?>
-                    <?php endif; ?>
-                    </tbody>
-                </table>
-            </div>
-
-            <a class="primary-btn1" href="checkout.php">Tiến hành thanh toán</a>
+<!-- Cart Area -->
+<!-- Hiển thị giỏ hàng -->
+<section>
+    <h2>Giỏ hàng của bạn</h2>
+    <div class="table-responsive">
+        <table class="table">
+        <tr>
+            <th>Ảnh</th>
+            <th>Tên sản phẩm</th>
+            <th>Giá</th>
+            <th>Số lượng</th>
+            <th>Thành tiền</th>
+            <th>Hành động</th>
+        </tr>
+        <?php foreach ($cartItems as $item): ?>
+            <tr data-idcart="<?php echo $item['idcart']; ?>">
+                <td><img src="<?php echo $item['images']; ?>" width="50"></td>
+                <td><?php echo $item['tensp']; ?></td>
+                <td class="price" data-price="<?php echo $item['giathanh']; ?>">
+                    <?php echo number_format($item['giathanh'], 0, ',', '.') . ' VNĐ'; ?>
+                </td>
+                <td>
+                    <input type="number" class="quantity" value="<?php echo $item['quantity']; ?>" min="1" onchange="updateQuantity(this, <?php echo $item['idcart']; ?>)">
+                </td>
+                <td class="total-price">
+                    <?php echo number_format($item['giathanh'] * $item['quantity'], 0, ',', '.') . ' VNĐ'; ?>
+                </td>
+                <td><button onclick="deleteItem(<?php echo $item['idcart']; ?>)">Xóa</button></td>
+            </tr>
+        <?php endforeach; ?>
+    </table>
+    <h3>Tổng tiền: <span id="total-price"><?php echo number_format($total, 0, ',', '.') . ' VNĐ'; ?></span></h3>
+        <a class="primary-btn1" href="checkout.php">Tiến hành thanh toán</a>
         </div>
     </div>
 </section>
-<!--================End Cart Area =================-->
 
-<!-- Start Footer Area -->
+<!-- Footer Area -->
 <footer class="footer-area section_gap">
     <div class="container">
         <div class="row">
-            <div class="col-lg-3 col-md-6 col-sm-6">
-                <div class="single-footer-widget">
-                    <h6>Về Chúng Tôi</h6>
-                    <p>
-                        “Kể từ lúc thành lập vào năm 2012, Karma luôn được khách hàng đánh giá là một trong những cửa hàng giày chất lượng cao tại Việt Nam. Hiện tại, Karma vẫn tiếp tục duy trì chất lượng dịch vụ và sản phẩm tốt để gìn giữ sự hài lòng của khách hàng.”
-                    </p>
-                </div>
-            </div>
-            <div class="col-lg-4 col-md-6 col-sm-6">
-                <div class="single-footer-widget">
-                    <h6>Bảng tin</h6>
-                    <p>Luôn cập nhật thông tin mới nhất của chúng tôi</p>
-                    <div class="">
-                        <form target="_blank" novalidate="true" action="https://spondonit.us12.list-manage.com/subscribe/post?u=1462626880ade1ac87bd9c93a&id=92a4423d01"
-                              method="get" class="form-inline">
-                            <div class="form-group lbel-inline">
-                                <input type="email" class="form-control" name="EMAIL" placeholder="Nhập email" required>
-                            </div>
-                            <button class="btn btn-default">
-                                <span class="lnr lnr-arrow-right"></span>
-                            </button>
-                            <div style="position: absolute; left: -5000px;">
-                                <input type="text" name="b_1462626880ade1ac87bd9c93a_92a4423d01" tabindex="-1" value="">
-                            </div>
-                        </form>
-                    </div>
-                    <div class="info"></div>
-                </div>
-            </div>
-            <div class="col-lg-2 col-md-6 col-sm-6">
-                <div class="single-footer-widget">
-                    <h6>Instagram</h6>
-                    <div class="instagram-row">
-                        <a href="#"><img src="img/i1.jpg" alt=""></a>
-                        <a href="#"><img src="img/i2.jpg" alt=""></a>
-                        <a href="#"><img src="img/i3.jpg" alt=""></a>
-                        <a href="#"><img src="img/i4.jpg" alt=""></a>
-                        <a href="#"><img src="img/i5.jpg" alt=""></a>
-                        <a href="#"><img src="img/i6.jpg" alt=""></a>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-3 col-md-6 col-sm-6">
-                <div class="single-footer-widget">
-                    <h6>Liên Hệ Với Chúng Tôi</h6>
-                    <p>ĐH Sài Gòn, <br>TP.HCM, VietNam</p>
-                    <p>
-                        <span class="lnr lnr-phone"></span> +01 234 567 89<br>
-                        <span class="lnr lnr-envelope"></span> support@HKTC.com
-                    </p>
-                </div>
-            </div>
+            <div class="col-lg-3 col-md-6 col-sm-6"><div class="single-footer-widget"><h6>Về Chúng Tôi</h6><p>“Kể từ lúc thành lập vào năm 2012, Karma luôn được khách hàng đánh giá là một trong những cửa hàng giày chất lượng cao tại Việt Nam. Hiện tại, Karma vẫn tiếp tục duy trì chất lượng dịch vụ và sản phẩm tốt để gìn giữ sự hài lòng của khách hàng.”</p></div></div>
+            <div class="col-lg-4 col-md-6 col-sm-6"><div class="single-footer-widget"><h6>Bảng tin</h6><p>Luôn cập nhật thông tin mới nhất của chúng tôi</p><div class=""><form target="_blank" novalidate="true" action="https://spondonit.us12.list-manage.com/subscribe/post?u=1462626880ade1ac87bd9c93a&id=92a4423d01" method="get" class="form-inline"><div class="form-group lbel-inline"><input type="email" class="form-control" name="EMAIL" placeholder="Nhập email" required></div><button class="btn btn-default"><span class="lnr lnr-arrow-right"></span></button><div style="position: absolute; left: -5000px;"><input type="text" name="b_1462626880ade1ac87bd9c93a_92a4423d01" tabindex="-1" value=""></div></form></div><div class="info"></div></div></div>
+            <div class="col-lg-2 col-md-6 col-sm-6"><div class="single-footer-widget"><h6>Instagram</h6><div class="instagram-row"><a href="#"><img src="img/i1.jpg" alt=""></a><a href="#"><img src="img/i2.jpg" alt=""></a><a href="#"><img src="img/i3.jpg" alt=""></a><a href="#"><img src="img/i4.jpg" alt=""></a><a href="#"><img src="img/i5.jpg" alt=""></a><a href="#"><img src="img/i6.jpg" alt=""></a></div></div></div>
+            <div class="col-lg-3 col-md-6 col-sm-6"><div class="single-footer-widget"><h6>Liên Hệ Với Chúng Tôi</h6><p>ĐH Sài Gòn, <br>TP.HCM, VietNam</p><p><span class="lnr lnr-phone"></span> +01 234 567 89<br><span class="lnr lnr-envelope"></span> support@HKTC.com</p></div></div>
         </div>
         <div class="row footer-bottom d-flex justify-content-between align-items-center">
-            <p class="footer-text m-0 col-lg-6 col-md-6">
-                2024 © Mọi quyền được bảo lưu | Mẫu này được tạo với <i class="fa fa-heart" aria-hidden="true"></i> by
-                <a href="https://colorlib.com" target="_blank">HKTC</a>
-            </p>
-            <div class="col-lg-6 col-md-6 footer-social">
-                <a href="#"><i class="fa fa-facebook"></i></a>
-                <a href="#"><i class="fa fa-twitter"></i></a>
-                <a href="#"><i class="fa fa-dribbble"></i></a>
-                <a href="#"><i class="fa fa-behance"></i></a>
-            </div>
+            <p class="footer-text m-0 col-lg-6 col-md-6">2024 © Mọi quyền được bảo lưu | Mẫu này được tạo với <i class="fa fa-heart" aria-hidden="true"></i> by <a href="https://colorlib.com" target="_blank">HKTC</a></p>
+            <div class="col-lg-6 col-md-6 footer-social"><a href="#"><i class="fa fa-facebook"></i></a><a href="#"><i class="fa fa-twitter"></i></a><a href="#"><i class="fa fa-dribbble"></i></a><a href="#"><i class="fa fa-behance"></i></a></div>
         </div>
     </div>
 </footer>
-<!-- End Footer Area -->
 
-<!-- Bootstrap and jQuery -->
+<!-- JavaScript -->
 <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-
 <script>
-    function deleteRow(button) {
-        let row = button.closest('tr');
-        let idCTDH = row.dataset.idctdh;
-
-        // Gửi yêu cầu xóa đến server
+    function deleteItem(idcart) {
+        if (!confirm("Bạn có chắc muốn xóa sản phẩm này?")) return;
         fetch('cart.php', {
             method: 'POST',
             headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-            body: 'delete_item=1&idCTDH=' + idCTDH
+            body: new URLSearchParams({ delete_item: 1, idcart: idcart })
         })
             .then(response => response.json())
             .then(data => {
                 if (data.success) {
-                    alert("Bạn đã xóa sản phẩm ra khỏi giỏ hàng.");
-                    row.remove();
+                    document.querySelector(`tr[data-idcart='${idcart}']`).remove();
+                    updateTotal();
                 } else {
-                    alert("Có lỗi xảy ra khi xóa sản phẩm: " + (data.message || "Không xác định"));
+                    alert("Có lỗi xảy ra!");
                 }
-            })
-            .catch(error => {
-                alert("Có lỗi xảy ra: " + error);
             });
+    }
+
+    function updateTotal() {
+        let total = 0;
+        document.querySelectorAll('tr[data-idcart]').forEach(row => {
+            let price = parseFloat(row.querySelector('.price').dataset.price);
+            let quantity = parseInt(row.querySelector('.quantity').value);
+            total += price * quantity;
+        });
+        document.getElementById('total-price').textContent = total.toLocaleString('vi-VN') + " VNĐ";
     }
 </script>
 </body>
