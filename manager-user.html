@@ -1,3 +1,35 @@
+<?php
+session_start();
+$servername = "localhost";
+$username = "root";
+$password = "";
+$dbname = "test";
+
+// Kết nối MySQL
+$conn = new mysqli($servername, $username, $password, $dbname);
+
+// Kiểm tra kết nối
+if ($conn->connect_error) {
+    die("Kết nối thất bại: " . $conn->connect_error);
+}
+
+// Kiểm tra đăng nhập admin
+if (!isset($_SESSION['admin_id'])) {
+    header("Location: login-admin.php");
+    exit;
+}
+
+// Xử lý tìm kiếm theo tên
+$search_query = "";
+if (isset($_GET['product-name']) && !empty($_GET['product-name'])) {
+    $search_query = $conn->real_escape_string($_GET['product-name']);
+$query = "SELECT * FROM kh WHERE tenkh LIKE '%$search_query%'";
+} else {
+$query = "SELECT * FROM kh";
+}
+
+$result = $conn->query($query);
+?>
 <!DOCTYPE html>
 <html lang="vi">
 <head>
@@ -333,7 +365,7 @@
                 </div>
             </form>
         </div>
-        <a href="add-user.html" class="btn-link">Thêm</a>
+        <a href="add-user.php" class="btn-link">Thêm</a>
         <h2>Danh sách sản phẩm:</h2>
 
         <div class="container">
@@ -345,158 +377,39 @@
                     <th>Tên Khách Hàng</th>
                     <th>Địa Chỉ Email</th>
                     <th>Số Điện Thoại</th>
-                    <th>Trạng Thái</th>
                     <th>Ngày Đăng Ký</th>
-                    <th>Cài Đặt</th>
+                    <th>Trạng Thái</th>
                     <th>Sửa</th>
                 </tr>
                 </thead>
                 <tbody>
-                <!-- Dữ liệu khách hàng (8 dòng) -->
-                <tr>
-                    <td>KH001</td>
-                    <td>Nguyễn Văn A</td>
-                    <td>nguyenvana@example.com</td>
-                    <td>0901234567</td>
-                    <td>Còn hoạt động</td>
-                    <td>2023-08-15</td>
-                    <td>
-                        <div class="dropdown">
-                            <select onchange="showAlert()">
-                                <option value="unlock">Hoạt Động</option>
-                                <option value="lock">Khóa tài khoản</option>
-                            </select>
-                        </div>
-                    <td>
-                        <a href="edit-user.html" class="action-btn">Sửa</a>
-                    </td>
-                </tr>
-                <tr>
-                    <td>KH002</td>
-                    <td>Trần Thị B</td>
-                    <td>tranthib@example.com</td>
-                    <td>0902345678</td>
-                    <td>Còn hoạt động</td>
-                    <td>2023-09-10</td>
-                    <td>
-                        <div class="dropdown">
-                            <select onchange="showAlert()">
-                                <option value="unlock">Hoạt Động</option>
-                                <option value="lock">Khóa tài khoản</option>
-                            </select>
-                        </div>
-                    <td>
-                        <a href="edit-user.html" class="action-btn">Sửa</a>
-                    </td>
-                </tr>
-                <tr>
-                    <td>KH003</td>
-                    <td>Lê Quang C</td>
-                    <td>lequangc@example.com</td>
-                    <td>0903456789</td>
-                    <td>Còn hoạt động</td>
-                    <td>2023-07-20</td>
-                    <td>
-                        <div class="dropdown">
-                            <select onchange="showAlert()">
-                                <option value="unlock">Hoạt Động</option>
-                                <option value="lock">Khóa tài khoản</option>
-                            </select>
-                        </div>
-                    <td>
-                        <a href="edit-user.html" class="action-btn">Sửa</a>
-                    </td>
-                </tr>
-                <tr>
-                    <td>KH004</td>
-                    <td>Phạm Minh D</td>
-                    <td>phamminhd@example.com</td>
-                    <td>0904567890</td>
-                    <td>Còn hoạt động</td>
-                    <td>2023-06-10</td>
-                    <td>
-                        <div class="dropdown">
-                            <select onchange="showAlert()">
-                                <option value="unlock">Hoạt Động</option>
-                                <option value="lock">Khóa tài khoản</option>
-                            </select>
-                        </div>
-                    <td>
-                        <a href="edit-user.html" class="action-btn">Sửa</a>
-                    </td>
-                </tr>
-                <tr>
-                    <td>KH005</td>
-                    <td>Ngô Minh E</td>
-                    <td>ngominhe@example.com</td>
-                    <td>0905678901</td>
-                    <td>Còn hoạt động</td>
-                    <td>2023-05-25</td>
-                    <td>
-                        <div class="dropdown">
-                            <select onchange="showAlert()">
-                                <option value="unlock">Hoạt Động</option>
-                                <option value="lock">Khóa tài khoản</option>
-                            </select>
-                        </div>
-                    <td>
-                        <a href="edit-user.html" class="action-btn">Sửa</a>
-                    </td>
-                </tr>
-                <tr>
-                    <td>KH006</td>
-                    <td>Đỗ Thị F</td>
-                    <td>dothif@example.com</td>
-                    <td>0906789012</td>
-                    <td>Còn hoạt động</td>
-                    <td>2023-04-30</td>
-                    <td>
-                        <div class="dropdown">
-                            <select onchange="showAlert()">
-                                <option value="unlock">Hoạt Động</option>
-                                <option value="lock">Khóa tài khoản</option>
-                            </select>
-                        </div>
-                    <td>
-                        <a href="edit-user.html" class="action-btn">Sửa</a>
-                    </td>
-                </tr>
-                <tr>
-                    <td>KH007</td>
-                    <td>Vũ Anh G</td>
-                    <td>vuanhg@example.com</td>
-                    <td>0907890123</td>
-                    <td>Còn hoạt động</td>
-                    <td>2023-03-22</td>
-                    <td>
-                        <div class="dropdown">
-                            <select onchange="showAlert()">
-                                <option value="unlock">Hoạt Động</option>
-                                <option value="lock">Khóa tài khoản</option>
-                            </select>
-                        </div>
-                    <td>
-                        <a href="edit-user.html" class="action-btn">Sửa</a>
-                    </td>
-                </tr>
-                <tr>
-                    <td>KH008</td>
-                    <td>Mai Lan H</td>
-                    <td>mailanh@example.com</td>
-                    <td>0908901234</td>
-                    <td>Còn hoạt động</td>
-                    <td>2023-02-18</td>
-                    <td>
-                        <div class="dropdown">
-                            <select onchange="showAlert()">
-                                <option value="unlock">Hoạt Động</option>
-                                <option value="lock">Khóa tài khoản</option>
-                            </select>
-                        </div>
-                    <td>
-                        <a href="edit-user.html" class="action-btn">Sửa</a>
-                    </td>
-                </tr>
+                <?php
+                if ($result->num_rows > 0) {
+                    while ($row = $result->fetch_assoc()) {
+                        ?>
+                        <tr>
+                            <td><?php echo htmlspecialchars($row['idKH']); ?></td>
+                            <td><?php echo htmlspecialchars($row['tenkh']); ?></td>
+                            <td><?php echo htmlspecialchars($row['email']); ?></td>
+                            <td><?php echo htmlspecialchars($row['sdt']); ?></td>
+                            <td><?php echo htmlspecialchars($row['ngaydangky']); ?></td>
+                            <td>
+                                <select class="status-select" data-id="<?php echo $row['idKH']; ?>" onchange="updateStatus(this)">
+                                    <option value="1" <?php echo $row['status'] == 1 ? 'selected' : ''; ?>>Hoạt động</option>
+                                    <option value="0" <?php echo $row['status'] == 0 ? 'selected' : ''; ?>>Ngưng hoạt động</option>
+                                </select>
+                            </td>
+                            <td>
+                                <a href="edit-user.php?id=<?php echo $row['idKH']; ?>" class="action-btn">Sửa</a>
+                            </td>
+                        </tr>
+                        <?php
+                    }
+                } else {
+                    echo "<tr><td colspan='8'>Không tìm thấy người dùng nào</td></tr>";
+                }
+                $conn->close();
+                ?>
                 </tbody>
             </table>
             <!-- Table Section -->
@@ -513,28 +426,43 @@
     </div>
     <!-- JavaScript -->
     <script>// Hiển thị thông báo khi trạng thái được thay đổi
-    function showAlert() {
-        var alert = document.getElementById('status-alert');
-        alert.classList.add('show');
+        function updateStatus(select) {
+            const userId = select.getAttribute('data-id');
+            const status = select.value;
 
-        // Tự động ẩn thông báo sau 3 giây với hiệu ứng fade-out
-        setTimeout(function() {
-            alert.classList.add('fadeOut');
+            fetch('update_status.php', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                body: `user_id=${userId}&status=${status}`
+            })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        showAlert();
+                    } else {
+                        alert('Cập nhật trạng thái thất bại: ' + (data.message || 'Lỗi không xác định'));
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('Đã xảy ra lỗi khi cập nhật trạng thái!');
+                });
+        }
+
+        function showAlert() {
+            var alert = document.getElementById('status-alert');
+            alert.classList.add('show');
             setTimeout(function() {
-                alert.classList.remove('show', 'fadeOut');
-            }, 300); // Phù hợp với thời gian animation fadeOut
-        }, 3000); // Thời gian hiển thị là 3 giây
-    }
+                alert.classList.remove('show');
+            }, 3000);
+        }
 
-    // Đóng thông báo khi nhấn nút đóng
-    function closeAlert() {
-        var alert = document.getElementById('status-alert');
-        alert.classList.add('fadeOut');
-        setTimeout(function() {
-            alert.classList.remove('show', 'fadeOut');
-        }, 300); // Phù hợp với thời gian animation fadeOut
-    }
-
+        function closeAlert() {
+            var alert = document.getElementById('status-alert');
+            alert.classList.remove('show');
+        }
     </script>
 </div>
 </body>
