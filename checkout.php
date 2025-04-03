@@ -1,5 +1,7 @@
 <?php
-// Kết nối cơ sở dữ liệu
+session_start(); // Bắt đầu session
+
+// Cấu hình kết nối CSDL
 $host = '127.0.0.1';
 $dbname = 'huydata';
 $username = 'root';
@@ -12,47 +14,41 @@ try {
     die("Kết nối thất bại: " . $e->getMessage());
 }
 
-// Giả lập ID khách hàng (thực tế sẽ lấy từ phiên đăng nhập)
-$customerId = 1;
+// Lấy ID khách hàng từ session
+$customerId = $_SESSION['user_id'] ?? 1;
+
+// Lấy idcart từ URL
+$idcart = isset($_GET['idcart']) ? intval($_GET['idcart']) : null;
+
+if (!$idcart) {
+    die("Không tìm thấy giỏ hàng để thanh toán.");
+}
+
+// Kiểm tra xem giỏ hàng có thuộc về khách hàng không
+$stmt = $pdo->prepare("SELECT * FROM cart WHERE idcart = :idcart AND idKH = :idKH");
+$stmt->execute(['idcart' => $idcart, 'idKH' => $customerId]);
+$cartItem = $stmt->fetch(PDO::FETCH_ASSOC);
+
+if (!$cartItem) {
+    die("Giỏ hàng không hợp lệ hoặc không thuộc về bạn.");
+}
+
+// Lấy thông tin sản phẩm từ bảng `sp`
+$stmt = $pdo->prepare("SELECT sp.tensp, sp.giathanh, sp.images FROM sp WHERE idsp = :idsp");
+$stmt->execute(['idsp' => $cartItem['idsp']]);
+$product = $stmt->fetch(PDO::FETCH_ASSOC);
+
+if (!$product) {
+    die("Không tìm thấy sản phẩm.");
+}
+
+// Tính tổng tiền cho giỏ hàng này
+$total = $product['giathanh'] * $cartItem['quantity'];
 
 // Lấy thông tin khách hàng từ bảng `kh`
 $stmt = $pdo->prepare("SELECT * FROM kh WHERE idKH = :idKH");
 $stmt->execute(['idKH' => $customerId]);
 $customer = $stmt->fetch(PDO::FETCH_ASSOC);
-
-// Giả lập ID đơn hàng (giỏ hàng) - Thay bằng logic thực tế
-$orderId = 1; // ID của đơn hàng tạm thời (giỏ hàng)
-
-// Lấy danh sách sản phẩm trong giỏ hàng từ bảng `ctdonhang` và `sp`
-$stmt = $pdo->prepare("
-    SELECT ctdh.idCTDH, ctdh.soluong, ctdh.giathanh, sp.images
-    FROM ctdonhang ctdh
-    JOIN sp ON ctdh.idsp = sp.idsp
-    WHERE ctdh.iddonhang = :iddonhang
-");
-$stmt->execute(['iddonhang' => $orderId]);
-$cartItems = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-// Tính tổng tiền từ danh sách sản phẩm
-$total = 0;
-foreach ($cartItems as $item) {
-    $total += $item['giathanh'] * $item['soluong'];
-}
-
-// Cập nhật tổng tiền vào bảng `donhang`
-try {
-    $stmt = $pdo->prepare("UPDATE donhang SET tongtien = :tongtien WHERE iddonhang = :iddonhang");
-    $stmt->execute(['tongtien' => $total, 'iddonhang' => $orderId]);
-} catch (PDOException $e) {
-    echo "Lỗi khi cập nhật tổng tiền: " . $e->getMessage();
-    exit();
-}
-
-// Lấy phương thức thanh toán từ bảng `donhang`
-$stmt = $pdo->prepare("SELECT phuongthucthanhtoan FROM donhang WHERE iddonhang = :iddonhang");
-$stmt->execute(['iddonhang' => $orderId]);
-$order = $stmt->fetch(PDO::FETCH_ASSOC);
-$paymentMethod = $order['phuongthucthanhtoan'] ?? 'Chưa chọn phương thức thanh toán';
 
 // Biến để kiểm tra xem có hiển thị modal hay không
 $showSuccessModal = false;
@@ -65,26 +61,29 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['place_order'])) {
     $notes = $_POST['notes'] ?? '';
     $paymentMethod = $_POST['payment_method'] ?? 'Tiền mặt'; // Mặc định là "Tiền mặt" nếu không chọn
 
-    // Cập nhật thông tin đơn hàng trong bảng `donhang`
+    // Tạo đơn hàng mới trong bảng `orders` (giả sử bạn đã tạo bảng này như trong hướng dẫn trước)
     try {
-        $stmt = $pdo->prepare("UPDATE donhang SET ngaymua = NOW(), tongtien = :tongtien, phuongthucthanhtoan = :phuongthucthanhtoan WHERE iddonhang = :iddonhang");
-        $stmt->execute(['tongtien' => $total, 'phuongthucthanhtoan' => $paymentMethod, 'iddonhang' => $orderId]);
-    } catch (PDOException $e) {
-        echo "Lỗi khi cập nhật đơn hàng: " . $e->getMessage();
-        exit();
-    }
+        $stmt = $pdo->prepare("INSERT INTO orders (idKH, idcart, total_amount, order_date, status, phuongthucthanhtoan) VALUES (:idKH, :idcart, :total_amount, NOW(), 'paid', :phuongthucthanhtoan)");
+        $stmt->execute([
+            'idKH' => $customerId,
+            'idcart' => $idcart,
+            'total_amount' => $total,
+            'phuongthucthanhtoan' => $paymentMethod
+        ]);
 
-    // Cập nhật địa chỉ giao hàng trong bảng `kh`
-    try {
+        // Cập nhật thông tin khách hàng trong bảng `kh`
         $stmt = $pdo->prepare("UPDATE kh SET diachi = :diachi, sdt = :sdt WHERE idKH = :idKH");
         $stmt->execute(['diachi' => $address, 'sdt' => $phone, 'idKH' => $customerId]);
+
+        // Xóa giỏ hàng sau khi thanh toán thành công
+        $stmt = $pdo->prepare("DELETE FROM cart WHERE idcart = :idcart");
+        $stmt->execute(['idcart' => $idcart]);
+
+        $showSuccessModal = true;
     } catch (PDOException $e) {
-        echo "Lỗi khi cập nhật thông tin khách hàng: " . $e->getMessage();
+        echo "Lỗi khi đặt hàng: " . $e->getMessage();
         exit();
     }
-
-    // Đặt biến để hiển thị modal
-    $showSuccessModal = true;
 }
 ?>
 
@@ -98,7 +97,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['place_order'])) {
     <meta name="description" content="">
     <meta name="keywords" content="">
     <meta charset="UTF-8">
-    <title>Cửa hàng Karma</title>
+    <title>Cửa hàng Karma - Thanh toán</title>
 
     <!-- Thêm Bootstrap và các thư viện cần thiết -->
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
@@ -301,13 +300,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['place_order'])) {
                     <div class="col-md-12 form-group">
                         <h3>Phương thức thanh toán</h3>
                         <div class="form-check">
-                            <input class="form-check-input" type="radio" name="payment_method" id="payment_cash" value="Tiền mặt" <?php echo $paymentMethod === 'Tiền mặt' ? 'checked' : ''; ?>>
+                            <input class="form-check-input" type="radio" name="payment_method" id="payment_cash" value="Tiền mặt" checked>
                             <label class="form-check-label" for="payment_cash">
                                 Tiền mặt
                             </label>
                         </div>
                         <div class="form-check">
-                            <input class="form-check-input" type="radio" name="payment_method" id="payment_transfer" value="Chuyển khoản" <?php echo $paymentMethod === 'Chuyển khoản' ? 'checked' : ''; ?>>
+                            <input class="form-check-input" type="radio" name="payment_method" id="payment_transfer" value="Chuyển khoản">
                             <label class="form-check-label" for="payment_transfer">
                                 Chuyển khoản
                             </label>
@@ -336,16 +335,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['place_order'])) {
                 <div class="order-summary">
                     <h4>Tóm tắt hóa đơn</h4>
                     <div class="product-list">
-                        <?php if (empty($cartItems)): ?>
+                        <?php if (!$cartItem): ?>
                             <p>Không có sản phẩm nào trong giỏ hàng.</p>
                         <?php else: ?>
-                            <?php foreach ($cartItems as $item): ?>
-                                <div class="product-item">
-                                    <p><strong>Tên sản phẩm:</strong> Sản phẩm <?php echo htmlspecialchars($item['idCTDH']); ?> (Hình: <?php echo htmlspecialchars($item['images']); ?>)</p>
-                                    <p><strong>Số lượng:</strong> <?php echo htmlspecialchars($item['soluong']); ?></p>
-                                    <p><strong>Giá:</strong> <?php echo number_format($item['giathanh'], 0, ',', '.') . 'đ'; ?></p>
-                                </div>
-                            <?php endforeach; ?>
+                            <div class="product-item">
+                                <p><strong>Tên sản phẩm:</strong> <?php echo htmlspecialchars($product['tensp']); ?></p>
+                                <p><strong>Số lượng:</strong> <?php echo htmlspecialchars($cartItem['quantity']); ?></p>
+                                <p><strong>Giá:</strong> <?php echo number_format($product['giathanh'], 0, ',', '.') . 'đ'; ?></p>
+                                <p><strong>Hình ảnh:</strong> <img src="<?php echo htmlspecialchars($product['images']); ?>" width="50"></p>
+                            </div>
                         <?php endif; ?>
                     </div>
                     <div class="total">
@@ -356,7 +354,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['place_order'])) {
                         <p><strong>Tên người nhận:</strong> <?php echo htmlspecialchars($customer['diachi'] ?? ''); ?></p>
                         <p><strong>Số điện thoại:</strong> <?php echo htmlspecialchars($customer['sdt'] ?? ''); ?></p>
                         <p><strong>Địa chỉ giao hàng:</strong> <?php echo htmlspecialchars($customer['diachi'] ?? ''); ?></p>
-                        <p><strong>Phương thức thanh toán:</strong> <?php echo htmlspecialchars($paymentMethod); ?></p>
+                        <p><strong>Phương thức thanh toán:</strong> Tiền mặt</p> <!-- Mặc định, sẽ cập nhật khi chọn -->
                         <p><strong>Tôi đã chấp nhận điều khoản và điều kiện</strong></p>
                     </div>
                     <button type="submit" class="order-btn" form="checkoutForm">Đặt hàng</button>
