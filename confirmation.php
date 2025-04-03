@@ -1,3 +1,28 @@
+<?php
+// Kết nối cơ sở dữ liệu
+$servername = "localhost";
+$username = "root";
+$password = "";
+$dbname = "test"; // Thay đổi tên cơ sở dữ liệu theo tên của bạn
+
+$conn = new mysqli($servername, $username, $password, $dbname);
+
+// Kiểm tra kết nối
+if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
+}
+
+// Lấy dữ liệu từ bảng donhang, ctdonhang, kh, sp
+$sql = "SELECT dh.iddonhang, dh.ngaymua, dh.trangthai, dh.diachi, dh.sdt, kh.tenkh, ctdh.idsp, ctdh.soluong, ctdh.giathanh, sp.tensp
+        FROM donhang dh
+        JOIN ctdonhang ctdh ON dh.iddonhang = ctdh.iddonhang
+        JOIN kh ON dh.idKH = kh.idKH
+        JOIN sp ON ctdh.idsp = sp.idsp
+        ORDER BY dh.ngaymua DESC";
+$result = $conn->query($sql);
+include 'header.php';
+?>
+
 <!DOCTYPE html>
 <html lang="zxx" class="no-js">
 
@@ -51,84 +76,6 @@
 <body>
 
 <!-- Start Header Area -->
-<header class="header_area sticky-header">
-	<div class="main_menu">
-		<nav class="navbar navbar-expand-lg navbar-light main_box">
-			<div class="container">
-				<!-- Brand and toggle get grouped for better mobile display -->
-				<a class="navbar-brand logo_h" href="index.html"><img src="img/logo.png" alt=""></a>
-				<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
-						aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-					<span class="icon-bar"></span>
-					<span class="icon-bar"></span>
-					<span class="icon-bar"></span>
-				</button>
-				<!-- Collect the nav links, forms, and other content for toggling -->
-				<div class="collapse navbar-collapse offset" id="navbarSupportedContent">
-					<ul class="nav navbar-nav menu_nav ml-auto">
-						<li class="nav-item active"><a class="nav-link" href="index2.html">Trang chủ</a></li>
-						<li class="nav-item submenu dropdown">
-							<a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
-							   aria-expanded="false">Sản phẩm</a>
-							<ul class="dropdown-menu">
-								<li class="nav-item"><a class="nav-link" href="category.html">Adidas</a></li>
-								<li class="nav-item"><a class="nav-link" href="category1.html">Vans</a></li>
-								<li class="nav-item"><a class="nav-link" href="category2.html">Nike</a></li>
-							</ul>
-						</li>
-
-						<li class="nav-item"><a class="nav-link" href="checkout.html">Thanh toán</a></li>
-						<ul class="dropdown-menu">
-
-						</ul>
-						</li>
-						<li class="nav-item submenu dropdown">
-						</li>
-					</ul>
-					<!-- Search Input Box -->
-					<input type="checkbox" id="search-toggle" class="search-toggle" hidden>
-					<div class="search_input">
-						<form id="search-form" action="ResultofSearch.html" method="GET" class="d-flex justify-content-between">
-							<input type="text" class="search-input" name="query" placeholder="Tìm kiếm" required>
-							<button type="submit" class="search-btn">
-								<span class="lnr lnr-magnifier"></span>
-							</button>
-							<label for="search-toggle" class="lnr lnr-cross" title="Close Search"></label>
-						</form>
-					</div>
-
-					<!-- Search Icon and Cart -->
-					<ul class="nav navbar-nav navbar-right">
-						<li class="nav-item"><a href="cart.html" class="cart"><span class="ti-bag"></span></a></li>
-						<li class="nav-item">
-							<!-- Search Button with Magnifier Icon -->
-							<label for="search-toggle" class="search-icon">
-								<span class="lnr lnr-magnifier"></span>
-							</label>
-						</li>
-					</ul>
-
-
-					<!-- User Dropdown -->
-					<ul class="nav navbar-nav navbar-right">
-						<li class="nav-item dropdown">
-							<a class="nav-link dropdown-toggle user-btn" href="" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-								<span class="username">Người dùng</span>
-								<span class="lnr lnr-user"></span>
-							</a>
-							<div class="dropdown-menu" aria-labelledby="navbarDropdown">
-								<a class="dropdown-item" href=User.html>Thông tin người dùng</a>
-								<a class="dropdown-item" href="confirmation.html">Lịch sử giao dịch</a>
-								<div class="dropdown-divider"></div>
-								<a class="dropdown-item" href="index.html">Đăng xuất</a>
-							</div>
-						</li>
-					</ul>
-				</div>
-			</div>
-		</nav>
-	</div>
-</header>
 <!-- Bootstrap and jQuery -->
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
@@ -145,7 +92,7 @@
 				<h1>Lịch sử giao dịch</h1>
 				<nav class="d-flex align-items-center">
 					<a href="index.html">Trang Chủ<span class="lnr lnr-arrow-right"></span></a>
-					<a href="category.html">Lịch sử giao dịch</a>
+					<a href="category.php">Lịch sử giao dịch</a>
 				</nav>
 			</div>
 		</div>
@@ -155,66 +102,47 @@
 
 
 <!--================Khu Vực Chi Tiết Đơn Hàng =================-->
+<section class="banner-area">
+    <div class="container">
+        <h1>Lịch Sử Giao Dịch</h1>
+    </div>
+</section>
+
+<!-- Lịch sử giao dịch -->
 <section class="order_details section_gap">
-		<div class="order_details_table">
-			<h2>Chi Tiết Đơn Hàng</h2>
-			<div class="table-responsive">
-				<table class="table">
-					<thead>
-					<tr>
-						<th scope="col">Mã đơn hàng</th>
-						<th scope="col">Địa chỉ nhận hàng</th>
-						<th scope="col">Số điện thoại</th>
-					</tr>
-					</thead>
-					<tbody>
-					<tr>
-						<td>
-							<p>GiaoDich123</p>
-						</td>
-						<td>
-							<h5>273 Đường An Dương Vương P8, Quận 5</h5>
-						</td>
-						<td>
-							<p>0393913131</p>
-						</td>
-						<td>
-							<button class="view-more" onclick="location.href='historydetail.html'">Xem Thêm</button>
-						</td>
-					</tr>
-					<tr>
-						<td>
-							<p>GiaoDich124</p>
-						</td>
-						<td>
-							<h5>273 Đường An Dương Vương P8, Quận 5 </h5>
-						</td>
-						<td>
-							<p>0393913131</p>
-						</td>
-						<td>
-							<button class="view-more" onclick="location.href='historydetail.html'">Xem Thêm</button>
-						</td>
-					</tr>
-					<tr>
-						<td>
-							<p>GiaoDich125</p>
-						</td>
-						<td>
-							<h5>273 Đường An Dương Vương P8, Quận 5</h5>
-						</td>
-						<td>
-							<p>0393913131</p>
-						</td>
-						<td>
-							<button class="view-more" onclick="location.href='historydetail.html'">Xem Thêm</button>
-						</td>
-					</tr>
-					</tbody>
-				</table>
-			</div>
-		</div>
-	</div>
+    <div class="order_details_table">
+        <h2>Chi Tiết Đơn Hàng</h2>
+        <div class="table-responsive">
+            <table class="table">
+                <thead>
+                <tr>
+                    <th scope="col">Mã Đơn Hàng</th>
+                    <th scope="col">Tên Khách Hàng</th>
+                    <th scope="col">Địa Chỉ</th>
+                    <th scope="col">Số Điện Thoại</th>
+                    <th scope="col">Xem Thêm</th>
+                </tr>
+                </thead>
+                <tbody>
+                <?php
+                if ($result->num_rows > 0) {
+                    while ($row = $result->fetch_assoc()) {
+                        echo "<tr>";
+                        echo "<td>" . $row["iddonhang"] . "</td>";
+                        echo "<td>" . $row["tenkh"] . "</td>";
+                        echo "<td>" . $row["diachi"] . "</td>";
+                        echo "<td>" . $row["sdt"] . "</td>";
+                        echo "<td><button class='view-more' onclick='location.href=\"historydetail.php?iddonhang=" . $row["iddonhang"] . "\"'>Xem Thêm</button></td>";
+                        echo "</tr>";
+                    }
+                } else {
+                    echo "<tr><td colspan='10'>Không có giao dịch nào.</td></tr>";
+                }
+                ?>
+                </tbody>
+            </table>
+        </div>
+    </div>
 </section>
 <footer class="footer-area section_gap">
 	<div class="container">
@@ -287,6 +215,10 @@
 		</div>
 	</div>
 </footer>
+<?php
+// Đóng kết nối cơ sở dữ liệu
+$conn->close();
+?>
 <!--================Kết Thúc Khu Vực Chi Tiết Đơn Hàng =================-->
 
 
