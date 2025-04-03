@@ -3,7 +3,7 @@ session_start(); // Bắt đầu session
 
 // Cấu hình kết nối CSDL
 $host = '127.0.0.1';
-$dbname = 'test';
+$dbname = 'huydata';
 $username = 'root';
 $password = '';
 
@@ -29,7 +29,6 @@ if (isset($_GET['add'])) {
     if (!$exists) {
         // Nếu chưa có, thêm sản phẩm với số lượng mặc định là 1
         $stmt = $pdo->prepare("INSERT INTO cart (idKH, idsp, quantity) VALUES (:idKH, :idsp, 1)");
-
         $stmt->execute(['idKH' => $customerId, 'idsp' => $idsp]);
 
         echo "<script>alert('Đã thêm vào giỏ hàng!'); window.location.href='cart.php';</script>";
@@ -129,7 +128,6 @@ include 'header.php';
             overflow: hidden;
             justify-content: center;
             color: #fff;
-            left: 50%;
             padding: 0 30px;
             line-height: 50px;
             border-radius: 50px;
@@ -156,6 +154,18 @@ include 'header.php';
         .customer-info h3 { font-size: 20px; font-weight: bold; margin-bottom: 15px; }
         .customer-info p { margin: 5px 0; font-size: 16px; }
         .total-amount { font-size: 18px; font-weight: bold; margin-top: 20px; }
+        .checkout-btn {
+            margin-left: 10px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            font-size: 14px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        .checkout-btn:hover { background-color: #45a049; }
     </style>
 </head>
 
@@ -179,34 +189,35 @@ include 'header.php';
     <h2>Giỏ hàng của bạn</h2>
     <div class="table-responsive">
         <table class="table">
-        <tr>
-            <th>Ảnh</th>
-            <th>Tên sản phẩm</th>
-            <th>Giá</th>
-            <th>Số lượng</th>
-            <th>Thành tiền</th>
-            <th>Hành động</th>
-        </tr>
-        <?php foreach ($cartItems as $item): ?>
-            <tr data-idcart="<?php echo $item['idcart']; ?>">
-                <td><img src="<?php echo $item['images']; ?>" width="50"></td>
-                <td><?php echo $item['tensp']; ?></td>
-                <td class="price" data-price="<?php echo $item['giathanh']; ?>">
-                    <?php echo number_format($item['giathanh'], 0, ',', '.') . ' VNĐ'; ?>
-                </td>
-                <td>
-                    <input type="number" class="quantity" value="<?php echo $item['quantity']; ?>" min="1" onchange="updateQuantity(this, <?php echo $item['idcart']; ?>)">
-                </td>
-                <td class="total-price">
-                    <?php echo number_format($item['giathanh'] * $item['quantity'], 0, ',', '.') . ' VNĐ'; ?>
-                </td>
-                <td><button onclick="deleteItem(<?php echo $item['idcart']; ?>)">Xóa</button></td>
+            <tr>
+                <th>Ảnh</th>
+                <th>Tên sản phẩm</th>
+                <th>Giá</th>
+                <th>Số lượng</th>
+                <th>Thành tiền</th>
+                <th>Hành động</th>
             </tr>
-        <?php endforeach; ?>
-    </table>
-    <h3>Tổng tiền: <span id="total-price"><?php echo number_format($total, 0, ',', '.') . ' VNĐ'; ?></span></h3>
-        <a class="primary-btn1" href="checkout.php">Tiến hành thanh toán</a>
-        </div>
+            <?php foreach ($cartItems as $item): ?>
+                <tr data-idcart="<?php echo $item['idcart']; ?>">
+                    <td><img src="<?php echo $item['images']; ?>" width="50"></td>
+                    <td><?php echo $item['tensp']; ?></td>
+                    <td class="price" data-price="<?php echo $item['giathanh']; ?>">
+                        <?php echo number_format($item['giathanh'], 0, ',', '.') . ' VNĐ'; ?>
+                    </td>
+                    <td>
+                        <input type="number" class="quantity" value="<?php echo $item['quantity']; ?>" min="1" onchange="updateQuantity(this, <?php echo $item['idcart']; ?>)">
+                    </td>
+                    <td class="total-price">
+                        <?php echo number_format($item['giathanh'] * $item['quantity'], 0, ',', '.') . ' VNĐ'; ?>
+                    </td>
+                    <td>
+                        <button onclick="deleteItem(<?php echo $item['idcart']; ?>)">Xóa</button>
+                        <a class="checkout-btn" href="checkout.php?idcart=<?php echo $item['idcart']; ?>">Thanh toán</a>
+                    </td>
+                </tr>
+            <?php endforeach; ?>
+        </table>
+        <h3>Tổng tiền: <span id="total-price"><?php echo number_format($total, 0, ',', '.') . ' VNĐ'; ?></span></h3>
     </div>
 </section>
 
@@ -245,6 +256,23 @@ include 'header.php';
                     updateTotal();
                 } else {
                     alert("Có lỗi xảy ra!");
+                }
+            });
+    }
+
+    function updateQuantity(input, idcart) {
+        let quantity = input.value;
+        fetch('cart.php', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+            body: new URLSearchParams({ update_quantity: 1, idcart: idcart, quantity: quantity })
+        })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    updateTotal();
+                } else {
+                    alert("Có lỗi xảy ra khi cập nhật số lượng!");
                 }
             });
     }
