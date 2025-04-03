@@ -1,5 +1,7 @@
+
 <?php
 // Kết nối cơ sở dữ liệu
+session_start();
 $servername = "localhost";
 $username = "root";
 $password = "";
@@ -12,17 +14,32 @@ if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
 
-// Lấy dữ liệu từ bảng donhang, ctdonhang, kh, sp
+// Kiểm tra xem người dùng đã đăng nhập chưa
+if (!isset($_SESSION['user_id'])) {
+    echo "<script>alert('Vui lòng đăng nhập để xem lịch sử giao dịch!'); window.location.href='login.php';</script>";
+    exit();
+}
+
+// Lấy user_id từ session
+$user_id = $_SESSION['user_id'];
+
+// Lấy dữ liệu từ bảng donhang, ctdonhang, kh, sp với điều kiện idKH
 $sql = "SELECT dh.iddonhang, dh.ngaymua, dh.trangthai, dh.diachi, dh.sdt, kh.tenkh, ctdh.idsp, ctdh.soluong, ctdh.giathanh, sp.tensp
         FROM donhang dh
         JOIN ctdonhang ctdh ON dh.iddonhang = ctdh.iddonhang
         JOIN kh ON dh.idKH = kh.idKH
         JOIN sp ON ctdh.idsp = sp.idsp
+        WHERE dh.idKH = ?
         ORDER BY dh.ngaymua DESC";
-$result = $conn->query($sql);
+
+// Sử dụng prepared statement để tránh SQL injection
+$stmt = $conn->prepare($sql);
+$stmt->bind_param("i", $user_id); // "i" là kiểu integer
+$stmt->execute();
+$result = $stmt->get_result();
+
 include 'header.php';
 ?>
-
 <!DOCTYPE html>
 <html lang="zxx" class="no-js">
 
@@ -102,11 +119,6 @@ include 'header.php';
 
 
 <!--================Khu Vực Chi Tiết Đơn Hàng =================-->
-<section class="banner-area">
-    <div class="container">
-        <h1>Lịch Sử Giao Dịch</h1>
-    </div>
-</section>
 
 <!-- Lịch sử giao dịch -->
 <section class="order_details section_gap">
