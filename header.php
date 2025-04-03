@@ -1,3 +1,27 @@
+<?php
+// Kết nối database
+$servername = "localhost";
+$username = "root";
+$password = "";
+$database = "test";
+
+$conn = new mysqli($servername, $username, $password, $database);
+
+// Kiểm tra lỗi kết nối
+if ($conn->connect_error) {
+    die("Kết nối thất bại: " . $conn->connect_error);
+}
+$sql_loaisp = "SELECT idloai, tenloai FROM loaisp";
+$result_loaisp = $conn->query($sql_loaisp);
+
+// Lưu danh mục vào mảng để sử dụng trong header
+$categories = [];
+if ($result_loaisp->num_rows > 0) {
+while ($row = $result_loaisp->fetch_assoc()) {
+$categories[] = $row;
+}
+}
+?>
 <!-- Start Header Area -->
 <header class="header_area sticky-header">
     <div class="main_menu">
@@ -24,7 +48,7 @@
                             <ul class="dropdown-menu">
                                 <?php if (isset($categories) && is_array($categories)): ?>
                                     <?php foreach ($categories as $category): ?>
-                                        <li class="nav-item"><a class="nav-link" href="category.php?id=<?= $category['idloai'] ?>">
+                                        <li class="nav-item"><a class="nav-link" href="category.php?idloai=<?= $category['idloai'] ?>">
                                                 <?= htmlspecialchars($category['tenloai']) ?></a></li>
                                     <?php endforeach; ?>
                                 <?php endif; ?>
