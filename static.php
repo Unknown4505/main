@@ -489,7 +489,7 @@ $result = $conn->query($sql);
           <td>" . $row["sanpham"] . "</td>
           <td>" . number_format($row["tongdoanhthu"], 0, ',', '.') . "</td>
           <td>" . $row["soluong_sanpham"] . "</td>
-          <td class='view-details'><a href='thongkesanphambanduoc.php?id=" . $row["idsp"] . "'>Chi Tiết</a></td>
+          <td class='view-details'><a href='thongkesanphambanduoc.php?idsp=" . $row["idsp"] . "'>Chi Tiết</a></td>
         </tr>";
         }
         } else {
