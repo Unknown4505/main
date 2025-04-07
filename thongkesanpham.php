@@ -21,16 +21,18 @@ die("Không tìm thấy khách hàng.");
 }
 
 // Truy vấn lấy thông tin chi tiết giao dịch của khách hàng
+// Truy vấn mới gộp sản phẩm theo đơn hàng
 $sql = "SELECT
-dh.iddonhang AS id_chuyen_hang,
-kh.tenkh AS ho_ten_khach_hang,
-sp.ten AS ten_san_pham,
-ctdh.soluong AS so_luong
+    dh.iddonhang AS id_chuyen_hang,
+    kh.tenkh AS ho_ten_khach_hang,
+    GROUP_CONCAT(CONCAT(sp.tensp, ' (', ctdh.soluong, ')') SEPARATOR ', ') AS danh_sach_san_pham
 FROM donhang dh
 JOIN kh ON dh.idKH = kh.idKH
 JOIN ctdonhang ctdh ON dh.iddonhang = ctdh.iddonhang
-JOIN sp ON ctdh.idsp = sp.id
-WHERE kh.idKH = $idKH";
+JOIN sp ON ctdh.idsp = sp.idsp
+WHERE kh.idKH = $idKH
+GROUP BY dh.iddonhang, kh.tenkh";
+
 
 $result = $conn->query($sql);
 ?>
@@ -466,24 +468,22 @@ $result = $conn->query($sql);
                     <th>ID Chuyến Hàng</th>
                     <th>Họ Tên Khách Hàng</th>
                     <th>Tên Sản Phẩm</th>
-                    <th>Số Lượng</th>
                     <th>Hành Động</th>
                 </tr>
                 </thead>
                 <tbody>
                 <?php
-            if ($result->num_rows > 0) {
-                while ($row = $result->fetch_assoc()) {
-                echo "<tr>
-                    <td>" . $row["id_chuyen_hang"] . "</td>
-                    <td>" . $row["ho_ten_khach_hang"] . "</td>
-                    <td>" . $row["ten_san_pham"] . "</td>
-                    <td>" . $row["so_luong"] . "</td>
-                    <td><a href='chitietthongkesanpham.php?id=" . $row["id_chuyen_hang"] . "' class='details-button'>Chi Tiết</a></td>
-                </tr>";
-                }
+                if ($result->num_rows > 0) {
+                    while ($row = $result->fetch_assoc()) {
+                        echo "<tr>
+        <td>" . $row["id_chuyen_hang"] . "</td>
+        <td>" . $row["ho_ten_khach_hang"] . "</td>
+        <td>" . $row["danh_sach_san_pham"] . "</td>
+        <td><a href='chitietgiaodich.php?iddonhang=" . $row["id_chuyen_hang"] . "' class='details-button'>Chi Tiết</a></td>
+    </tr>";
+                    }
                 } else {
-                echo "<tr><td colspan='5'>Không có dữ liệu</td></tr>";
+                    echo "<tr><td colspan='5'>Không có dữ liệu</td></tr>";
                 }
                 $conn->close();
                 ?>
