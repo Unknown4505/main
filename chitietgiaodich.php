@@ -407,6 +407,24 @@ $total += $row['soluong'] * $row['giathanh'];
     </ul>
   </nav>
 </header>
+<div class="admin-container">
+    <!-- Sidebar -->
+    <div class="sidebar">
+
+        <ul>
+            <li><a href="admin.php">Trang chủ</a></li>
+            <li><a href="managerp.php">Quản lí sản phẩm</a></li>
+            <li><a href="manager-user.html">Quản lí người dùng</a></li>
+            <li><a href="ManageCustomerOrder.html">Quản lí đơn hàng</a></li>
+            <li class="dropdown">
+                <a href="#statistics">Thống kê</a>
+                <ul class="dropdown-menu">
+                    <li><a href="static.php">Sản phẩm</a></li>
+                    <li><a href="static2.php">Người dùng</a></li>
+                </ul>
+            </li>
+        </ul>
+    </div>
   <div class="container">
     <h2>Chi Tiết Hóa Đơn</h2>
 
