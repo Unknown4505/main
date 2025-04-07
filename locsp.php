@@ -82,11 +82,19 @@ $stt=1;
                 <td><img src='".$row["images"]."' alt='Sản phẩm' class='product-img' width='100'></td> <!-- Đổi 'hinhanh' thành 'images' -->
                 <td>".number_format($row["giathanh"])."đ</td> <!-- Đổi 'gia' thành 'giathanh' -->
                 <td>".$row["soluong"]."</td>
-                <td>
-                    <a href='managerp.php?delete_id=".$row['idsp']."' class='action-btn' onclick=\"return confirm('Bạn có chắc chắn muốn xóa sản phẩm này?')\">Xóa</a>
-                    <a href='edit-product.php?idsp=".$row['idsp']."' class='action-btn'>Sửa</a>
-                </td>
-              </tr>";
+                <td style='text-align: center;'>";
+
+            // Kiểm tra trạng thái ẩn và hiển thị nút tương ứng
+            if ($row["ansp"] == 1) {
+                echo "<a href='managerp.php?toggle_id=".$row['idsp']."' class='action-btn btn-secondary' onclick=\"return confirm('Bạn có chắc chắn muốn hiển thị lại sản phẩm này?')\">Bỏ ẩn</a>";
+            } else {
+                echo "<a href='managerp.php?toggle_id=".$row['idsp']."' class='action-btn btn-warning' onclick=\"return confirm('Bạn có chắc chắn muốn ẩn sản phẩm này?')\">Ẩn</a>";
+            }
+
+            // Nút sửa và xóa
+            echo " <a href='edit-product.php?idsp=".$row['idsp']."' class='action-btn btn-primary'>Sửa</a>
+               <a href='managerp.php?delete_id=".$row['idsp']."' class='action-btn btn-danger' onclick=\"return confirm('Bạn có chắc chắn muốn xóa sản phẩm này?')\">Xóa</a>
+              </td></tr>";
             $stt++;
         }
         echo "</table>";
