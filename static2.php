@@ -449,7 +449,6 @@ $result = $conn->query($sql);
           <th>STT</th>
           <th>Tên Khách Hàng</th>
           <th>Tổng Doanh Thu (VNĐ)</th>
-          <th>Số Lượng Sản Phẩm</th>
           <th>Hành Động</th>
         </tr>
         </thead>
@@ -462,7 +461,6 @@ $result = $conn->query($sql);
           <td>" . $stt++ . "</td>
           <td>" . $row["tenkh"] . "</td>
           <td>" . number_format($row["tongdoanhthu"], 0, ',', '.') . " VNĐ</td>
-          <td>" . $row["soluong"] . "</td>
           <td class='view-details'><a href='thongkesanpham.php?idKH=" . $row["idKH"] . "'>Chi Tiết</a></td>
         </tr>";
         }
