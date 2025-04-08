@@ -2,7 +2,7 @@
 $servername = "localhost";
 $username = "root";
 $password = "";
-$database = "mydatabase";
+$database = "test";
 
 $conn = new mysqli($servername, $username, $password, $database);
 if ($conn->connect_error) {
@@ -120,18 +120,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['ajax_update_status'])
     <link rel="stylesheet" href="css/ManageCustomerOrder.css">
 </head>
 <body>
-<header style="background-color: rgb(255,255,255); color: #0b0b0b; padding: 20px 40px; display: flex; align-items: center; justify-content: space-between; font-size: 28px; border-bottom: 5px solid #0b0b0b;">
-    <div style="flex: 0; display: flex; align-items: center;">
-        <img src="img/fav.png" alt="Karma Logo" style="width: 60px; height: 60px; border-radius: 50%; margin-right: 20px;">
-        <h1 style="margin: 0; font-size: 20px;">Karma Shop</h1>
-    </div>
-    <nav style="flex: 1; text-align: center">
-        <ul style="list-style: none; display: flex; justify-content: right; margin: 0; padding: 0;">
-            <li style="margin: 0 20px;"><a href="admin.html" style="color: #0b0b0b; text-decoration: none; font-size: 22px;">Admin</a></li>
-            <li style="margin: 0 20px;"><a href="dangxuatadmin.html" style="color: #0b0b0b; text-decoration: none; font-size: 22px;">Đăng xuất</a></li>
-        </ul>
-    </nav>
-</header>
+<?php include 'header-admin.php'?>
 
 <div class="admin-container">
     <?php include 'sidebar.php'; ?>
