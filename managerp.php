@@ -446,7 +446,7 @@
             </form>
         </div>
 
-      <a href="add-product.html" class="btn-link">Thêm</a>
+      <a href="add-product.php" class="btn-link">Thêm</a>
       <h2>Danh sách sản phẩm:</h2>
         <div id="product-list">
         <?php include 'getp.php'; ?>
