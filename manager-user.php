@@ -311,7 +311,7 @@ $result = $conn->query($query);
 <?php include 'header-admin.php'?>
 
 <div class="admin-container">
-    <?php include 'sidebar.php'; ?>
+    <?php include 'sidebar.php' ?>
     <div class="dashboard-container">
         <!-- Header Section -->
         <header class="main-header">
