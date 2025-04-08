@@ -20,12 +20,20 @@ if (!isset($_SESSION['admin_id'])) {
 }
 
 // Xử lý tìm kiếm theo tên
-$search_query = "";
 if (isset($_GET['product-name']) && !empty($_GET['product-name'])) {
     $search_query = $conn->real_escape_string($_GET['product-name']);
-$query = "SELECT * FROM kh WHERE tenkh LIKE '%$search_query%'";
+    $_SESSION['search_query'] = $search_query;
+    header("Location: manager-user.php?filtered=1");
+    exit;
+}
+
+// Nếu có kết quả lọc từ session
+if (isset($_GET['filtered']) && isset($_SESSION['search_query'])) {
+    $search_query = $_SESSION['search_query'];
+    $query = "SELECT * FROM kh WHERE tenkh LIKE '%$search_query%'";
+    unset($_SESSION['search_query']); // Xóa sau khi dùng 1 lần
 } else {
-$query = "SELECT * FROM kh";
+    $query = "SELECT * FROM kh";
 }
 
 $result = $conn->query($query);
@@ -318,7 +326,7 @@ $result = $conn->query($query);
             <h1>Quản lí người dùng </h1>
         </header>
         <div class="filter-container">
-            <form method="GET" action="your_backend_endpoint">
+            <form method="GET" action="manager-user.php">
 
                 <!-- Lọc theo tên -->
                 <div class="filter-name">
@@ -332,7 +340,7 @@ $result = $conn->query($query);
                 </div>
                 <!-- Nút tìm kiếm -->
                 <div class="filter-actions">
-                    <a href="manager-user.html" type="submit" class="filter-btn">Lọc</a>
+                    <button  type="submit" class="filter-btn">Lọc</button>
                 </div>
             </form>
         </div>
