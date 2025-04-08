@@ -265,44 +265,11 @@ $conn->close();
 </style>
 </head>
 <body>
-<header style="background-color: rgb(255,255,255); color: #0b0b0b; padding: 20px 40px; display: flex; align-items: center; justify-content: space-between; font-size: 28px; border-bottom: 5px solid #0b0b0b;">
-  <!-- Logo bên trái -->
-  <div style="flex: 0; display: flex; align-items: center;">
-    <img src="img/fav.png" alt="Karma Logo" style="width: 60px; height: 60px; border-radius: 50%; margin-right: 20px;">
-<h1 style="margin: 0; font-size: 20px; font-weight: bold; text-align: center;">Karma Shop</h1>
-  </div>
 
-  <!-- Phần menu bên phải -->
-  <nav style="flex: 1;text-align: center">
-    <ul style="list-style: none; display: flex; justify-content: right; margin: 0; padding: 0;">
-      <li style="margin: 0 20px;"><a href="admin.php" style="color: #0b0b0b; text-decoration: none; font-size: 22px;">Admin</a></li>
-      <li style="margin: 0 20px;"><a href="dangxuatadmin.html" style="color: #0b0b0b; text-decoration: none; font-size: 22px;">Đăng xuất</a></li>
-    </ul>
-  </nav>
-</header>
-
-
-
-
-
+<?php include 'header-admin.php' ?>
 <div class="admin-container">
   <!-- Sidebar -->
-  <div class="sidebar">
-
-    <ul>
-      <li><a href="admin.php">Trang chủ</a></li>
-      <li><a href="managerp.php">Quản lí sản phẩm</a></li>
-      <li><a href="manager-user.html">Quản lí người dùng</a></li>
-      <li><a href="ManageCustomerOrder.html">Quản lí đơn hàng</a></li>
-      <li class="dropdown">
-        <a href="#statistics">Thống kê</a>
-        <ul class="dropdown-menu">
-          <li><a href="static.php">Sản phẩm</a></li>
-          <li><a href="static2.php">Người dùng</a></li>
-        </ul>
-      </li>
-    </ul>
-  </div>
+<?php include 'sidebar.php' ?>
 
   <!-- Main Content -->
   <div class="main-content">
