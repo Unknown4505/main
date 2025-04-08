@@ -33,25 +33,9 @@
     </script>
 </head>
 <body>
-<header>
-    <h1>Karma Shop - Admin</h1>
-</header>
+<?php include 'header-admin.php' ?>
 <div class="admin-container">
-    <div class="sidebar">
-        <ul>
-            <li><a href="admin.html">Trang chủ</a></li>
-            <li><a href="managerp.php">Quản lý sản phẩm</a></li>
-            <li><a href="manager-user.html">Quản lí người dùng</a></li>
-            <li><a href="ManageCustomerOrder.html">Quản lí đơn hàng</a></li>
-            <li class="dropdown">
-                <a href="#statistics">Thống kê</a>
-                <ul class="dropdown-menu">
-                    <li><a href="static.html">Sản phẩm</a></li>
-                    <li><a href="static2.html">Người dùng</a></li>
-                </ul>
-            </li>
-        </ul>
-    </div>
+    <?php include 'sidebar.php' ?>
     <div class="main-content">
         <h1>Thêm Sản Phẩm</h1>
         <form id="addProductForm" action="adp.php" method="POST" enctype="multipart/form-data">
