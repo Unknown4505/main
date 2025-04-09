@@ -41,15 +41,23 @@ if (!empty($_GET['query'])) {
 
 // Nếu có khoảng giá
 if (!empty($_GET['priceRange'])) {
-    [$minPrice, $maxPrice] = explode("-", $_GET['priceRange']);
-    $minPrice = intval($minPrice);
-    $maxPrice = intval($maxPrice);
+    if ($_GET['priceRange'] === "10000000-") {
+        $minPrice = 10000000;
+        $sql .= " AND sp.giathanh >= ?";
+        $types .= "i";
+        $params[] = &$minPrice;
+    } else {
+        [$minPrice, $maxPrice] = explode("-", $_GET['priceRange']);
+        $minPrice = intval($minPrice);
+        $maxPrice = intval($maxPrice);
 
-    $sql .= " AND sp.giathanh BETWEEN ? AND ?";
-    $types .= "ii"; // Cả hai là số nguyên
-    $params[] = &$minPrice;
-    $params[] = &$maxPrice;
+        $sql .= " AND sp.giathanh BETWEEN ? AND ?";
+        $types .= "ii";
+        $params[] = &$minPrice;
+        $params[] = &$maxPrice;
+    }
 }
+
 
 // Chuẩn bị truy vấn
 $stmt = $conn->prepare($sql);
@@ -293,6 +301,7 @@ include 'header.php';
                 <option value="0-2500000" <?php if (isset($_GET['priceRange']) && $_GET['priceRange'] == "0-2500000") echo "selected"; ?>>0đ - 2.500.000đ</option>
                 <option value="2500000-5000000" <?php if (isset($_GET['priceRange']) && $_GET['priceRange'] == "2500000-5000000") echo "selected"; ?>>2.500.000đ - 5.000.000đ</option>
                 <option value="5000000-10000000" <?php if (isset($_GET['priceRange']) && $_GET['priceRange'] == "5000000-10000000") echo "selected"; ?>>5.000.000đ - 10.000.000đ</option>
+                <option value="10000000-" <?php if (isset($_GET['priceRange']) && $_GET['priceRange'] == "10000000-") echo "selected"; ?>>Trên 10.000.000đ</option>
             </select>
 
             <button type="submit" class="apply-filter-button">Áp dụng</button>
