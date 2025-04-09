@@ -21,33 +21,109 @@ $customerId = $_SESSION['user_id'] ?? 1;
 if (isset($_GET['add'])) {
     $idsp = intval($_GET['add']);
 
+    // Kiểm tra số lượng tồn kho
+    $stmt = $pdo->prepare("SELECT soluong FROM sp WHERE idsp = :idsp FOR UPDATE");
+    $stmt->execute(['idsp' => $idsp]);
+    $availableQuantity = $stmt->fetchColumn();
+
+    if ($availableQuantity === false || $availableQuantity < 1) {
+        echo "<script>alert('Sản phẩm đã hết hàng!'); window.location.href='cart.php';</script>";
+        exit();
+    }
+
     // Kiểm tra xem sản phẩm đã có trong giỏ hàng chưa
     $stmt = $pdo->prepare("SELECT * FROM cart WHERE idKH = :idKH AND idsp = :idsp");
     $stmt->execute(['idKH' => $customerId, 'idsp' => $idsp]);
     $exists = $stmt->fetch(PDO::FETCH_ASSOC);
 
-    if (!$exists) {
-        // Nếu chưa có, thêm sản phẩm với số lượng mặc định là 1
-        $stmt = $pdo->prepare("INSERT INTO cart (idKH, idsp, quantity) VALUES (:idKH, :idsp, 1)");
-        $stmt->execute(['idKH' => $customerId, 'idsp' => $idsp]);
+    $pdo->beginTransaction();
+    try {
+        if (!$exists) {
+            // Nếu chưa có, thêm sản phẩm với số lượng mặc định là 1
+            $stmt = $pdo->prepare("INSERT INTO cart (idKH, idsp, quantity) VALUES (:idKH, :idsp, 1)");
+            $stmt->execute(['idKH' => $customerId, 'idsp' => $idsp]);
 
+            // Trừ số lượng tồn kho
+            $stmt = $pdo->prepare("UPDATE sp SET soluong = soluong - 1 WHERE idsp = :idsp");
+            $stmt->execute(['idsp' => $idsp]);
+        } else {
+            // Nếu đã có, kiểm tra số lượng tồn kho trước khi tăng
+            $newQuantity = $exists['quantity'] + 1;
+            if ($availableQuantity < 1) {
+                echo "<script>alert('Số lượng tồn kho không đủ!'); window.location.href='cart.php';</script>";
+                $pdo->rollBack();
+                exit();
+            }
+            $stmt = $pdo->prepare("UPDATE cart SET quantity = quantity + 1 WHERE idcart = :idcart");
+            $stmt->execute(['idcart' => $exists['idcart']]);
+
+            // Trừ số lượng tồn kho
+            $stmt = $pdo->prepare("UPDATE sp SET soluong = soluong - 1 WHERE idsp = :idsp");
+            $stmt->execute(['idsp' => $idsp]);
+        }
+        $pdo->commit();
         echo "<script>alert('Đã thêm vào giỏ hàng!'); window.location.href='cart.php';</script>";
-    } else {
-        echo "<script>alert('Sản phẩm đã có trong giỏ hàng!'); window.location.href='cart.php';</script>";
+    } catch (PDOException $e) {
+        $pdo->rollBack();
+        echo "<script>alert('Lỗi khi thêm vào giỏ hàng: " . $e->getMessage() . "'); window.location.href='cart.php';</script>";
     }
 }
 
 // Xử lý cập nhật số lượng sản phẩm trong giỏ hàng
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_quantity'])) {
     $idcart = $_POST['idcart'];
-    $quantity = max(1, intval($_POST['quantity'])); // Số lượng không thể nhỏ hơn 1
+    $quantity = intval($_POST['quantity']); // Không sử dụng max(1, ...) để cho phép 0
 
+    $pdo->beginTransaction();
     try {
-        $stmt = $pdo->prepare("UPDATE cart SET quantity = :quantity WHERE idcart = :idcart AND idKH = :idKH");
-        $stmt->execute(['quantity' => $quantity, 'idcart' => $idcart, 'idKH' => $customerId]);
+        // Lấy thông tin hiện tại từ giỏ hàng
+        $stmt = $pdo->prepare("SELECT idsp, quantity FROM cart WHERE idcart = :idcart AND idKH = :idKH");
+        $stmt->execute(['idcart' => $idcart, 'idKH' => $customerId]);
+        $cartItem = $stmt->fetch(PDO::FETCH_ASSOC);
 
-        echo json_encode(['success' => true]);
+        if ($cartItem) {
+            // Kiểm tra tồn kho hiện tại
+            $stmt = $pdo->prepare("SELECT soluong FROM sp WHERE idsp = :idsp FOR UPDATE");
+            $stmt->execute(['idsp' => $cartItem['idsp']]);
+            $availableQuantity = $stmt->fetchColumn();
+
+            $currentTotalQuantity = $cartItem['quantity']; // Số lượng hiện tại trong giỏ
+            $newTotalQuantity = $quantity; // Số lượng mới muốn đặt
+            $quantityDiff = $newTotalQuantity - $currentTotalQuantity;
+
+            // Kiểm tra tồn kho trước khi cập nhật
+            if ($newTotalQuantity > 0 && $availableQuantity + $currentTotalQuantity < $newTotalQuantity) {
+                echo json_encode(['success' => false, 'message' => 'Số lượng vượt quá tồn kho! Tồn kho còn ' . $availableQuantity . ' sản phẩm.']);
+                $pdo->rollBack();
+                exit();
+            }
+
+            if ($newTotalQuantity === 0) {
+                // Nếu số lượng = 0, xóa sản phẩm khỏi giỏ hàng
+                $stmt = $pdo->prepare("DELETE FROM cart WHERE idcart = :idcart AND idKH = :idKH");
+                $stmt->execute(['idcart' => $idcart, 'idKH' => $customerId]);
+
+                // Cộng lại số lượng tồn kho
+                $stmt = $pdo->prepare("UPDATE sp SET soluong = soluong + :quantity WHERE idsp = :idsp");
+                $stmt->execute(['quantity' => $currentTotalQuantity, 'idsp' => $cartItem['idsp']]);
+            } else {
+                // Cập nhật số lượng nếu > 0
+                $stmt = $pdo->prepare("UPDATE cart SET quantity = :quantity WHERE idcart = :idcart AND idKH = :idKH");
+                $stmt->execute(['quantity' => $quantity, 'idcart' => $idcart, 'idKH' => $customerId]);
+
+                // Cập nhật tồn kho
+                $stmt = $pdo->prepare("UPDATE sp SET soluong = soluong - :diff WHERE idsp = :idsp");
+                $stmt->execute(['diff' => $quantityDiff, 'idsp' => $cartItem['idsp']]);
+            }
+
+            $pdo->commit();
+            echo json_encode(['success' => true]);
+        } else {
+            echo json_encode(['success' => false, 'message' => 'Không tìm thấy sản phẩm trong giỏ hàng!']);
+            $pdo->rollBack();
+        }
     } catch (PDOException $e) {
+        $pdo->rollBack();
         echo json_encode(['success' => false, 'message' => 'Lỗi khi cập nhật số lượng: ' . $e->getMessage()]);
     }
     exit();
@@ -57,28 +133,37 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_quantity'])) {
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete_item'])) {
     $idcart = $_POST['idcart'];
 
-    try {
-        $stmt = $pdo->prepare("DELETE FROM cart WHERE idcart = :idcart AND idKH = :idKH");
-        $stmt->execute(['idcart' => $idcart, 'idKH' => $customerId]);
+    $stmt = $pdo->prepare("SELECT idsp, quantity FROM cart WHERE idcart = :idcart AND idKH = :idKH");
+    $stmt->execute(['idcart' => $idcart, 'idKH' => $customerId]);
+    $cartItem = $stmt->fetch(PDO::FETCH_ASSOC);
 
-        echo json_encode(['success' => true]);
-    } catch (PDOException $e) {
-        echo json_encode(['success' => false, 'message' => 'Lỗi khi xóa sản phẩm: ' . $e->getMessage()]);
+    if ($cartItem) {
+        $pdo->beginTransaction();
+        try {
+            $stmt = $pdo->prepare("DELETE FROM cart WHERE idcart = :idcart AND idKH = :idKH");
+            $stmt->execute(['idcart' => $idcart, 'idKH' => $customerId]);
+
+            $stmt = $pdo->prepare("UPDATE sp SET soluong = soluong + :quantity WHERE idsp = :idsp");
+            $stmt->execute(['quantity' => $cartItem['quantity'], 'idsp' => $cartItem['idsp']]);
+
+            $pdo->commit();
+            echo json_encode(['success' => true]);
+        } catch (PDOException $e) {
+            $pdo->rollBack();
+            echo json_encode(['success' => false, 'message' => 'Lỗi khi xóa sản phẩm: ' . $e->getMessage()]);
+        }
     }
     exit();
 }
 
 // Xử lý thanh toán toàn bộ giỏ hàng
 if (isset($_POST['checkout_all'])) {
-    // Lấy tất cả sản phẩm trong giỏ hàng
     $stmt = $pdo->prepare("SELECT * FROM cart WHERE idKH = :idKH");
     $stmt->execute(['idKH' => $customerId]);
     $cartItems = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
     if (count($cartItems) > 0) {
-        // Lưu thông tin giỏ hàng vào session để sử dụng ở trang checkout
         $_SESSION['cart_items'] = $cartItems;
-        // Chuyển hướng đến trang thanh toán
         header("Location: checkout.php");
         exit();
     } else {
@@ -88,7 +173,7 @@ if (isset($_POST['checkout_all'])) {
 
 // Lấy danh sách sản phẩm trong giỏ hàng
 $stmt = $pdo->prepare("
-    SELECT cart.idcart, sp.idsp, sp.tensp, sp.giathanh, sp.images, cart.quantity
+    SELECT cart.idcart, sp.idsp, sp.tensp, sp.giathanh, sp.images, sp.soluong AS available_quantity, cart.quantity
     FROM cart
     JOIN sp ON cart.idsp = sp.idsp
     WHERE cart.idkh = :idkh
@@ -185,13 +270,26 @@ include 'header.php';
         }
         .checkout-btn:hover, .checkout-all-btn:hover { background-color: #45a049; }
         .checkout-btn:focus, .checkout-all-btn:focus { outline: none; }
+        .stock-info {
+            color: #ff0000;
+            font-size: 12px;
+            margin-top: 5px;
+        }
+        .out-of-stock {
+            background-color: #ffebee;
+            color: #c62828;
+        }
+        .quantity {
+            width: 60px;
+            padding: 5px;
+        }
     </style>
 </head>
 
 <body>
 
 <!-- Header Area -->
-
+<?php include 'header.php'; ?>
 
 <!-- Banner Area -->
 <section class="banner-area organic-breadcrumb">
@@ -203,7 +301,6 @@ include 'header.php';
 </section>
 
 <!-- Cart Area -->
-<!-- Hiển thị giỏ hàng -->
 <section>
     <h2>Giỏ hàng của bạn</h2>
     <div class="table-responsive">
@@ -215,22 +312,29 @@ include 'header.php';
                 <th>Số lượng</th>
                 <th>Thành tiền</th>
                 <th>Hành động</th>
+                <th>Tồn kho</th>
             </tr>
             <?php foreach ($cartItems as $item): ?>
-                <tr data-idcart="<?php echo $item['idcart']; ?>">
+                <tr data-idcart="<?php echo $item['idcart']; ?>" class="<?php echo $item['available_quantity'] < 1 ? 'out-of-stock' : ''; ?>">
                     <td><img src="<?php echo $item['images']; ?>" width="50"></td>
                     <td><?php echo $item['tensp']; ?></td>
                     <td class="price" data-price="<?php echo $item['giathanh']; ?>">
                         <?php echo number_format($item['giathanh'], 0, ',', '.') . ' VNĐ'; ?>
                     </td>
                     <td>
-                        <input type="number" class="quantity" value="<?php echo $item['quantity']; ?>" min="1" onchange="updateQuantity(this, <?php echo $item['idcart']; ?>)">
+                        <input type="number" class="quantity" value="<?php echo $item['quantity']; ?>" min="0" max="<?php echo $item['available_quantity']; ?>" onchange="updateQuantity(this, <?php echo $item['idcart']; ?>)">
                     </td>
                     <td class="total-price">
                         <?php echo number_format($item['giathanh'] * $item['quantity'], 0, ',', '.') . ' VNĐ'; ?>
                     </td>
                     <td>
                         <button onclick="deleteItem(<?php echo $item['idcart']; ?>)" class="delete-btn">Xóa</button>
+                    </td>
+                    <td>
+                        <span class="stock-info">Còn: <?php echo $item['available_quantity']; ?> sản phẩm</span>
+                        <?php if ($item['available_quantity'] < 1): ?>
+                            <p class="stock-info">Hết hàng</p>
+                        <?php endif; ?>
                     </td>
                 </tr>
             <?php endforeach; ?>
@@ -275,6 +379,7 @@ include 'header.php';
                 if (data.success) {
                     document.querySelector(`tr[data-idcart='${idcart}']`).remove();
                     updateTotal();
+                    location.reload(); // Tải lại trang để cập nhật tồn kho
                 } else {
                     alert("Có lỗi xảy ra!");
                 }
@@ -282,7 +387,19 @@ include 'header.php';
     }
 
     function updateQuantity(input, idcart) {
-        let quantity = input.value;
+        let quantity = parseInt(input.value);
+        let maxQuantity = parseInt(input.getAttribute('max')); // Lấy max từ thuộc tính HTML
+
+        // Không cho phép số lượng âm hoặc vượt quá tồn kho
+        if (quantity > maxQuantity) {
+            alert('Số lượng vượt quá tồn kho! Số lượng tối đa là ' + maxQuantity);
+            input.value = maxQuantity;
+            quantity = maxQuantity;
+        } else if (quantity < 0) {
+            input.value = 0;
+            quantity = 0;
+        }
+
         fetch('cart.php', {
             method: 'POST',
             headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
@@ -291,9 +408,15 @@ include 'header.php';
             .then(response => response.json())
             .then(data => {
                 if (data.success) {
+                    if (quantity === 0) {
+                        document.querySelector(`tr[data-idcart='${idcart}']`).remove(); // Xóa dòng nếu quantity = 0
+                    }
                     updateTotal();
+                    location.reload(); // Tải lại trang để cập nhật tồn kho và giao diện
                 } else {
-                    alert("Có lỗi xảy ra khi cập nhật số lượng!");
+                    alert(data.message || 'Có lỗi xảy ra khi cập nhật số lượng!');
+                    input.value = parseInt(input.getAttribute('data-original-quantity')); // Khôi phục giá trị cũ
+                    updateTotal();
                 }
             });
     }
@@ -307,6 +430,13 @@ include 'header.php';
         });
         document.getElementById('total-price').textContent = total.toLocaleString('vi-VN') + " VNĐ";
     }
+
+    // Lưu giá trị ban đầu của quantity khi tải trang
+    document.addEventListener('DOMContentLoaded', function() {
+        document.querySelectorAll('.quantity').forEach(input => {
+            input.setAttribute('data-original-quantity', input.value);
+        });
+    });
 </script>
 </body>
 </html>
