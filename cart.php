@@ -1,6 +1,10 @@
 <?php
 session_start(); // Bắt đầu session
 
+if (!isset($_SESSION['user_id'])) {
+    header("Location: login.php");
+    exit;
+}
 // Cấu hình kết nối CSDL
 $host = '127.0.0.1';
 $dbname = 'test';
