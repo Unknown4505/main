@@ -223,68 +223,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['place_order'])) {
 <body>
 
 <!-- Start Header Area -->
-<header class="header_area sticky-header">
-    <div class="main_menu">
-        <nav class="navbar navbar-expand-lg navbar-light main_box">
-            <div class="container">
-                <a class="navbar-brand logo_h" href="index.html"><img src="img/logo.png" alt=""></a>
-                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
-                        aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                <div class="collapse navbar-collapse offset" id="navbarSupportedContent">
-                    <ul class="nav navbar-nav menu_nav ml-auto">
-                        <li class="nav-item active"><a class="nav-link" href="index2.html">Trang chủ</a></li>
-                        <li class="nav-item submenu dropdown">
-                            <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
-                               aria-expanded="false">Sản phẩm</a>
-                            <ul class="dropdown-menu">
-                                <li class="nav-item"><a class="nav-link" href="category.html">Adidas</a></li>
-                                <li class="nav-item"><a class="nav-link" href="category1.html">Vans</a></li>
-                                <li class="nav-item"><a class="nav-link" href="category2.html">Nike</a></li>
-                            </ul>
-                        </li>
-                        <li class="nav-item"><a class="nav-link" href="checkout.php">Thanh toán</a></li>
-                    </ul>
-                    <input type="checkbox" id="search-toggle" class="search-toggle" hidden>
-                    <div class="search_input">
-                        <form id="search-form" action="ResultOfSearch.html" method="GET" class="d-flex justify-content-between">
-                            <input type="text" class="search-input" name="query" placeholder="Tìm kiếm" required>
-                            <button type="submit" class="search-btn">
-                                <span class="lnr lnr-magnifier"></span>
-                            </button>
-                            <label for="search-toggle" class="lnr lnr-cross" title="Đóng tìm kiếm"></label>
-                        </form>
-                    </div>
-                    <ul class="nav navbar-nav navbar-right">
-                        <li class="nav-item"><a href="cart.php" class="cart"><span class="ti-bag"></span></a></li>
-                        <li class="nav-item">
-                            <label for="search-toggle" class="search-icon">
-                                <span class="lnr lnr-magnifier"></span>
-                            </label>
-                        </li>
-                    </ul>
-                    <ul class="nav navbar-nav navbar-right">
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle user-btn" href="" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <span class="username">Người dùng</span>
-                                <span class="lnr lnr-user"></span>
-                            </a>
-                            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                <a class="dropdown-item" href="User.html">Thông tin người dùng</a>
-                                <a class="dropdown-item" href="confirmation.php">Lịch sử giao dịch</a>
-                                <div class="dropdown-divider"></div>
-                                <a class="dropdown-item" href="index.html">Đăng xuất</a>
-                            </div>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </nav>
-    </div>
-</header>
+<?php include 'header.php'?>
 <!-- End Header Area -->
 
 <!-- Start Banner Area -->
@@ -415,7 +354,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['place_order'])) {
                 <p>Bạn đã đặt hàng thành công</p>
             </div>
             <div class="modal-footer">
-                <a href="index2.php" class="btn">Quay lại trang chủ</a>
+                <a href="index.php" class="btn">Quay lại trang chủ</a>
             </div>
         </div>
     </div>
