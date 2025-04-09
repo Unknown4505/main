@@ -41,6 +41,9 @@ foreach ($cartItems as $item) {
     }
 }
 
+// Lấy phương thức thanh toán mặc định hoặc từ form
+$paymentMethod = $_POST['payment_method'] ?? 'Tiền mặt';
+
 // Biến để kiểm tra xem có hiển thị modal hay không
 $showSuccessModal = false;
 
@@ -50,10 +53,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['place_order'])) {
     $phone = $_POST['number'] ?? '';
     $address = $_POST['address'] ?? '';
     $notes = $_POST['notes'] ?? '';
-    $paymentMethod = $_POST['payment_method'] ?? 'Tiền mặt'; // Mặc định là "Tiền mặt" nếu không chọn
+    $paymentMethod = $_POST['payment_method'] ?? 'Tiền mặt';
 
     try {
-        // Bắt đầu transaction để đảm bảo tính toàn vẹn dữ liệu
         $pdo->beginTransaction();
 
         // Lưu đơn hàng vào bảng `donhang`
@@ -67,12 +69,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['place_order'])) {
             'phuongthucthanhtoan' => $paymentMethod
         ]);
 
-        // Lấy ID của đơn hàng vừa tạo
         $orderId = $pdo->lastInsertId();
 
-        // Lưu chi tiết đơn hàng vào bảng `ctdonhang`
+        // Lưu chi tiết đơn hàng và giảm số lượng tồn kho
         foreach ($cartItems as $item) {
-            $stmt = $pdo->prepare("SELECT giathanh FROM sp WHERE idsp = :idsp");
+            $stmt = $pdo->prepare("SELECT giathanh FROM sp WHERE idsp = :idsp FOR UPDATE");
             $stmt->execute(['idsp' => $item['idsp']]);
             $giathanh = $stmt->fetchColumn();
             if ($giathanh !== false) {
@@ -81,8 +82,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['place_order'])) {
                     'iddonhang' => $orderId,
                     'idsp' => $item['idsp'],
                     'soluong' => $item['quantity'],
-                    'giathanh' => $giathanh // Lấy giá từ bảng sp
+                    'giathanh' => $giathanh
                 ]);
+
+                // Giảm số lượng tồn kho
+                $stmt = $pdo->prepare("UPDATE sp SET soluong = soluong - :quantity WHERE idsp = :idsp");
+                $stmt->execute(['quantity' => $item['quantity'], 'idsp' => $item['idsp']]);
             }
         }
 
@@ -177,6 +182,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['place_order'])) {
         }
         .order-btn:hover {
             background-color: #e63939;
+        }
+        .stock-info {
+            color: #ff0000;
+            font-size: 12px;
+            margin-top: 5px;
         }
         /* CSS cho modal */
         .modal-content {
@@ -304,7 +314,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['place_order'])) {
                     <div class="col-md-12 form-group">
                         <label for="name">Tên người nhận:</label>
                         <input type="text" class="form-control" id="name" name="name" placeholder="Tên người nhận"
-                               value="<?php echo htmlspecialchars($customer['diachi'] ?? ''); ?>" required>
+                               value="<?php echo htmlspecialchars($customer['tenkh'] ?? ''); ?>" required>
                     </div>
                     <div class="col-md-12 form-group">
                         <label for="number">Số điện thoại:</label>
@@ -348,7 +358,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['place_order'])) {
                     </div>
 
                     <input type="hidden" name="place_order" value="1">
-                    <button type="submit" class="order-btn">Đặt hàng</button>
+                    <button type="submit" class="order-btn" form="checkoutForm">Đặt hàng</button>
                 </form>
             </div>
 
@@ -357,29 +367,34 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['place_order'])) {
                 <div class="order-summary">
                     <h4>Tóm tắt hóa đơn</h4>
                     <div class="product-list">
-                        <?php foreach ($cartItems as $item): ?>
-                            <?php
-                            $stmt = $pdo->prepare("SELECT tensp, giathanh, images FROM sp WHERE idsp = :idsp");
-                            $stmt->execute(['idsp' => $item['idsp']]);
-                            $product = $stmt->fetch(PDO::FETCH_ASSOC);
-                            ?>
-                            <div class="product-item">
-                                <p><strong>Tên sản phẩm:</strong> <?php echo htmlspecialchars($product['tensp']); ?></p>
-                                <p><strong>Số lượng:</strong> <?php echo htmlspecialchars($item['quantity']); ?></p>
-                                <p><strong>Giá:</strong> <?php echo number_format($product['giathanh'], 0, ',', '.') . 'đ'; ?></p>
-                                <p><strong>Hình ảnh:</strong> <img src="<?php echo htmlspecialchars($product['images']); ?>" width="50"></p>
-                            </div>
-                        <?php endforeach; ?>
+                        <?php if (!$cartItems): ?>
+                            <p>Không có sản phẩm nào trong giỏ hàng.</p>
+                        <?php else: ?>
+                            <?php foreach ($cartItems as $item): ?>
+                                <?php
+                                $stmt = $pdo->prepare("SELECT tensp, giathanh, images, soluong AS available_quantity FROM sp WHERE idsp = :idsp");
+                                $stmt->execute(['idsp' => $item['idsp']]);
+                                $product = $stmt->fetch(PDO::FETCH_ASSOC);
+                                ?>
+                                <div class="product-item">
+                                    <p><strong>Tên sản phẩm:</strong> <?php echo htmlspecialchars($product['tensp']); ?></p>
+                                    <p><strong>Số lượng:</strong> <?php echo htmlspecialchars($item['quantity']); ?></p>
+                                    <p><strong>Giá:</strong> <?php echo number_format($product['giathanh'], 0, ',', '.') . 'đ'; ?></p>
+                                    <p><strong>Hình ảnh:</strong> <img src="<?php echo htmlspecialchars($product['images']); ?>" width="50"></p>
+                                    <p class="stock-info">Tồn kho: <?php echo $product['available_quantity']; ?> sản phẩm</p>
+                                </div>
+                            <?php endforeach; ?>
+                        <?php endif; ?>
                     </div>
                     <div class="total">
                         Tổng tiền: <?php echo number_format($total, 0, ',', '.') . 'đ'; ?>
                     </div>
                     <hr>
                     <div class="summary-details">
-                        <p><strong>Tên người nhận:</strong> <?php echo htmlspecialchars($customer['diachi'] ?? ''); ?></p>
+                        <p><strong>Tên người nhận:</strong> <?php echo htmlspecialchars($customer['tenkh'] ?? ''); ?></p>
                         <p><strong>Số điện thoại:</strong> <?php echo htmlspecialchars($customer['sdt'] ?? ''); ?></p>
                         <p><strong>Địa chỉ giao hàng:</strong> <?php echo htmlspecialchars($customer['diachi'] ?? ''); ?></p>
-                        <p><strong>Phương thức thanh toán:</strong> Tiền mặt</p> <!-- Mặc định, sẽ cập nhật khi chọn -->
+                        <p><strong>Phương thức thanh toán:</strong> <?php echo htmlspecialchars($paymentMethod); ?></p>
                         <p><strong>Tôi đã chấp nhận điều khoản và điều kiện</strong></p>
                     </div>
                 </div>
