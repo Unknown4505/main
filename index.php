@@ -36,6 +36,7 @@ if (isset($_GET['query'])) {
 $sql_sp = "SELECT sp.*, loaisp.tenloai 
            FROM sp 
            JOIN loaisp ON sp.idloai = loaisp.idloai 
+           where sp.ansp=0
            ORDER BY sp.idsp DESC 
            LIMIT 6";
 $result_sp = $conn->query($sql_sp);
