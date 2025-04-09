@@ -1,5 +1,9 @@
 <?php
-// Kết nối CSDL
+session_start();
+if (!isset($_SESSION['admin_id'])) {
+    header("Location: login-admin.php");
+    exit;
+}
 $servername = "localhost";
 $username = "root";
 $password = "";
