@@ -16,10 +16,24 @@ if ($conn->connect_error) {
 // Xóa sản phẩm nếu có yêu cầu
 if (isset($_GET['delete_id'])) {
     $delete_id = intval($_GET['delete_id']);
-    $conn->query("DELETE FROM sp WHERE idsp = $delete_id");
-    echo "<script>window.location.href='managerp.php';</script>"; // Chuyển hướng bằng JavaScript
+
+    // Kiểm tra xem sản phẩm đã từng xuất hiện trong đơn hàng hay chưa
+    $check_sql = "SELECT COUNT(*) as total FROM ctdonhang WHERE idsp = $delete_id";
+    $check_result = $conn->query($check_sql);
+    $row = $check_result->fetch_assoc();
+
+    if ($row['total'] > 0) {
+        // Nếu sản phẩm đã từng được bán, không cho phép xóa
+        echo "<script>alert('Không thể xóa sản phẩm này vì đã có đơn hàng bán ra.'); window.location.href='managerp.php';</script>";
+    } else {
+        // Xóa sản phẩm nếu chưa từng được bán
+        $conn->query("DELETE FROM sp WHERE idsp = $delete_id");
+        echo "<script>window.location.href='managerp.php';</script>";
+    }
+
     exit();
 }
+
 
 // Ẩn / Hiện sản phẩm
 if (isset($_GET['toggle_id'])) {
