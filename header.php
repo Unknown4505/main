@@ -92,7 +92,7 @@ if ($result_loaisp->num_rows > 0) {
                                     <a class="dropdown-item" href="User.php">Thông tin người dùng</a>
                                     <a class="dropdown-item" href="confirmation.php">Lịch sử giao dịch</a>
                                     <div class="dropdown-divider"></div>
-                                    <a class="dropdown-item" href="login.php">Đăng xuất</a>
+                                    <a class="dropdown-item" href="logout.php">Đăng xuất</a>
                                 </div>
                             <?php else : ?>
                                 <a class="nav-link" href="login.php">Đăng nhập</a>
