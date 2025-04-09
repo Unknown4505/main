@@ -1,3 +1,58 @@
+<?php
+session_start();
+
+// Kiểm tra đăng nhập admin
+if (!isset($_SESSION['admin_id'])) {
+    header("Location: login-admin.php");
+    exit;
+}
+
+// Kết nối MySQL
+$servername = "localhost";
+$username = "root";
+$password = "";
+$dbname = "test";
+
+$conn = new mysqli($servername, $username, $password, $dbname);
+$conn->set_charset("utf8");
+
+if ($conn->connect_error) {
+    die("Kết nối thất bại: " . $conn->connect_error);
+}
+
+// Xử lý khi form được gửi
+$success_message = '';
+$error_message = '';
+
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    $idKH = $conn->real_escape_string($_POST['idKH']);
+    $tenkh = $conn->real_escape_string($_POST['tenkh']);
+    $email = $conn->real_escape_string($_POST['email']);
+    $dob = $conn->real_escape_string($_POST['dob']);
+    $sdt = $conn->real_escape_string($_POST['sdt']);
+    $diachi = $conn->real_escape_string($_POST['diachi']);
+
+    // Kiểm tra xem idKH đã tồn tại chưa
+    $check_query = "SELECT idKH FROM kh WHERE idKH = '$idKH'";
+    $check_result = $conn->query($check_query);
+
+    if ($check_result->num_rows > 0) {
+        $error_message = "Mã khách hàng đã tồn tại!";
+    } else {
+        // Thêm người dùng mới vào bảng kh
+        $sql = "INSERT INTO kh (idKH, tenkh, email, dob, sdt, diachi) 
+                VALUES ('$idKH', '$tenkh', '$email', '$dob', '$sdt', '$diachi')";
+
+        if ($conn->query($sql) === TRUE) {
+            $success_message = "Đã thêm người dùng thành công!";
+        } else {
+            $error_message = "Lỗi khi thêm người dùng: " . $conn->error;
+        }
+    }
+}
+
+$conn->close();
+?>
 <!DOCTYPE html>
 <html lang="vi">
 <head>
@@ -161,67 +216,99 @@
   </style>
 </head>
 <body>
-<?php include 'header-admin.php'?>
+<?php include 'header-admin.php'; ?>
 
 <div class="admin-container">
-  <!-- Sidebar -->
-<?php include 'sidebar.php'?>
+    <?php include 'sidebar.php'; ?>
 
-  <!-- Main Content -->
-  <div class="main-content">
-    <h1>Thêm người dùng</h1>
-    <form id="addProductForm" onsubmit="return handleAddProduct(event)">
-      <!-- Tên sản phẩm -->
-      <label for="productName">Tên người dùng:</label>
-      <input type="text" id="productName" name="productName" required><br><br>
+    <div class="main-content">
+        <h1>Thêm Người Dùng</h1>
 
-      <!-- Mô tả sản phẩm -->
-      <label for="productName">Địa chỉ email:</label>
-      <input type="text" id="productName" name="productName" required><br><br>
+        <!-- Hiển thị thông báo thành công hoặc lỗi -->
+        <?php if (!empty($success_message)): ?>
+            <div class="alert alert-success">
+                <strong>Thành công!</strong> <?php echo $success_message; ?>
+            </div>
+        <?php endif; ?>
 
-      <label for="productName">Ngày sinh:</label>
-      <input type="text" id="productName" name="productName" required><br><br>
+        <?php if (!empty($error_message)): ?>
+            <div class="alert alert-danger">
+                <strong>Lỗi!</strong> <?php echo $error_message; ?>
+            </div>
+        <?php endif; ?>
 
-      <label for="productName">Số điện thoại:</label>
-      <input type="text" id="productName" name="productName" required><br><br>
+        <form id="addUserForm" action="add-user.php" method="POST">
+            <label for="tenkh">Tên Người Dùng:</label>
+            <input type="text" id="tenkh" name="tenkh" required><br><br>
 
-      <label for="productName">Địa chỉ:</label>
-      <input type="text" id="productName" name="productName" required><br><br>
+            <label for="email">Địa Chỉ Email:</label>
+            <input type="email" id="email" name="email" required><br><br>
 
-      <!-- Nút thêm sản phẩm -->
-      <button type="button" onclick="handleAddProduct()">Thêm</button>
-    </form>
+            <label for="dob">Ngày Sinh (DD/MM/YYYY):</label>
+            <input type="text" id="dob" name="dob" placeholder="VD: 01/01/2024" required><br><br>
 
-    <!-- Modal hiện thông báo thêm thành công -->
-    <div id="successModal" style="text-align: center;">
-      <p>Đã thêm thành công!</p>
-      <button onclick="closeModal()">OK</button>
+            <label for="sdt">Số Điện Thoại:</label>
+            <input type="text" id="sdt" name="sdt" required><br><br>
+
+            <label for="diachi">Địa Chỉ:</label>
+            <input type="text" id="diachi" name="diachi" required><br><br>
+
+            <button type="submit">Thêm</button>
+        </form>
+
+        <!-- Modal hiện thông báo thêm thành công -->
+        <div id="successModal">
+            <p>Đã thêm thành công!</p>
+            <button onclick="closeModal()">OK</button>
+        </div>
+
+        <!-- Overlay mờ khi hiển thị modal -->
+        <div id="overlay"></div>
     </div>
-
-    <!-- Overlay mờ khi hiển thị modal -->
-    <div id="overlay"></div>
-  </div>
 </div>
 
 <script>
-
-  function handleAddProduct() {
-    // Hiển thị modal thông báo thành công
+    // Hiển thị modal nếu có success_message
+    <?php if (!empty($success_message)): ?>
     document.getElementById("successModal").style.display = "block";
     document.getElementById("overlay").style.display = "block";
-  }
-  // Hiển thị thông báo thành công
+    <?php endif; ?>
 
-  function closeModal() {
-    // Ẩn modal thông báo và overlay
-    document.getElementById("successModal").style.display = "none";
-    document.getElementById("overlay").style.display = "none";
+    function closeModal() {
+        // Ẩn modal thông báo và overlay
+        document.getElementById("successModal").style.display = "none";
+        document.getElementById("overlay").style.display = "none";
 
-    // Reset form sau khi thêm thành công
-    document.getElementById("addProductForm").reset();
-  }
+        // Reset form sau khi thêm thành công
+        document.getElementById("addUserForm").reset();
+    }
+
+    // Định dạng ngày sinh (DD/MM/YYYY)
+    const dobInput = document.getElementById('dob');
+    dobInput.addEventListener('input', function (e) {
+        let value = e.target.value.replace(/\D/g, ''); // Chỉ giữ lại số
+        if (value.length >= 2 && value.length < 4) {
+            value = value.slice(0, 2) + '/' + value.slice(2);
+        } else if (value.length >= 4) {
+            value = value.slice(0, 2) + '/' + value.slice(2, 4) + '/' + value.slice(4, 8);
+        }
+        e.target.value = value;
+    });
+
+    // Kiểm tra định dạng ngày sinh khi gửi form
+    document.getElementById('addUserForm').addEventListener('submit', function (e) {
+        const dobValue = dobInput.value;
+        const dobRegex = /^\d{2}\/\d{2}\/\d{4}$/;
+        if (!dobRegex.test(dobValue)) {
+            e.preventDefault();
+            alert('Vui lòng nhập ngày sinh đúng định dạng DD/MM/YYYY (VD: 01/01/2024)');
+        } else {
+            // Chuyển đổi định dạng DD/MM/YYYY sang YYYY-MM-DD để lưu vào cơ sở dữ liệu
+            const [day, month, year] = dobValue.split('/');
+            const formattedDob = `${year}-${month}-${day}`;
+            dobInput.value = formattedDob;
+        }
+    });
 </script>
-
-
 </body>
 </html>
