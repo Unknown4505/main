@@ -3,7 +3,7 @@ session_start(); // Bắt đầu session
 
 // Cấu hình kết nối CSDL
 $host = '127.0.0.1';
-$dbname = 'huydata';
+$dbname = 'test';
 $username = 'root';
 $password = '';
 
@@ -66,6 +66,24 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete_item'])) {
         echo json_encode(['success' => false, 'message' => 'Lỗi khi xóa sản phẩm: ' . $e->getMessage()]);
     }
     exit();
+}
+
+// Xử lý thanh toán toàn bộ giỏ hàng
+if (isset($_POST['checkout_all'])) {
+    // Lấy tất cả sản phẩm trong giỏ hàng
+    $stmt = $pdo->prepare("SELECT * FROM cart WHERE idKH = :idKH");
+    $stmt->execute(['idKH' => $customerId]);
+    $cartItems = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+    if (count($cartItems) > 0) {
+        // Lưu thông tin giỏ hàng vào session để sử dụng ở trang checkout
+        $_SESSION['cart_items'] = $cartItems;
+        // Chuyển hướng đến trang thanh toán
+        header("Location: checkout.php");
+        exit();
+    } else {
+        echo "<script>alert('Giỏ hàng trống!'); window.location.href='cart.php';</script>";
+    }
 }
 
 // Lấy danh sách sản phẩm trong giỏ hàng
@@ -154,8 +172,7 @@ include 'header.php';
         .customer-info h3 { font-size: 20px; font-weight: bold; margin-bottom: 15px; }
         .customer-info p { margin: 5px 0; font-size: 16px; }
         .total-amount { font-size: 18px; font-weight: bold; margin-top: 20px; }
-        .checkout-btn {
-            margin-left: 10px;
+        .checkout-btn, .checkout-all-btn {
             background-color: #4CAF50;
             color: white;
             border: none;
@@ -164,8 +181,10 @@ include 'header.php';
             border-radius: 5px;
             cursor: pointer;
             transition: background-color 0.3s ease;
+            margin-left: 10px;
         }
-        .checkout-btn:hover { background-color: #45a049; }
+        .checkout-btn:hover, .checkout-all-btn:hover { background-color: #45a049; }
+        .checkout-btn:focus, .checkout-all-btn:focus { outline: none; }
     </style>
 </head>
 
@@ -211,13 +230,15 @@ include 'header.php';
                         <?php echo number_format($item['giathanh'] * $item['quantity'], 0, ',', '.') . ' VNĐ'; ?>
                     </td>
                     <td>
-                        <button onclick="deleteItem(<?php echo $item['idcart']; ?>)">Xóa</button>
-                        <a class="checkout-btn" href="checkout.php?idcart=<?php echo $item['idcart']; ?>">Thanh toán</a>
+                        <button onclick="deleteItem(<?php echo $item['idcart']; ?>)" class="delete-btn">Xóa</button>
                     </td>
                 </tr>
             <?php endforeach; ?>
         </table>
         <h3>Tổng tiền: <span id="total-price"><?php echo number_format($total, 0, ',', '.') . ' VNĐ'; ?></span></h3>
+        <form method="POST" style="margin-top: 20px;">
+            <button type="submit" name="checkout_all" class="checkout-all-btn">Thanh toán tất cả</button>
+        </form>
     </div>
 </section>
 
