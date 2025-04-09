@@ -1,9 +1,9 @@
 <?php
-session_start(); // Bắt đầu session
+session_start();
 
 // Cấu hình kết nối CSDL
 $host = '127.0.0.1';
-$dbname = 'huydata';
+$dbname = 'test';
 $username = 'root';
 $password = '';
 
@@ -17,38 +17,29 @@ try {
 // Lấy ID khách hàng từ session
 $customerId = $_SESSION['user_id'] ?? 1;
 
-// Lấy idcart từ URL
-$idcart = isset($_GET['idcart']) ? intval($_GET['idcart']) : null;
-
-if (!$idcart) {
-    die("Không tìm thấy giỏ hàng để thanh toán.");
+// Kiểm tra xem session chứa thông tin giỏ hàng không
+if (!isset($_SESSION['cart_items']) || empty($_SESSION['cart_items'])) {
+    die("Giỏ hàng trống. Vui lòng thêm sản phẩm vào giỏ hàng trước khi thanh toán.");
 }
 
-// Kiểm tra xem giỏ hàng có thuộc về khách hàng không
-$stmt = $pdo->prepare("SELECT * FROM cart WHERE idcart = :idcart AND idKH = :idKH");
-$stmt->execute(['idcart' => $idcart, 'idKH' => $customerId]);
-$cartItem = $stmt->fetch(PDO::FETCH_ASSOC);
-
-if (!$cartItem) {
-    die("Giỏ hàng không hợp lệ hoặc không thuộc về bạn.");
-}
-
-// Lấy thông tin sản phẩm từ bảng `sp`
-$stmt = $pdo->prepare("SELECT sp.tensp, sp.giathanh, sp.images FROM sp WHERE idsp = :idsp");
-$stmt->execute(['idsp' => $cartItem['idsp']]);
-$product = $stmt->fetch(PDO::FETCH_ASSOC);
-
-if (!$product) {
-    die("Không tìm thấy sản phẩm.");
-}
-
-// Tính tổng tiền cho giỏ hàng này
-$total = $product['giathanh'] * $cartItem['quantity'];
+// Lấy tất cả sản phẩm trong giỏ hàng từ session
+$cartItems = $_SESSION['cart_items'];
 
 // Lấy thông tin khách hàng từ bảng `kh`
 $stmt = $pdo->prepare("SELECT * FROM kh WHERE idKH = :idKH");
 $stmt->execute(['idKH' => $customerId]);
 $customer = $stmt->fetch(PDO::FETCH_ASSOC);
+
+// Tính tổng tiền cho tất cả sản phẩm
+$total = 0;
+foreach ($cartItems as $item) {
+    $stmt = $pdo->prepare("SELECT giathanh FROM sp WHERE idsp = :idsp");
+    $stmt->execute(['idsp' => $item['idsp']]);
+    $productPrice = $stmt->fetchColumn();
+    if ($productPrice !== false) {
+        $total += $productPrice * $item['quantity'];
+    }
+}
 
 // Biến để kiểm tra xem có hiển thị modal hay không
 $showSuccessModal = false;
@@ -61,26 +52,56 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['place_order'])) {
     $notes = $_POST['notes'] ?? '';
     $paymentMethod = $_POST['payment_method'] ?? 'Tiền mặt'; // Mặc định là "Tiền mặt" nếu không chọn
 
-    // Tạo đơn hàng mới trong bảng `orders` (giả sử bạn đã tạo bảng này như trong hướng dẫn trước)
     try {
-        $stmt = $pdo->prepare("INSERT INTO orders (idKH, idcart, total_amount, order_date, status, phuongthucthanhtoan) VALUES (:idKH, :idcart, :total_amount, NOW(), 'paid', :phuongthucthanhtoan)");
+        // Bắt đầu transaction để đảm bảo tính toàn vẹn dữ liệu
+        $pdo->beginTransaction();
+
+        // Lưu đơn hàng vào bảng `donhang`
+        $stmt = $pdo->prepare("INSERT INTO donhang (idKH, ngaymua, tongtien, trangthai, diachi, sdt, ghichu, phuongthucthanhtoan) VALUES (:idKH, CURDATE(), :tongtien, 'Chờ xử lý', :diachi, :sdt, :ghichu, :phuongthucthanhtoan)");
         $stmt->execute([
             'idKH' => $customerId,
-            'idcart' => $idcart,
-            'total_amount' => $total,
+            'tongtien' => $total,
+            'diachi' => $address,
+            'sdt' => $phone,
+            'ghichu' => $notes,
             'phuongthucthanhtoan' => $paymentMethod
         ]);
+
+        // Lấy ID của đơn hàng vừa tạo
+        $orderId = $pdo->lastInsertId();
+
+        // Lưu chi tiết đơn hàng vào bảng `ctdonhang`
+        foreach ($cartItems as $item) {
+            $stmt = $pdo->prepare("SELECT giathanh FROM sp WHERE idsp = :idsp");
+            $stmt->execute(['idsp' => $item['idsp']]);
+            $giathanh = $stmt->fetchColumn();
+            if ($giathanh !== false) {
+                $stmt = $pdo->prepare("INSERT INTO ctdonhang (iddonhang, idsp, soluong, giathanh) VALUES (:iddonhang, :idsp, :soluong, :giathanh)");
+                $stmt->execute([
+                    'iddonhang' => $orderId,
+                    'idsp' => $item['idsp'],
+                    'soluong' => $item['quantity'],
+                    'giathanh' => $giathanh // Lấy giá từ bảng sp
+                ]);
+            }
+        }
 
         // Cập nhật thông tin khách hàng trong bảng `kh`
         $stmt = $pdo->prepare("UPDATE kh SET diachi = :diachi, sdt = :sdt WHERE idKH = :idKH");
         $stmt->execute(['diachi' => $address, 'sdt' => $phone, 'idKH' => $customerId]);
 
-        // Xóa giỏ hàng sau khi thanh toán thành công
-        $stmt = $pdo->prepare("DELETE FROM cart WHERE idcart = :idcart");
-        $stmt->execute(['idcart' => $idcart]);
+        // Xóa toàn bộ giỏ hàng sau khi thanh toán thành công
+        $stmt = $pdo->prepare("DELETE FROM cart WHERE idKH = :idKH");
+        $stmt->execute(['idKH' => $customerId]);
+
+        // Xóa session giỏ hàng
+        unset($_SESSION['cart_items']);
+
+        $pdo->commit();
 
         $showSuccessModal = true;
     } catch (PDOException $e) {
+        $pdo->rollBack();
         echo "Lỗi khi đặt hàng: " . $e->getMessage();
         exit();
     }
@@ -327,6 +348,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['place_order'])) {
                     </div>
 
                     <input type="hidden" name="place_order" value="1">
+                    <button type="submit" class="order-btn">Đặt hàng</button>
                 </form>
             </div>
 
@@ -335,16 +357,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['place_order'])) {
                 <div class="order-summary">
                     <h4>Tóm tắt hóa đơn</h4>
                     <div class="product-list">
-                        <?php if (!$cartItem): ?>
-                            <p>Không có sản phẩm nào trong giỏ hàng.</p>
-                        <?php else: ?>
+                        <?php foreach ($cartItems as $item): ?>
+                            <?php
+                            $stmt = $pdo->prepare("SELECT tensp, giathanh, images FROM sp WHERE idsp = :idsp");
+                            $stmt->execute(['idsp' => $item['idsp']]);
+                            $product = $stmt->fetch(PDO::FETCH_ASSOC);
+                            ?>
                             <div class="product-item">
                                 <p><strong>Tên sản phẩm:</strong> <?php echo htmlspecialchars($product['tensp']); ?></p>
-                                <p><strong>Số lượng:</strong> <?php echo htmlspecialchars($cartItem['quantity']); ?></p>
+                                <p><strong>Số lượng:</strong> <?php echo htmlspecialchars($item['quantity']); ?></p>
                                 <p><strong>Giá:</strong> <?php echo number_format($product['giathanh'], 0, ',', '.') . 'đ'; ?></p>
                                 <p><strong>Hình ảnh:</strong> <img src="<?php echo htmlspecialchars($product['images']); ?>" width="50"></p>
                             </div>
-                        <?php endif; ?>
+                        <?php endforeach; ?>
                     </div>
                     <div class="total">
                         Tổng tiền: <?php echo number_format($total, 0, ',', '.') . 'đ'; ?>
@@ -357,7 +382,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['place_order'])) {
                         <p><strong>Phương thức thanh toán:</strong> Tiền mặt</p> <!-- Mặc định, sẽ cập nhật khi chọn -->
                         <p><strong>Tôi đã chấp nhận điều khoản và điều kiện</strong></p>
                     </div>
-                    <button type="submit" class="order-btn" form="checkoutForm">Đặt hàng</button>
                 </div>
             </div>
         </div>
