@@ -1,4 +1,10 @@
-
+<?php
+session_start();
+if (!isset($_SESSION['admin_id'])) {
+    header("Location: login-admin.php");
+    exit;
+}
+?>
 <!DOCTYPE html>
 <html lang="zxx" class="no-js">
 <head>
