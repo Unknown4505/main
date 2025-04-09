@@ -1,10 +1,14 @@
 <?php
-// Kết nối database
+session_start();
 $servername = "localhost";
 $username = "root";
 $password = "";
 $database = "test";
 
+if (!isset($_SESSION['admin_id'])) {
+    header("Location: login-admin.php");
+    exit;
+}
 $conn = new mysqli($servername, $username, $password, $database);
 
 // Kiểm tra kết nối
