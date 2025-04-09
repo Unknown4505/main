@@ -1,9 +1,14 @@
 <?php
+session_start();
 $servername = "localhost";
 $username = "root";
 $password = "";
 $database = "test";
 
+if (!isset($_SESSION['admin_id'])) {
+    header("Location: login-admin.php");
+    exit;
+}
 $conn = new mysqli($servername, $username, $password, $database);
 if ($conn->connect_error) {
     die("Kết nối thất bại: " . $conn->connect_error);
