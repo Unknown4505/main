@@ -1,10 +1,14 @@
 <?php
-// Kết nối đến CSDL
+session_start();
 $servername = "localhost";
 $username = "root";
 $password = "";
 $dbname = "test";
 
+if (!isset($_SESSION['admin_id'])) {
+    header("Location: login-admin.php");
+    exit;
+}
 $conn = new mysqli($servername, $username, $password, $dbname);
 $conn->set_charset("utf8");
 
