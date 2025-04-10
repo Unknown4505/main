@@ -55,7 +55,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $stmt->bind_param("iisddssi", $next_id, $idloai, $tensp, $soluong, $giathanh, $target_file, $mota, $ansp);
 
             if ($stmt->execute()) {
-                header("Location: add-product.html?success=1");
+                header("Location: add-product.php?success=1");
                 exit();
             } else {
                 echo "Lỗi: " . $stmt->error;
