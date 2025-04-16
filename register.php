@@ -11,6 +11,7 @@ $conn = new mysqli($servername, $username, $password, $dbname);
 if ($conn->connect_error) {
     die("Kết nối thất bại: " . $conn->connect_error);
 }
+$ngaydangky = date("Y-m-d H:i:s");
 
 if (isset($_POST['btn-reg'])) {
     $diachi = $_POST['diachi'];
@@ -21,9 +22,11 @@ if (isset($_POST['btn-reg'])) {
     $password = password_hash($_POST['password'], PASSWORD_DEFAULT); // Hash mật khẩu
 
     if (!empty($tenkh) && !empty($diachi) && !empty($sdt) && !empty($email) && !empty($dob) && !empty($_POST['password'])) {
-        $sql = "INSERT INTO `kh` (`diachi`, `sdt`, `email`, `dob`, `tenkh`, `password`) VALUES (?, ?, ?, ?, ?, ?)";
+        $sql = "INSERT INTO `kh` (`diachi`, `sdt`, `email`, `dob`, `tenkh`, `password`, `ngaydangky`) VALUES (?, ?, ?, ?, ?, ?, ?)";
         $stmt = $conn->prepare($sql);
-        $stmt->bind_param("ssssss", $diachi, $sdt, $email, $dob, $tenkh, $password);
+        $stmt->bind_param("sssssss", $diachi, $sdt, $email, $dob, $tenkh, $password, $ngaydangky);$sql = "INSERT INTO `kh` (`diachi`, `sdt`, `email`, `dob`, `tenkh`, `password`, `ngaydangky`) VALUES (?, ?, ?, ?, ?, ?, ?)";
+        $stmt = $conn->prepare($sql);
+        $stmt->bind_param("sssssss", $diachi, $sdt, $email, $dob, $tenkh, $password, $ngaydangky);
 
         if ($stmt->execute()) {
             $message = "Đăng ký thành công!";
@@ -183,8 +186,8 @@ if (isset($_POST['btn-reg'])) {
         <label for="password">Nhập mật khẩu</label>
         <input type="password" id="password" name="password" placeholder="Nhập mật khẩu ">
 
-        <label for="dob">Ngày sinh</label>
-        <input type="date" id="dob" name="dob">
+        <label for="dob">Ngày Sinh (DD/MM/YYYY):</label>
+        <input type="text" id="dob" name="dob" placeholder="VD: 01/01/2024" required><br><br>
 
         <button type="submit" name="btn-reg">Đăng Ký</button>
     </form>
@@ -200,6 +203,34 @@ if (isset($_POST['btn-reg'])) {
             <button onclick="window.location.href='login.php';">Đóng</button>
         </div>
     <?php endif; ?>
+<script>
+    // Định dạng ngày sinh (DD/MM/YYYY)
+    const dobInput = document.getElementById('dob');
+    dobInput.addEventListener('input', function (e) {
+        let value = e.target.value.replace(/\D/g, ''); // Chỉ giữ lại số
+        if (value.length >= 2 && value.length < 4) {
+            value = value.slice(0, 2) + '/' + value.slice(2);
+        } else if (value.length >= 4) {
+            value = value.slice(0, 2) + '/' + value.slice(2, 4) + '/' + value.slice(4, 8);
+        }
+        e.target.value = value;
+    });
+
+    // Kiểm tra định dạng ngày sinh khi gửi form
+    document.getElementById('addUserForm').addEventListener('submit', function (e) {
+        const dobValue = dobInput.value;
+        const dobRegex = /^\d{2}\/\d{2}\/\d{4}$/;
+        if (!dobRegex.test(dobValue)) {
+            e.preventDefault();
+            alert('Vui lòng nhập ngày sinh đúng định dạng DD/MM/YYYY (VD: 01/01/2024)');
+        } else {
+            // Chuyển đổi định dạng DD/MM/YYYY sang YYYY-MM-DD để lưu vào cơ sở dữ liệu
+            const [day, month, year] = dobValue.split('/');
+            const formattedDob = `${year}-${month}-${day}`;
+            dobInput.value = formattedDob;
+        }
+    });
+</script>
 </div>
 </body>
 </html>
