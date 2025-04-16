@@ -1,13 +1,11 @@
 <?php
 session_start();
 
-// Kiểm tra đăng nhập admin
 if (!isset($_SESSION['admin_id'])) {
     header("Location: login-admin.php");
     exit;
 }
 
-// Kết nối MySQL
 $servername = "localhost";
 $username = "root";
 $password = "";
@@ -20,37 +18,27 @@ if ($conn->connect_error) {
     die("Kết nối thất bại: " . $conn->connect_error);
 }
 
-// Xử lý khi form được gửi
 $success_message = '';
 $error_message = '';
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $idKH = $conn->real_escape_string($_POST['idKH']);
     $tenkh = $conn->real_escape_string($_POST['tenkh']);
     $email = $conn->real_escape_string($_POST['email']);
     $dob = $conn->real_escape_string($_POST['dob']);
     $sdt = $conn->real_escape_string($_POST['sdt']);
     $diachi = $conn->real_escape_string($_POST['diachi']);
+    $password = $conn->real_escape_string($_POST['password']);
+    $password = password_hash($_POST['password'], PASSWORD_DEFAULT);
 
-    // Kiểm tra xem idKH đã tồn tại chưa
-    $check_query = "SELECT idKH FROM kh WHERE idKH = '$idKH'";
-    $check_result = $conn->query($check_query);
+    $sql = "INSERT INTO kh (tenkh, email, dob, sdt, diachi,password) 
+            VALUES ('$tenkh', '$email', '$dob', '$sdt', '$diachi','$password')";
 
-    if ($check_result->num_rows > 0) {
-        $error_message = "Mã khách hàng đã tồn tại!";
+    if ($conn->query($sql) === TRUE) {
+        $success_message = "Đã thêm người dùng thành công!";
     } else {
-        // Thêm người dùng mới vào bảng kh
-        $sql = "INSERT INTO kh (idKH, tenkh, email, dob, sdt, diachi) 
-                VALUES ('$idKH', '$tenkh', '$email', '$dob', '$sdt', '$diachi')";
-
-        if ($conn->query($sql) === TRUE) {
-            $success_message = "Đã thêm người dùng thành công!";
-        } else {
-            $error_message = "Lỗi khi thêm người dùng: " . $conn->error;
-        }
+        $error_message = "Lỗi khi thêm người dùng: " . $conn->error;
     }
 }
-
 $conn->close();
 ?>
 <!DOCTYPE html>
@@ -241,8 +229,8 @@ $conn->close();
             <label for="tenkh">Tên Người Dùng:</label>
             <input type="text" id="tenkh" name="tenkh" required><br><br>
 
-            <label for="email">Địa Chỉ Email:</label>
-            <input type="email" id="email" name="email" required><br><br>
+            <label for="addUserForm">Địa Chỉ Email:</label>
+            <input type="text" id="email" name="email" required><br><br>
 
             <label for="dob">Ngày Sinh (DD/MM/YYYY):</label>
             <input type="text" id="dob" name="dob" placeholder="VD: 01/01/2024" required><br><br>
@@ -252,9 +240,12 @@ $conn->close();
 
             <label for="diachi">Địa Chỉ:</label>
             <input type="text" id="diachi" name="diachi" required><br><br>
+            <label for="password">Mật khẩu:</label>
+            <input type="text" id="password" name="password" required><br><br>
 
             <button type="submit">Thêm</button>
         </form>
+
 
         <!-- Modal hiện thông báo thêm thành công -->
         <div id="successModal">
