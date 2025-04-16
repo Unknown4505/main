@@ -3,7 +3,6 @@ $servername = "localhost";
 $username = "root";
 $password = "";
 $database = "test";
-
 // Kết nối đến MySQL
 $conn = new mysqli($servername, $username, $password, $database);
 if ($conn->connect_error) {
@@ -55,7 +54,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $stmt->bind_param("iisddssi", $next_id, $idloai, $tensp, $soluong, $giathanh, $target_file, $mota, $ansp);
 
             if ($stmt->execute()) {
-                header("Location: add-product.php?success=1");
+                echo "<script>alert('Thêm thành công sản phẩm: $tensp'); window.location.href='add-product.php';</script>";
                 exit();
             } else {
                 echo "Lỗi: " . $stmt->error;
