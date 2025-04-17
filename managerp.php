@@ -404,9 +404,6 @@ if (!isset($_SESSION['admin_id'])) {
     }
 
 
-
-
-
   </style>
 </head>
 <body>
@@ -424,47 +421,41 @@ if (!isset($_SESSION['admin_id'])) {
       <!-- Bộ lọc -->
         <div class="filter-container">
             <form id="filter-form" method="GET" action="">
+
                 <div class="filter-category">
                     <label for="tenloai">Phân loại:</label>
                     <select id="tenloai" name="tenloai">
-                        <option value="all">Tất cả</option>
-                        <option value="adidas">Adidas</option>
-                        <option value="nike">Nike</option>
-                        <option value="vans">Vans</option>
+                        <option value="">Tất cả</option>
+                        <option value="adidas" <?= isset($_GET['tenloai']) && $_GET['tenloai'] == 'adidas' ? 'selected' : '' ?>>Adidas</option>
+                        <option value="nike" <?= isset($_GET['tenloai']) && $_GET['tenloai'] == 'nike' ? 'selected' : '' ?>>Nike</option>
+                        <option value="vans" <?= isset($_GET['tenloai']) && $_GET['tenloai'] == 'vans' ? 'selected' : '' ?>>Vans</option>
                     </select>
                 </div>
 
                 <div class="filter-name">
-                    <label for="product-name">Tên sản phẩm:</label>
-                    <input type="text" id="product-name" name="product-name" placeholder="Nhập tên sản phẩm...">
+                    <label for="tensp">Tên sản phẩm:</label>
+                    <input type="text" id="tensp" name="tensp" placeholder="Nhập tên sản phẩm..." value="<?= isset($_GET['tensp']) ? htmlspecialchars($_GET['tensp']) : '' ?>">
                 </div>
 
                 <div class="filter-price">
                     <label for="min-price">Giá từ:</label>
-                    <input type="number" id="min-price" name="min-price" placeholder="Min">
+                    <input type="number" id="min-price" name="min-price" placeholder="Min" value="<?= isset($_GET['min-price']) ? $_GET['min-price'] : '' ?>">
                     <label for="max-price">đến:</label>
-                    <input type="number" id="max-price" name="max-price" placeholder="Max">
+                    <input type="number" id="max-price" name="max-price" placeholder="Max" value="<?= isset($_GET['max-price']) ? $_GET['max-price'] : '' ?>">
                 </div>
 
                 <div class="filter-actions">
                     <button type="submit" class="filter-btn">Lọc</button>
                 </div>
+
             </form>
         </div>
+
 
       <a href="add-product.php" class="btn-link">Thêm</a>
       <h2>Danh sách sản phẩm:</h2>
         <div id="product-list">
         <?php include 'getp.php'; ?>
-      <div class="pagination">
-        <a href="?page=1">&laquo;</a> <!-- Quay lại trang 1 -->
-        <a href="?page=1">1</a> <!-- Trang 1 -->
-        <a href="?page=2">2</a> <!-- Trang 2 -->
-        <a href="?page=3">3</a> <!-- Trang 3 -->
-        <a href="?page=4">4</a> <!-- Trang 4 -->
-        <a href="?page=5">5</a> <!-- Trang 5 -->
-        <a href="?page=5">&raquo;</a> <!-- Chuyển tới trang 5 -->
-      </div>
     </div>
   </section>
   <div id="confirmModal1" class="modal">
@@ -500,7 +491,7 @@ if (!isset($_SESSION['admin_id'])) {
 
         let formData = new FormData(this); // Lấy dữ liệu từ form
         let xhr = new XMLHttpRequest();
-        xhr.open("GET", "locsp.php?" + new URLSearchParams(formData).toString(), true);
+        xhr.open("GET", "getp.php?" + new URLSearchParams(formData).toString(), true);
 
         xhr.onload = function() {
             if (xhr.status === 200) {
@@ -509,6 +500,52 @@ if (!isset($_SESSION['admin_id'])) {
         };
 
         xhr.send();
+    });
+</script>
+<!-- AJAX script -->
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const filterForm = document.getElementById("filter-form");
+        const productList = document.getElementById("product-list");
+
+        function fetchProducts(params) {
+            const xhr = new XMLHttpRequest();
+            xhr.open("GET", "getp.php?" + new URLSearchParams(params).toString(), true);
+            xhr.onload = function () {
+                if (xhr.status === 200) {
+                    productList.innerHTML = xhr.responseText;
+                }
+            };
+            xhr.send();
+        }
+
+        function getFormParams(extra = {}) {
+            const formData = new FormData(filterForm);
+            const params = {};
+            for (let [key, value] of formData.entries()) {
+                params[key] = value;
+            }
+            return { ...params, ...extra };
+        }
+
+        ['tenloai', 'tensp', 'min-price', 'max-price'].forEach(id => {
+            document.getElementById(id).addEventListener("input", () => {
+                fetchProducts(getFormParams({ page: 1 }));
+            });
+        });
+
+        document.addEventListener("click", function (e) {
+            if (e.target.matches(".pagination a")) {
+                e.preventDefault();
+                const page = e.target.getAttribute("data-page");
+                fetchProducts(getFormParams({ page }));
+            }
+        });
+
+        filterForm.addEventListener("submit", function (event) {
+            event.preventDefault();
+            fetchProducts(getFormParams({ page: 1 }));
+        });
     });
 </script>
 
