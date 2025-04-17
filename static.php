@@ -29,7 +29,7 @@ $sql = "SELECT
         WHERE dh.trangthai = 'Hoàn thành'
         GROUP BY sp.idsp, sp.tensp
         ORDER BY tongdoanhthu DESC
-        LIMIT 5";
+        LIMIT 3";
 
 $result = $conn->query($sql);
 ?>
