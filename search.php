@@ -1,9 +1,14 @@
 <?php
 // Kết nối database
+session_start();
+if (!isset($_SESSION['user_id'])) {
+    header("Location: login.php");
+    exit;
+}
 $servername = "localhost";
 $username = "root"; // Thay bằng username của bạn
 $password = ""; // Nếu có mật khẩu, hãy điền vào đây
-$database = "mydatabase"; // Thay bằng tên database của bạn
+$database = "test"; // Thay bằng tên database của bạn
 
 $conn = new mysqli($servername, $username, $password, $database);
 
