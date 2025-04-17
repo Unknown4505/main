@@ -59,7 +59,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['place_order'])) {
         $pdo->beginTransaction();
 
         // Lưu đơn hàng vào bảng `donhang`
-        $stmt = $pdo->prepare("INSERT INTO donhang (idKH, ngaymua, tongtien, trangthai, diachi, sdt, ghichu, phuongthucthanhtoan) VALUES (:idKH, CURDATE(), :tongtien, 'Chờ xử lý', :diachi, :sdt, :ghichu, :phuongthucthanhtoan)");
+        $stmt = $pdo->prepare("INSERT INTO donhang (idKH, ngaymua, tongtien, trangthai, diachi, sdt, ghichu, phuongthucthanhtoan) VALUES (:idKH, CURDATE(), :tongtien, 'Chưa xác nhận', :diachi, :sdt, :ghichu, :phuongthucthanhtoan)");
         $stmt->execute([
             'idKH' => $customerId,
             'tongtien' => $total,
