@@ -1,8 +1,11 @@
 <?php
+session_start(); // Để dùng CSRF token nếu có
+
 $servername = "localhost";
 $username = "root";
 $password = "";
 $database = "test";
+
 // Kết nối đến MySQL
 $conn = new mysqli($servername, $username, $password, $database);
 if ($conn->connect_error) {
@@ -20,7 +23,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $soluong = intval($_POST["soluong"]);
     $giathanh = floatval($_POST["gia"]);
     $idloai = intval($_POST["idloai"]);
-    $mota = trim($_POST["mota"]); // Lấy mô tả từ form
+    $mota = trim($_POST["mota"]);
 
     // Kiểm tra dữ liệu đầu vào
     if (empty($tensp) || $soluong <= 0 || $giathanh <= 0 || $idloai <= 0 || empty($mota)) {
@@ -35,21 +38,67 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     if ($_FILES["images"]["error"] == 0) {
         $file_name = basename($_FILES["images"]["name"]);
+        $file_tmp = $_FILES["images"]["tmp_name"];
         $target_file = $target_dir . $file_name;
-        $fileType = strtolower(pathinfo($target_file, PATHINFO_EXTENSION));
 
-        // Chỉ cho phép upload file JPG, JPEG, PNG
-        $allowTypes = ["jpg", "jpeg", "png"];
-        if (!in_array($fileType, $allowTypes)) {
-            die("Chỉ cho phép upload file JPG, JPEG, PNG.");
+        // Kiểm tra MIME type của file
+        $finfo = finfo_open(FILEINFO_MIME_TYPE);
+        $mime_type = finfo_file($finfo, $file_tmp);
+        finfo_close($finfo);
+
+        $allowed_mime_types = ['image/jpeg', 'image/png', 'image/webp'];
+        if (!in_array($mime_type, $allowed_mime_types)) {
+            die("Chỉ cho phép upload file JPG, PNG hoặc WebP. Detected MIME type: $mime_type");
         }
 
-        if (move_uploaded_file($_FILES["images"]["tmp_name"], $target_file)) {
+        // Kiểm tra file là ảnh hợp lệ
+        $image_info = getimagesize($file_tmp);
+        if (!$image_info) {
+            die("File không phải là ảnh hợp lệ.");
+        }
+
+        // Resize ảnh
+        list($width, $height) = $image_info;
+        $new_width = 413.75;
+        $new_height = 310.31;
+
+        $src = null;
+        if ($mime_type == "image/jpeg") {
+            $src = imagecreatefromjpeg($file_tmp);
+        } elseif ($mime_type == "image/png") {
+            $src = imagecreatefrompng($file_tmp);
+        } elseif ($mime_type == "image/webp") {
+            $src = imagecreatefromwebp($file_tmp);
+        }
+
+        if ($src) {
+            $dst = imagecreatetruecolor($new_width, $new_height);
+            // Giữ nền trong suốt cho PNG và WebP
+            if ($mime_type == "image/png" || $mime_type == "image/webp") {
+                imagealphablending($dst, false);
+                imagesavealpha($dst, true);
+                $transparent = imagecolorallocatealpha($dst, 0, 0, 0, 127);
+                imagefilledrectangle($dst, 0, 0, $new_width, $new_height, $transparent);
+            }
+
+            imagecopyresampled($dst, $src, 0, 0, 0, 0, $new_width, $new_height, $width, $height);
+
+            // Lưu ảnh với định dạng phù hợp
+            if ($mime_type == "image/jpeg") {
+                imagejpeg($dst, $target_file, 90);
+            } elseif ($mime_type == "image/png") {
+                imagepng($dst, $target_file, 9);
+            } elseif ($mime_type == "image/webp") {
+                imagewebp($dst, $target_file, 90); // Chất lượng 90
+            }
+
+            imagedestroy($src);
+            imagedestroy($dst);
+
             // Chèn dữ liệu vào bảng sp
             $sql = "INSERT INTO sp (idsp, idloai, tensp, soluong, giathanh, images, mota, ansp) 
                     VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
-
-            $ansp = false; // Hoặc $ansp = 1 nếu cột ansp là TINYINT(1)
+            $ansp = false;
             $stmt = $conn->prepare($sql);
             $stmt->bind_param("iisddssi", $next_id, $idloai, $tensp, $soluong, $giathanh, $target_file, $mota, $ansp);
 
@@ -61,10 +110,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             }
             $stmt->close();
         } else {
-            echo "Lỗi: Không thể upload ảnh.";
+            die("Lỗi khi xử lý hình ảnh: Không thể tạo ảnh từ file.");
         }
     } else {
-        echo "Lỗi: Không có ảnh nào được tải lên.";
+        die("Lỗi: Không có ảnh nào được tải lên hoặc có lỗi khi upload. Mã lỗi: " . $_FILES["images"]["error"]);
     }
 }
 
