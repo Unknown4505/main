@@ -18,8 +18,13 @@ try {
     die("Kết nối thất bại: " . $e->getMessage());
 }
 
-// Lấy ID khách hàng từ session (giả sử nếu chưa có thì mặc định là 1)
+// Lấy ID khách hàng từ session
 $customerId = $_SESSION['user_id'] ?? 1;
+
+// Lấy thông tin khách hàng từ bảng `kh`
+$stmt = $pdo->prepare("SELECT tenkh, sdt, email FROM kh WHERE idKH = :idKH");
+$stmt->execute(['idKH' => $customerId]);
+$customerInfo = $stmt->fetch(PDO::FETCH_ASSOC);
 
 // Xử lý thêm sản phẩm vào giỏ hàng với số lượng mặc định là 1
 if (isset($_GET['add'])) {
@@ -306,47 +311,63 @@ include 'header.php';
 
 <!-- Cart Area -->
 <section>
-    <h2>Giỏ hàng của bạn</h2>
-    <div class="table-responsive">
-        <table class="table">
-            <tr>
-                <th>Ảnh</th>
-                <th>Tên sản phẩm</th>
-                <th>Giá</th>
-                <th>Số lượng</th>
-                <th>Thành tiền</th>
-                <th>Hành động</th>
-                <th>Tồn kho</th>
-            </tr>
-            <?php foreach ($cartItems as $item): ?>
-                <tr data-idcart="<?php echo $item['idcart']; ?>" class="<?php echo $item['available_quantity'] < 1 ? 'out-of-stock' : ''; ?>">
-                    <td><img src="<?php echo $item['images']; ?>" width="50"></td>
-                    <td><?php echo $item['tensp']; ?></td>
-                    <td class="price" data-price="<?php echo $item['giathanh']; ?>">
-                        <?php echo number_format($item['giathanh'], 0, ',', '.') . ' VNĐ'; ?>
-                    </td>
-                    <td>
-                        <input type="number" class="quantity" value="<?php echo $item['quantity']; ?>" min="0" max="<?php echo $item['available_quantity']; ?>" onchange="updateQuantity(this, <?php echo $item['idcart']; ?>)">
-                    </td>
-                    <td class="total-price">
-                        <?php echo number_format($item['giathanh'] * $item['quantity'], 0, ',', '.') . ' VNĐ'; ?>
-                    </td>
-                    <td>
-                        <button onclick="deleteItem(<?php echo $item['idcart']; ?>)" class="delete-btn">Xóa</button>
-                    </td>
-                    <td>
-                        <span class="stock-info">Còn: <?php echo $item['available_quantity']; ?> sản phẩm</span>
-                        <?php if ($item['available_quantity'] < 1): ?>
-                            <p class="stock-info">Hết hàng</p>
-                        <?php endif; ?>
-                    </td>
+    <div class="container">
+        <!-- Hiển thị thông tin khách hàng -->
+        <?php if ($customerInfo): ?>
+            <div class="customer-info">
+                <h3>Thông tin khách hàng</h3>
+                <p><strong>Tên:</strong> <?php echo htmlspecialchars($customerInfo['tenkh']); ?></p>
+                <p><strong>Số điện thoại:</strong> <?php echo htmlspecialchars($customerInfo['sdt']); ?></p>
+                <p><strong>Email:</strong> <?php echo htmlspecialchars($customerInfo['email']); ?></p>
+            </div>
+        <?php else: ?>
+            <div class="customer-info">
+                <p>Không tìm thấy thông tin khách hàng.</p>
+            </div>
+        <?php endif; ?>
+
+        <h2>Giỏ hàng của bạn</h2>
+        <div class="table-responsive">
+            <table class="table">
+                <tr>
+                    <th>Ảnh</th>
+                    <th>Tên sản phẩm</th>
+                    <th>Giá</th>
+                    <th>Số lượng</th>
+                    <th>Thành tiền</th>
+                    <th>Hành động</th>
+                    <th>Tồn kho</th>
                 </tr>
-            <?php endforeach; ?>
-        </table>
-        <h3>Tổng tiền: <span id="total-price"><?php echo number_format($total, 0, ',', '.') . ' VNĐ'; ?></span></h3>
-        <form method="POST" style="margin-top: 20px;">
-            <button type="submit" name="checkout_all" class="checkout-all-btn">Thanh toán tất cả</button>
-        </form>
+                <?php foreach ($cartItems as $item): ?>
+                    <tr data-idcart="<?php echo $item['idcart']; ?>" class="<?php echo $item['available_quantity'] < 1 ? 'out-of-stock' : ''; ?>">
+                        <td><img src="<?php echo $item['images']; ?>" width="50"></td>
+                        <td><?php echo $item['tensp']; ?></td>
+                        <td class="price" data-price="<?php echo $item['giathanh']; ?>">
+                            <?php echo number_format($item['giathanh'], 0, ',', '.') . ' VNĐ'; ?>
+                        </td>
+                        <td>
+                            <input type="number" class="quantity" value="<?php echo $item['quantity']; ?>" min="0" max="<?php echo $item['available_quantity']; ?>" onchange="updateQuantity(this, <?php echo $item['idcart']; ?>)">
+                        </td>
+                        <td class="total-price">
+                            <?php echo number_format($item['giathanh'] * $item['quantity'], 0, ',', '.') . ' VNĐ'; ?>
+                        </td>
+                        <td>
+                            <button onclick="deleteItem(<?php echo $item['idcart']; ?>)" class="delete-btn">Xóa</button>
+                        </td>
+                        <td>
+                            <span class="stock-info">Còn: <?php echo $item['available_quantity']; ?> sản phẩm</span>
+                            <?php if ($item['available_quantity'] < 1): ?>
+                                <p class="stock-info">Hết hàng</p>
+                            <?php endif; ?>
+                        </td>
+                    </tr>
+                <?php endforeach; ?>
+            </table>
+            <h3>Tổng tiền: <span id="total-price"><?php echo number_format($total, 0, ',', '.') . ' VNĐ'; ?></span></h3>
+            <form method="POST" style="margin-top: 20px;">
+                <button type="submit" name="checkout_all" class="checkout-all-btn">Thanh toán tất cả</button>
+            </form>
+        </div>
     </div>
 </section>
 
