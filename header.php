@@ -23,6 +23,7 @@ if ($result_loaisp->num_rows > 0) {
 }
 ?>
 <!-- Start Header Area -->
+<link rel="shortcut icon" href="img/fav.png">
 <header class="header_area sticky-header">
     <div class="main_menu">
         <nav class="navbar navbar-expand-lg navbar-light main_box">
