@@ -39,7 +39,7 @@ if ($result->num_rows === 0) {
 $order = $result->fetch_assoc();
 
 // Lấy danh sách sản phẩm trong đơn hàng
-$sql_products = "SELECT sp.tensp, ctdonhang.soluong FROM ctdonhang
+$sql_products = "SELECT sp.tensp,sp.giathanh, ctdonhang.soluong FROM ctdonhang
                  JOIN sp ON ctdonhang.idsp = sp.idsp 
                  WHERE ctdonhang.iddonhang = ?";
 $stmt = $conn->prepare($sql_products);
@@ -116,16 +116,40 @@ $conn->close();
             <div class="info"><?php echo htmlspecialchars($order['ngaymua']); ?></div>
         </div>
 
+        <div class="info-group">
+            <label>Trạng thái đơn hàng:</label>
+            <div class="info">
+                <?php echo htmlspecialchars($order['trangthai']); ?>
+            </div>
+        </div>
+
         <!-- Danh sách sản phẩm -->
         <div class="product-info">
             <label>Danh sách sản phẩm:</label>
-            <?php foreach ($products as $product) { ?>
-                <div class="info">
-                    <span><?php echo htmlspecialchars($product['tensp']); ?></span>
-                    <span>x<?php echo $product['soluong']; ?></span>
-                </div>
-            <?php } ?>
+            <table style="width: 100%; border-collapse: collapse; margin-top: 10px;">
+                <thead>
+                <tr style="background-color: #f2f2f2;">
+                    <th style="text-align: left; padding: 8px;">Sản phẩm</th>
+                    <th style="text-align: center; padding: 8px;">Số lượng</th>
+                    <th style="text-align: right; padding: 8px;">Đơn giá</th>
+                    <th style="text-align: right; padding: 8px;">Thành tiền</th>
+                </tr>
+                </thead>
+                <tbody>
+                <?php foreach ($products as $product) {
+                    $thanhtien = $product['giathanh'] * $product['soluong'];
+                    ?>
+                    <tr>
+                        <td style="padding: 8px;"><?php echo htmlspecialchars($product['tensp']); ?></td>
+                        <td style="text-align: center;"><?php echo $product['soluong']; ?></td>
+                        <td style="text-align: right;"><?php echo number_format($product['giathanh'], 0, ',', '.'); ?> VND</td>
+                        <td style="text-align: right;"><?php echo number_format($thanhtien, 0, ',', '.'); ?> VND</td>
+                    </tr>
+                <?php } ?>
+                </tbody>
+            </table>
         </div>
+
 
         <!-- Tổng tiền -->
         <div class="total-info">
