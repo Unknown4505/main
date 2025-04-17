@@ -121,6 +121,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['ajax_update_status'])
 <!DOCTYPE html>
 <html lang="vi">
 <head>
+    <link rel="shortcut icon" href="img/fav.png">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Quản lý đơn hàng - Karma Shop</title>
@@ -128,18 +129,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['ajax_update_status'])
     <link rel="stylesheet" href="css/ManageCustomerOrder.css">
 </head>
 <body>
-<header style="background-color: rgb(255,255,255); color: #0b0b0b; padding: 20px 40px; display: flex; align-items: center; justify-content: space-between; font-size: 28px; border-bottom: 5px solid #0b0b0b;">
-    <div style="flex: 0; display: flex; align-items: center;">
-        <img src="img/fav.png" alt="Karma Logo" style="width: 60px; height: 60px; border-radius: 50%; margin-right: 20px;">
-        <h1 style="margin: 0; font-size: 20px;">Karma Shop</h1>
-    </div>
-    <nav style="flex: 1; text-align: center">
-        <ul style="list-style: none; display: flex; justify-content: right; margin: 0; padding: 0;">
-            <li style="margin: 0 20px;"><a href="admin.html" style="color: #0b0b0b; text-decoration: none; font-size: 22px;">Admin</a></li>
-            <li style="margin: 0 20px;"><a href="dangxuatadmin.html" style="color: #0b0b0b; text-decoration: none; font-size: 22px;">Đăng xuất</a></li>
-        </ul>
-    </nav>
-</header>
+<?php include 'header-admin.php'; ?>
 
 <div class="admin-container">
     <?php include 'sidebar.php'; ?>
@@ -159,11 +149,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['ajax_update_status'])
                 <option value="Hủy bỏ" <?php if ($statusFilter == 'Hủy bỏ') echo 'selected'; ?>>Hủy bỏ</option>
             </select>
             <label for="from-date">Từ ngày:</label>
-            <input type="date" id="from-date" name="from-date" min="2000-01-01" max="2099-12-31"
-                   value="<?php echo htmlspecialchars($fromDate); ?>">
+            <input type="date" id="from-date" name="from-date" value="<?php echo htmlspecialchars($fromDate); ?>">
             <label for="to-date">Đến ngày:</label>
-            <input type="date" id="to-date" name="to-date" min="2000-01-01" max="2099-12-31"
-                   value="<?php echo htmlspecialchars($toDate); ?>">
+            <input type="date" id="to-date" name="to-date" value="<?php echo htmlspecialchars($toDate); ?>">
             <?php
             $districts = [ // <- đặt ở đây
                 'Quận 1', 'Quận 3', 'Quận 4', 'Quận 5', 'Quận 6',
@@ -275,8 +263,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['ajax_update_status'])
         document.getElementById('status-alert').style.display = 'none';
     }
 
-        // Xóa các tham số GET sau khi lọc để tránh lưu trạng thái khi F5
-        if (window.history.replaceState) {
+    // Xóa các tham số GET sau khi lọc để tránh lưu trạng thái khi F5
+    if (window.history.replaceState) {
         const url = new URL(window.location);
         url.search = ''; // Xóa query string
         window.history.replaceState({}, document.title, url);
@@ -291,4 +279,3 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['ajax_update_status'])
 </script>
 </body>
 </html>
-
