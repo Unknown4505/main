@@ -1,20 +1,16 @@
 <?php
-// Kết nối database
 $servername = "localhost";
 $username = "root";
 $password = "";
 $database = "test";
 
 $conn = new mysqli($servername, $username, $password, $database);
-
-// Kiểm tra lỗi kết nối
 if ($conn->connect_error) {
     die("Kết nối thất bại: " . $conn->connect_error);
 }
+
 $sql_loaisp = "SELECT idloai, tenloai FROM loaisp";
 $result_loaisp = $conn->query($sql_loaisp);
-
-// Lưu danh mục vào mảng để sử dụng trong header
 $categories = [];
 if ($result_loaisp->num_rows > 0) {
     while ($row = $result_loaisp->fetch_assoc()) {
@@ -22,8 +18,8 @@ if ($result_loaisp->num_rows > 0) {
     }
 }
 ?>
+
 <!-- Start Header Area -->
-<link rel="shortcut icon" href="img/fav.png">
 <header class="header_area sticky-header">
     <div class="main_menu">
         <nav class="navbar navbar-expand-lg navbar-light main_box">
@@ -44,15 +40,15 @@ if ($result_loaisp->num_rows > 0) {
 
                         <!-- Mục Sản Phẩm, danh mục được truyền từ trang chính -->
                         <li class="nav-item submenu dropdown">
-                            <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
-                               aria-expanded="false">Sản phẩm</a>
+                            <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">Sản phẩm</a>
                             <ul class="dropdown-menu">
-                                <?php if (isset($categories) && is_array($categories)): ?>
-                                    <?php foreach ($categories as $category): ?>
-                                        <li class="nav-item"><a class="nav-link" href="category.php?idloai=<?= $category['idloai'] ?>">
-                                                <?= htmlspecialchars($category['tenloai']) ?></a></li>
-                                    <?php endforeach; ?>
-                                <?php endif; ?>
+                                <?php foreach ($categories as $category): ?>
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="category.php?<?= urlencode($category['tenloai']) ?>">
+                                            <?= htmlspecialchars($category['tenloai']) ?>
+                                        </a>
+                                    </li>
+                                <?php endforeach; ?>
                             </ul>
                         </li>
 
@@ -60,16 +56,6 @@ if ($result_loaisp->num_rows > 0) {
                     </ul>
 
                     <!-- Search Input Box -->
-                    <input type="checkbox" id="search-toggle" class="search-toggle" hidden>
-                    <div class="search_input">
-                        <form id="search-form" action="search.php" method="GET" class="d-flex justify-content-between">
-                            <input type="text" class="search-input" name="query" placeholder="Tìm kiếm sản phẩm..." required>
-                            <button type="submit" class="search-btn">
-                                <span class="lnr lnr-magnifier"></span>
-                            </button>
-                            <label for="search-toggle" class="lnr lnr-cross" title="Đóng tìm kiếm"></label>
-                        </form>
-                    </div>
 
                     <!-- Search Icon and Cart -->
                     <ul class="nav navbar-nav navbar-right">
@@ -141,6 +127,11 @@ if ($result_loaisp->num_rows > 0) {
         });
     });
 
+</script>
+<script>
+    document.querySelector('.search-icon').addEventListener('click', function() {
+        window.location.href = 'search.php';
+    });
 </script>
 
 <!-- End Header -->
