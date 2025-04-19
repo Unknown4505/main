@@ -1,8 +1,14 @@
 <?php
+session_start();
 $servername = "localhost";
 $username = "root";
 $password = "";
 $database = "test";
+
+if (!isset($_SESSION['admin_id'])) {
+    header("Location: login-admin.php");
+    exit;
+}
 
 // Kết nối database
 $conn = new mysqli($servername, $username, $password, $database);
@@ -40,17 +46,84 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $mota = trim($_POST["mota"]);
     $image_path = $product["images"]; // Giữ ảnh cũ nếu không thay đổi
 
+    // Kiểm tra dữ liệu đầu vào
+    if (empty($tensp) || $soluong <= 0 || $giathanh <= 0 || $idloai <= 0 || empty($mota)) {
+        die("Dữ liệu không hợp lệ!");
+    }
+
+    // Xử lý upload ảnh mới (nếu có)
     if ($_FILES["images"]["error"] == 0) {
         $target_dir = "uploads/";
         if (!is_dir($target_dir)) {
             mkdir($target_dir, 0777, true);
         }
+
         $file_name = time() . "_" . basename($_FILES["images"]["name"]);
+        $file_tmp = $_FILES["images"]["tmp_name"];
         $target_file = $target_dir . $file_name;
-        move_uploaded_file($_FILES["images"]["tmp_name"], $target_file);
-        $image_path = $target_file;
+
+        // Kiểm tra MIME type của file
+        $finfo = finfo_open(FILEINFO_MIME_TYPE);
+        $mime_type = finfo_file($finfo, $file_tmp);
+        finfo_close($finfo);
+
+        $allowed_mime_types = ['image/jpeg', 'image/png', 'image/webp'];
+        if (!in_array($mime_type, $allowed_mime_types)) {
+            die("Chỉ cho phép upload file JPG, PNG hoặc WebP. Detected MIME type: $mime_type");
+        }
+
+        // Kiểm tra file là ảnh hợp lệ
+        $image_info = getimagesize($file_tmp);
+        if (!$image_info) {
+            die("File không phải là ảnh hợp lệ.");
+        }
+
+        // Resize ảnh
+        list($width, $height) = $image_info;
+        $new_width = 413.75;
+        $new_height = 310.31;
+
+        $src = null;
+        if ($mime_type == "image/jpeg") {
+            $src = imagecreatefromjpeg($file_tmp);
+        } elseif ($mime_type == "image/png") {
+            $src = imagecreatefrompng($file_tmp);
+        } elseif ($mime_type == "image/webp") {
+            $src = imagecreatefromwebp($file_tmp);
+        }
+
+        if ($src) {
+            $dst = imagecreatetruecolor($new_width, $new_height);
+            // Giữ nền trong suốt cho PNG và WebP
+            if ($mime_type == "image/png" || $mime_type == "image/webp") {
+                imagealphablending($dst, false);
+                imagesavealpha($dst, true);
+                $transparent = imagecolorallocatealpha($dst, 0, 0, 0, 127);
+                imagefilledrectangle($dst, 0, 0, $new_width, $new_height, $transparent);
+            }
+
+            imagecopyresampled($dst, $src, 0, 0, 0, 0, $new_width, $new_height, $width, $height);
+
+            // Lưu ảnh với định dạng phù hợp
+            if ($mime_type == "image/jpeg") {
+                imagejpeg($dst, $target_file, 90);
+            } elseif ($mime_type == "image/png") {
+                imagepng($dst, $target_file, 9);
+            } elseif ($mime_type == "image/webp") {
+                imagewebp($dst, $target_file, 90);
+            }
+
+            imagedestroy($src);
+            imagedestroy($dst);
+
+            // Cập nhật đường dẫn ảnh mới
+            $image_path = $target_file;
+        } else {
+            die("Lỗi khi xử lý hình ảnh: Không thể tạo ảnh từ file.");
+        }
     }
 
+    // Cập nhật thông tin sản phẩm vào database
     $sql = "UPDATE sp SET tensp=?, giathanh=?, soluong=?, idloai=?, mota=?, images=? WHERE idsp=?";
     $stmt = $conn->prepare($sql);
     $stmt->bind_param("sdiiisi", $tensp, $giathanh, $soluong, $idloai, $mota, $image_path, $idsp);
@@ -429,7 +502,7 @@ $conn->close();
 
 <div class="admin-container">
     <!-- Sidebar -->
- <?php include 'sidebar.php' ?>
+    <?php include 'sidebar.php' ?>
     <body>
     <div class="container">
         <h1>Chỉnh sửa sản phẩm</h1>
