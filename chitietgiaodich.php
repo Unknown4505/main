@@ -429,14 +429,23 @@ $total += $row['soluong'] * $row['giathanh'];
         <div class="info"><?php echo htmlspecialchars($order['ngaymua']); ?></div>
     </div>
 
+      <!-- Danh sách sản phẩm -->
       <div class="product-info">
           <label>Danh sách sản phẩm:</label>
-          <?php foreach ($products as $product): ?>
-              <div class="info">
-                  <span><?php echo htmlspecialchars($product['tensp']); ?></span>
-                  <span>x<?php echo htmlspecialchars($product['soluong']); ?></span>
-              </div>
-          <?php endforeach; ?>
+          <table style="width: 100%; border-collapse: collapse; margin-top: 10px;">
+              <tbody>
+              <?php foreach ($products as $product) {
+                  $thanhtien = $product['giathanh'] * $product['soluong'];
+                  ?>
+                  <tr>
+                      <td style="padding: 8px;"><?php echo htmlspecialchars($product['tensp']); ?></td>
+                      <td style="text-align: center;">x<?php echo $product['soluong']; ?></td>
+                      <td style="text-align: right;"><?php echo number_format($product['giathanh'], 0, ',', '.'); ?> VND</td>
+                      <td style="text-align: right;"><?php echo number_format($thanhtien, 0, ',', '.'); ?> VND</td>
+                  </tr>
+              <?php } ?>
+              </tbody>
+          </table>
       </div>
 
       <!-- Giá tiền thanh toán -->
@@ -447,7 +456,7 @@ $total += $row['soluong'] * $row['giathanh'];
     <!-- Nút quay lại -->
   </div>
 </div>
-</div>
+
 
 </body>
 </html>
