@@ -1,66 +1,137 @@
 <?php
 session_start();
+$servername = "localhost";
+$username = "root";
+$password = "";
+$database = "test";
 
-// Kiểm tra đăng nhập admin
 if (!isset($_SESSION['admin_id'])) {
     header("Location: login-admin.php");
     exit;
 }
 
-// Kết nối MySQL
-$servername = "localhost";
-$username = "root";
-$password = "";
-$dbname = "test";
-
-$conn = new mysqli($servername, $username, $password, $dbname);
-$conn->set_charset("utf8");
-
+// Kết nối database
+$conn = new mysqli($servername, $username, $password, $database);
 if ($conn->connect_error) {
     die("Kết nối thất bại: " . $conn->connect_error);
 }
 
-// Lấy thông tin người dùng để chỉnh sửa
-if (!isset($_GET['id'])) {
-    header("Location: manager-user.php?error=Không tìm thấy người dùng!");
-    exit;
+// Kiểm tra có `idsp` hay không
+if (!isset($_GET['idsp'])) {
+    die("Không có sản phẩm nào được chọn!");
+}
+$idsp = intval($_GET['idsp']);
+
+// Lấy thông tin sản phẩm từ database
+$sql = "SELECT * FROM sp WHERE idsp = ?";
+$stmt = $conn->prepare($sql);
+$stmt->bind_param("i", $idsp);
+$stmt->execute();
+$result = $stmt->get_result();
+$product = $result->fetch_assoc();
+if (!$product) {
+    die("Sản phẩm không tồn tại!");
 }
 
-$user_id = $conn->real_escape_string($_GET['id']);
-$sql = "SELECT * FROM kh WHERE idKH = '$user_id'";
-$result = $conn->query($sql);
+// Lấy danh sách loại sản phẩm
+$sql = "SELECT * FROM loaisp";
+$loai_result = $conn->query($sql);
 
-if ($result->num_rows == 0) {
-    header("Location: manager-user.php?error=Không tìm thấy người dùng!");
-    exit;
-}
-
-$user = $result->fetch_assoc();
-
-// Xử lý khi form được gửi
-$success_message = '';
-$error_message = '';
-
+// Xử lý khi nhấn "Lưu thay đổi"
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $tenkh = $conn->real_escape_string($_POST['tenkh']);
-    $email = $conn->real_escape_string($_POST['email']);
-    $dob = $conn->real_escape_string($_POST['dob']);
-    $sdt = $conn->real_escape_string($_POST['sdt']);
-    $diachi = $conn->real_escape_string($_POST['diachi']);
+    $tensp = trim($_POST["tensp"]);
+    $giathanh = floatval($_POST["giathanh"]);
+    $soluong = intval($_POST["soluong"]);
+    $idloai = intval($_POST["idloai"]);
+    $mota = trim($_POST["mota"]);
+    $image_path = $product["images"]; // Giữ ảnh cũ nếu không thay đổi
 
-    // Cập nhật thông tin người dùng
-    $sql = "UPDATE kh SET 
-            tenkh = '$tenkh', 
-            email = '$email', 
-            dob = '$dob', 
-            sdt = '$sdt', 
-            diachi = '$diachi' 
-            WHERE idKH = '$user_id'";
+    // Kiểm tra dữ liệu đầu vào
+    if (empty($tensp) || $soluong <= 0 || $giathanh <= 0 || $idloai <= 0 || empty($mota)) {
+        die("Dữ liệu không hợp lệ!");
+    }
 
-    if ($conn->query($sql) === TRUE) {
-        $success_message = "Đã sửa thành công!";
+    // Xử lý upload ảnh mới (nếu có)
+    if ($_FILES["images"]["error"] == 0) {
+        $target_dir = "uploads/";
+        if (!is_dir($target_dir)) {
+            mkdir($target_dir, 0777, true);
+        }
+
+        $file_name = time() . "_" . basename($_FILES["images"]["name"]);
+        $file_tmp = $_FILES["images"]["tmp_name"];
+        $target_file = $target_dir . $file_name;
+
+        // Kiểm tra MIME type của file
+        $finfo = finfo_open(FILEINFO_MIME_TYPE);
+        $mime_type = finfo_file($finfo, $file_tmp);
+        finfo_close($finfo);
+
+        $allowed_mime_types = ['image/jpeg', 'image/png', 'image/webp'];
+        if (!in_array($mime_type, $allowed_mime_types)) {
+            die("Chỉ cho phép upload file JPG, PNG hoặc WebP. Detected MIME type: $mime_type");
+        }
+
+        // Kiểm tra file là ảnh hợp lệ
+        $image_info = getimagesize($file_tmp);
+        if (!$image_info) {
+            die("File không phải là ảnh hợp lệ.");
+        }
+
+        // Resize ảnh
+        list($width, $height) = $image_info;
+        $new_width = 413.75;
+        $new_height = 310.31;
+
+        $src = null;
+        if ($mime_type == "image/jpeg") {
+            $src = imagecreatefromjpeg($file_tmp);
+        } elseif ($mime_type == "image/png") {
+            $src = imagecreatefrompng($file_tmp);
+        } elseif ($mime_type == "image/webp") {
+            $src = imagecreatefromwebp($file_tmp);
+        }
+
+        if ($src) {
+            $dst = imagecreatetruecolor($new_width, $new_height);
+            // Giữ nền trong suốt cho PNG và WebP
+            if ($mime_type == "image/png" || $mime_type == "image/webp") {
+                imagealphablending($dst, false);
+                imagesavealpha($dst, true);
+                $transparent = imagecolorallocatealpha($dst, 0, 0, 0, 127);
+                imagefilledrectangle($dst, 0, 0, $new_width, $new_height, $transparent);
+            }
+
+            imagecopyresampled($dst, $src, 0, 0, 0, 0, $new_width, $new_height, $width, $height);
+
+            // Lưu ảnh với định dạng phù hợp
+            if ($mime_type == "image/jpeg") {
+                imagejpeg($dst, $target_file, 90);
+            } elseif ($mime_type == "image/png") {
+                imagepng($dst, $target_file, 9);
+            } elseif ($mime_type == "image/webp") {
+                imagewebp($dst, $target_file, 90);
+            }
+
+            imagedestroy($src);
+            imagedestroy($dst);
+
+            // Cập nhật đường dẫn ảnh mới
+            $image_path = $target_file;
+        } else {
+            die("Lỗi khi xử lý hình ảnh: Không thể tạo ảnh từ file.");
+        }
+    }
+
+    // Cập nhật thông tin sản phẩm vào database
+    $sql = "UPDATE sp SET tensp=?, giathanh=?, soluong=?, idloai=?, mota=?, images=? WHERE idsp=?";
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("sdiiisi", $tensp, $giathanh, $soluong, $idloai, $mota, $image_path, $idsp);
+
+    if ($stmt->execute()) {
+        echo "<script>alert('Cập nhật thành công!'); window.location.href='managerp.php';</script>";
     } else {
-        $error_message = "Lỗi khi cập nhật: " . $conn->error;
+        echo "Lỗi cập nhật: " . $stmt->error;
     }
 }
 
@@ -70,7 +141,6 @@ $conn->close();
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Giao diện Admin</title>
@@ -82,13 +152,6 @@ $conn->close();
     <meta charset="UTF-8">
     <title>Karma Shop</title>
     <style>
-        body {
-            font-family: 'Roboto', sans-serif;
-        }
-
-        h1, h6, p, a, button, .single-features, .product-details {
-            font-family: 'Roboto', sans-serif;
-        }
         /* Admin Container */
         .admin-container {
             display: flex;
@@ -163,7 +226,6 @@ $conn->close();
             flex-wrap: wrap;
             gap: 20px;
         }
-
 
         .card {
             flex: 1 1 calc(20% - 20px);
@@ -303,11 +365,11 @@ $conn->close();
             font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
-            background: linear-gradient(135deg, #f8c2c2, #fafcb3);
+            background-color: #f5f5f5;
         }
 
         .container {
-            max-width: 1200px;
+            max-width:1200px;
             margin: 30px auto;
             background: #fff;
             padding: 20px;
@@ -333,16 +395,20 @@ $conn->close();
         .product-image img {
             max-width: 100%;
             border-radius: 8px;
+            width: 300px;
         }
 
         .product-details {
             flex: 2;
+
         }
 
         .product-details form {
             display: flex;
             flex-direction: column;
             gap: 15px;
+            width: 600px;
+            height: auto;
         }
 
         .form-group {
@@ -431,78 +497,65 @@ $conn->close();
         }
     </style>
 </head>
-<body>
-<?php include 'header-admin.php'; ?>
+
+<?php include 'header-admin.php' ?>
 
 <div class="admin-container">
-    <?php include 'sidebar.php'; ?>
-
+    <!-- Sidebar -->
+    <?php include 'sidebar.php' ?>
+    <body>
     <div class="container">
-        <h1>Sửa thông tin người dùng</h1>
+        <h1>Chỉnh sửa sản phẩm</h1>
         <div class="product-edit">
             <div class="product-image">
-                <img src="img/product/hinhconnguoi.jpg" alt="Ảnh người dùng">
+                <img src="<?php echo $product['images']; ?>" alt="Ảnh sản phẩm" width="150">
             </div>
             <div class="product-details">
-                <!-- Hiển thị thông báo thành công hoặc lỗi -->
-                <?php if (!empty($success_message)): ?>
-                    <div class="alert alert-success">
-                        <strong>Thành công!</strong> <?php echo $success_message; ?>
-                    </div>
-                <?php endif; ?>
-
-                <?php if (!empty($error_message)): ?>
-                    <div class="alert alert-danger">
-                        <strong>Lỗi!</strong> <?php echo $error_message; ?>
-                    </div>
-                <?php endif; ?>
-
-                <form id="edit-product-form" method="POST" action="edit-user.php?id=<?php echo $user_id; ?>">
+                <form id="edit-product-form" method="POST" enctype="multipart/form-data">
                     <div class="form-group">
-                        <label for="tenkh">Tên người dùng:</label>
-                        <input type="text" id="tenkh" name="tenkh" value="<?php echo htmlspecialchars($user['tenkh']); ?>" required>
+                        <label for="tensp">Tên sản phẩm</label>
+                        <input type="text" id="tensp" name="tensp" value="<?php echo htmlspecialchars($product['tensp']); ?>" required>
                     </div>
                     <div class="form-group">
-                        <label for="email">Địa chỉ email:</label>
-                        <input type="email" id="email" name="email" value="<?php echo htmlspecialchars($user['email']); ?>" required>
+                        <label for="giathanh">Giá sản phẩm (VNĐ)</label>
+                        <input type="number" id="giathanh" name="giathanh" value="<?php echo $product['giathanh']; ?>" required>
                     </div>
                     <div class="form-group">
-                        <label for="dob">Ngày sinh:</label>
-                        <input type="date" id="dob" name="dob" value="<?php echo htmlspecialchars($user['dob']); ?>" required>
+                        <label for="soluong">Số lượng</label>
+                        <input type="number" id="soluong" name="soluong" value="<?php echo $product['soluong']; ?>" min="1" required>
                     </div>
                     <div class="form-group">
-                        <label for="sdt">Số điện thoại:</label>
-                        <input type="text" id="sdt" name="sdt" value="<?php echo htmlspecialchars($user['sdt']); ?>" required>
+                        <label for="idloai">Loại sản phẩm</label>
+                        <select id="idloai" name="idloai" required>
+                            <?php while ($loai = $loai_result->fetch_assoc()) { ?>
+                                <option value="<?php echo $loai['idloai']; ?>" <?php echo ($loai['idloai'] == $product['idloai']) ? 'selected' : ''; ?>>
+                                    <?php echo $loai['tenloai']; ?>
+                                </option>
+                            <?php } ?>
+                        </select>
                     </div>
                     <div class="form-group">
-                        <label for="diachi">Địa chỉ:</label>
-                        <input type="text" id="diachi" name="diachi" value="<?php echo htmlspecialchars($user['diachi']); ?>" required>
+                        <label for="tinhtrang">Tình trạng</label>
+                        <select id="tinhtrang" name="tinhtrang">
+                            <option value="Còn hàng">Còn hàng</option>
+                            <option value="Hết hàng">Hết hàng</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="mota">Mô tả sản phẩm</label>
+                        <textarea id="mota" name="mota" rows="5"><?php echo htmlspecialchars($product['mota']); ?></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="images">Thay đổi hình ảnh</label>
+                        <input type="file" id="images" name="images" accept="image/*">
                     </div>
                     <div class="button-group">
-                        <button type="submit" class="btn-save">Lưu</button>
+                        <button type="submit" class="btn-save">Lưu thay đổi</button>
                     </div>
                 </form>
             </div>
         </div>
     </div>
-
-    <!-- Hộp thông báo -->
-    <div class="custom-alert" id="success-alert">
-        <p>Đã sửa thành công!</p>
-        <button onclick="closeAlert()">OK</button>
-    </div>
 </div>
-
-<script>
-    // Hiển thị thông báo nếu có success_message
-    <?php if (!empty($success_message)): ?>
-    document.getElementById('success-alert').style.display = 'block';
-    <?php endif; ?>
-
-    // Đóng thông báo
-    function closeAlert() {
-        document.getElementById('success-alert').style.display = 'none';
-    }
-</script>
 </body>
 </html>
