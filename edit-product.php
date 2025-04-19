@@ -126,7 +126,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Cập nhật thông tin sản phẩm vào database
     $sql = "UPDATE sp SET tensp=?, giathanh=?, soluong=?, idloai=?, mota=?, images=? WHERE idsp=?";
     $stmt = $conn->prepare($sql);
-    $stmt->bind_param("sdiiisi", $tensp, $giathanh, $soluong, $idloai, $mota, $image_path, $idsp);
+    $stmt->bind_param("sdiissi", $tensp, $giathanh, $soluong, $idloai, $mota, $image_path, $idsp);
 
     if ($stmt->execute()) {
         echo "<script>alert('Cập nhật thành công!'); window.location.href='managerp.php';</script>";
@@ -400,7 +400,6 @@ $conn->close();
 
         .product-details {
             flex: 2;
-
         }
 
         .product-details form {
