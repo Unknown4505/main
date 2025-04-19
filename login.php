@@ -15,41 +15,43 @@ if ($conn->connect_error) {
 }
 
 // Xử lý khi người dùng gửi biểu mẫu đăng nhập
-if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    if (!empty($_POST['email']) && !empty($_POST['password'])) {
-        $email = $_POST['email'];
-        $password = $_POST['password'];
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $email = trim($_POST['email']);
+    $password = $_POST['password'];
 
-        // Truy vấn lấy thông tin người dùng
-        $query = $conn->prepare("SELECT idKH, email, password, tenkh FROM kh WHERE email = ?");
+    if (!empty($email) && !empty($password)) {
+        // Truy vấn người dùng theo email, không kiểm tra status ở đây
+        $query = $conn->prepare("SELECT idKH, email, password, tenkh, status FROM kh WHERE email = ?");
         $query->bind_param('s', $email);
         $query->execute();
         $result = $query->get_result();
 
         if ($result->num_rows > 0) {
-            // Lấy thông tin người dùng
             $user = $result->fetch_assoc();
 
-            // Xác thực mật khẩu
-            if (password_verify($password, $user['password'])) {
-                // Đăng nhập thành công, lưu thông tin vào session
-                $_SESSION['user_id'] = $user['idKH'];
-                $_SESSION['email'] = $user['email'];
-                $_SESSION['username'] = $user['tenkh']; // Đã có trong truy vấn
-
-                // Chuyển hướng về trang chủ
-                header("Location: index.php");
-                exit();
+            // Kiểm tra status
+            if ($user['status'] != 1) {
+                echo "<script>alert('Tài khoản đã bị khóa!');</script>";
             } else {
-                echo "<script>alert('Sai mật khẩu!');</script>";
+                // Kiểm tra mật khẩu
+                if (password_verify($password, $user['password'])) {
+                    $_SESSION['user_id'] = $user['idKH'];
+                    $_SESSION['email'] = $user['email'];
+                    $_SESSION['username'] = $user['tenkh'];
+                    header("Location: index.php");
+                    exit();
+                } else {
+                    echo "<script>alert('Sai email hoặc mật khẩu!');</script>";
+                }
             }
         } else {
-            echo "<script>alert('Email không tồn tại!');</script>";
+            echo "<script>alert('Sai email hoặc mật khẩu!');</script>";
         }
     } else {
         echo "<script>alert('Vui lòng nhập đầy đủ email và mật khẩu!');</script>";
     }
 }
+
 ?>
 
 
