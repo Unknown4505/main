@@ -528,12 +528,13 @@ if (!isset($_SESSION['admin_id'])) {
             return { ...params, ...extra };
         }
 
-        ['tenloai', 'tensp', 'min-price', 'max-price'].forEach(id => {
-            document.getElementById(id).addEventListener("input", () => {
-                fetchProducts(getFormParams({ page: 1 }));
-            });
+        // Xử lý khi form được submit (nhấn nút "Lọc")
+        filterForm.addEventListener("submit", function (event) {
+            event.preventDefault();
+            fetchProducts(getFormParams({ page: 1 }));
         });
 
+        // Xử lý phân trang
         document.addEventListener("click", function (e) {
             if (e.target.matches(".pagination a")) {
                 e.preventDefault();
@@ -541,12 +542,6 @@ if (!isset($_SESSION['admin_id'])) {
                 fetchProducts(getFormParams({ page }));
             }
         });
-
-        filterForm.addEventListener("submit", function (event) {
-            event.preventDefault();
-            fetchProducts(getFormParams({ page: 1 }));
-        });
     });
 </script>
-
 </html>
